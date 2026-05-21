@@ -58,6 +58,7 @@ argument-hint: "[args]"
 
 | Skill | Command | Purpose |
 |-------|---------|---------|
+| `mossy-flowctl` | N/A (internal) | Wrapper for flowctl.py operations |
 | `mossy-plan` | `/mossy:plan` | Create execution plan from spec |
 | `mossy-work` | `/mossy:work` | Execute plan tasks |
 | `mossy-review` | `/mossy:review` | Review changes before commit |
@@ -84,6 +85,8 @@ argument-hint: "[args]"
 ├── README.md             # Repository overview
 ├── .gitlab-ci.yml        # CI configuration
 ├── skills/               # All skills
+│   ├── mossy-flowctl/
+│   │   └── SKILL.md
 │   ├── mossy-plan/
 │   │   ├── SKILL.md
 │   │   └── workflow.md
@@ -223,6 +226,42 @@ argument-hint: "[args]"
 
 Pass $ARGUMENTS to the skill.
 ```
+
+## flowctl Integration
+
+flow-next provides `flowctl.py` at `../flow-next/plugins/flow-next/scripts/flowctl.py`. It is MIT licensed.
+
+**Rule**: If `.flow/flowctl` or `.flow/flowctl.py` exists in the repo, use it. Otherwise, ignore.
+
+**Never modify flowctl.py** — it is maintained by flow-next. Treat it as a read-only dependency.
+
+### flowctl Usage Pattern
+
+```bash
+# Check if flowctl exists
+FLOWCTL="${FLOW_DIR:-.flow}/flowctl"
+if [[ -x "$FLOWCTL" ]]; then
+  $FLOWCTL <command> [args]
+fi
+```
+
+### flowctl Core Commands (used by mossy skills)
+
+| Command | Purpose |
+|---------|---------|
+| `flowctl list` | List all specs + tasks |
+| `flowctl show <id>` | Show spec or task details |
+| `flowctl specs` | List all specs |
+| `flowctl tasks` | List all tasks |
+| `flowctl ready` | Show ready tasks |
+| `flowctl start <task-id>` | Claim a task |
+| `flowctl done <task-id> --summary-file <path>` | Mark task complete |
+| `flowctl spec create --title <title>` | Create new spec |
+| `flowctl task create --spec <spec-id> --title <title>` | Create new task |
+
+### mossy-flowctl Skill
+
+A dedicated internal skill that wraps flowctl for other mossy skills to use. Other skills should delegate to `mossy-flowctl` rather than calling flowctl directly.
 
 ## Constraints
 
