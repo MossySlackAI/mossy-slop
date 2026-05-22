@@ -96,7 +96,6 @@ argument-hint: "[args]"
 ```
 .
 ├── AGENTS.md              # This file
-├── PROMPTS.md            # User prompt log with timestamps and usernames
 ├── README.md             # Repository overview
 ├── .gitlab-ci.yml        # CI configuration
 ├── skills/               # All skills
@@ -172,10 +171,6 @@ Skills can chain:
 /mossy:review
 /mossy:cpp --check-style
 ```
-
-## Transparency
-
-All user prompts must be logged in `PROMPTS.md` with timestamp and user name for full transparency about what has been done.
 
 ## Tool Usage
 
