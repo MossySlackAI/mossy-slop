@@ -8,5 +8,5 @@ On all skills, present and future, make it so that errors in tool use and other 
 
 ## Interview
 
-Add interview skill that asks extra many questions.
+Our inspiration source in ./flow-next has an 'interview' skill, that is similar to our 'plan', but makes some pre-planing and asks questions where clarification is needed. It has a buisiness and technical mode, we only want the technical mode to avoid overhead. Plan and implement it here.
 
