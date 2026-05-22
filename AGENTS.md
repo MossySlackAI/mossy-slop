@@ -4,6 +4,18 @@
 
 This repository provides alternative skills to flow-next, designed for Mistral Vibe. They are intentionally minimal — no unnecessary verbosity, no token-wasting patterns.
 
+## Mission Statement
+
+The focus should be the code; the code is the single source of truth. Inline comments should provide the documentation.
+
+The human should retain full control and responsibility. They should be able to verify the quality of individual steps of the process if they want to, or later when everything is done.
+
+It should be the user's choice whether individual steps are committed to git, and whether auto-generated plan metadata gets committed or not.
+
+When questions arise during processing, they should be logged to the human readable output right away, but processing should continue with other parts of the job for as long as reasonably possible; the open questions should then be asked in bulk.
+
+A reasonable effort should be made in the planning phase to discover open questions, but speed and token conservation are valued higher.
+
 ## Purpose
 
 Aid in planning and executing code changes across:

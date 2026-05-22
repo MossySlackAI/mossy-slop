@@ -7,7 +7,9 @@ allowed-tools: read_file,write_file,grep,bash,ask_user_question
 
 # Plan
 
-Create an execution plan from a spec. Output: ordered tasks in `.flow/specs/<id>.md` with `.flow/tasks/` for tracking.
+Create an execution plan from a spec. Code is the single source of truth — inline comments in code serve as documentation.
+
+**User controls all git decisions**: Auto-generated plan metadata in `.flow/` is NOT committed by default. User explicitly chooses what to commit.
 
 ## Input
 
@@ -28,16 +30,19 @@ Accepts:
 2. **Extract requirements**
    - Split spec into acceptance criteria (R-IDs)
    - Number them sequentially: R1, R2, R3...
+   - Log questions immediately but continue processing; ask in bulk at end
 
 3. **Break into tasks**
    - Each task implements 1+N requirements
    - Order by dependency (infrastructure first, UI last)
    - ID format: `<spec-id>.M` (fn-1.1, fn-1.2...)
+   - Speed and token conservation > exhaustive question discovery
 
 4. **Write artifacts**
    - Spec file: `.flow/specs/<id>.md` with R-IDs
    - Task files: `.flow/tasks/<id>.M.md` per task
    - Summary: `.flow/specs/<id>-plan.md` with dependency graph
+   - **NOT committed to git by default** — user choice
 
 ## Spec Format
 

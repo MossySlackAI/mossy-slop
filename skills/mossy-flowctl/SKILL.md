@@ -11,6 +11,8 @@ allowed-tools: read_file,bash
 
 This skill wraps `flowctl.py` from flow-next. If flowctl exists in `.flow/`, use it. Otherwise, provide minimal fallback.
 
+**Human control**: All operations on `.flow/` metadata are user-initiated. Auto-generated files in `.flow/` are NOT committed without explicit user action.
+
 ## Detection
 
 ```bash
