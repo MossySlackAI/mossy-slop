@@ -100,6 +100,43 @@ CMake, Make, Bazel, Ninja, Meson
 - `/mossy:cpp --check raii` - Check RAII compliance
 - `/mossy:cpp --refactor` - Refactor C++ code
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on header/source file, grep for patterns fails |
+| validation-error | C++ specific validation fails | Invalid file extension, unsupported build system |
+| logic-error | Internal analysis logic fails | AST parsing error, symbol resolution failure |
+| resource-error | Required resources missing | CMakeLists.txt not found, include directories missing |
+| configuration-error | Environment misconfiguration | Compiler not installed, clang-tidy not available |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$cpp_file" 2>/dev/null; then
+    record_issue "mossy-cpp" "tool-error" "read_file" "$cpp_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading C++ file for analysis" || true
+fi
+
+# When file extension is invalid
+if [[ ! "$file_ext" =~ \.(cpp|h|hpp|cc|cxx|hxx|ipp)$ ]]; then
+    record_issue "mossy-cpp" "validation-error" "N/A" "$cpp_file" \
+        "Invalid C++ file extension: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Never modify include order without reason

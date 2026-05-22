@@ -264,6 +264,50 @@ git show <commit> --name-only | xargs mossy-analyze
 - `/mossy:analyze --quick` - Quick basic checks
 - `/mossy:analyze --full` - Full analysis (default)
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on source file, grep pattern error, bash command fails |
+| validation-error | Analysis input invalid | Invalid file path, unsupported language, missing required parameters |
+| logic-error | Internal analysis logic fails | Check implementation error, result processing failure |
+| resource-error | Required resources missing | .flow/analysis/ directory creation fails, source directory not found |
+| configuration-error | Environment misconfiguration | Missing analysis tools, incompatible configurations |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$file_path" 2>/dev/null; then
+    record_issue "mossy-analyze" "tool-error" "read_file" "$file_path" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading file for static analysis" || true
+fi
+
+# When file type is unsupported
+if ! is_supported_language "${file_path##*.}"; then
+    record_issue "mossy-analyze" "validation-error" "N/A" "$file_path" \
+        "Unsupported language for analysis: ${file_path##*.}" \
+        "Phase: target resolution, Detecting language from extension" || true
+fi
+
+# When grep fails during pattern search
+if ! grep pattern="$pattern" path="$directory" 2>/dev/null; then
+    record_issue "mossy-analyze" "tool-error" "grep" "$directory" \
+        "grep failed with exit code $?" \
+        "Phase: analysis, Searching for pattern in codebase" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Never modify source files

@@ -119,6 +119,43 @@ Accepts:
 - `/mossy:gdscript --refactor` - Refactor GDScript code
 - `/mossy:gdscript --export` - Check exported variables
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on .gd file, grep for patterns fails |
+| validation-error | GDScript specific validation fails | Invalid file extension, missing project.godot |
+| logic-error | Internal analysis logic fails | Scene tree parsing error, node resolution failure |
+| resource-error | Required resources missing | project.godot not found, Godot editor not available |
+| configuration-error | Environment misconfiguration | Godot version mismatch, missing export plugins |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$gd_file" 2>/dev/null; then
+    record_issue "mossy-gdscript" "tool-error" "read_file" "$gd_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading GDScript file for analysis" || true
+fi
+
+# When file extension is invalid
+if [[ "$file_ext" != ".gd" ]]; then
+    record_issue "mossy-gdscript" "validation-error" "N/A" "$gd_file" \
+        "Invalid GDScript file extension: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Always use @onready for node references that need to be ready

@@ -144,6 +144,43 @@ When flowctl exists, it manages:
 - Never write to flowctl or flowctl.py files
 - flowctl.py source: `../flow-next/plugins/flow-next/scripts/flowctl.py` (MIT)
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during flowctl operations | bash command fails, flowctl executable not found |
+| validation-error | flowctl command arguments invalid | Invalid command format, missing required parameters |
+| logic-error | Internal flowctl logic fails | State inconsistency, invalid JSON parsing |
+| resource-error | Required resources missing | .flow/ directory not found, flowctl.py not copied |
+| configuration-error | Environment misconfiguration | FLOW_DIR not set, flowctl not executable |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When flowctl command fails
+FLOWCTL="$FLOW_DIR/flowctl"
+if [[ -x "$FLOWCTL" ]]; then
+    if ! "$FLOWCTL" <command> [args] 2>/dev/null; then
+        record_issue "mossy-flowctl" "tool-error" "bash" "$FLOWCTL <command>" \
+            "flowctl command failed with exit code $?" \
+            "Phase: flowctl wrapper, Executing $FLOWCTL <command>" || true
+    fi
+else
+    record_issue "mossy-flowctl" "resource-error" "N/A" "$FLOWCTL" \
+        "flowctl not found or not executable" \
+        "Phase: detection, Checking flowctl availability" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Commands for Other Skills
 
 Other mossy skills should call this via bash:

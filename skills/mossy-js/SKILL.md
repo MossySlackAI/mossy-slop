@@ -122,6 +122,43 @@ Accepts:
 - `/mossy:js --refactor` - Refactor JS code
 - `/mossy:js --async` - Convert callbacks to async/await
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on .js file, grep for patterns fails |
+| validation-error | JavaScript specific validation fails | Invalid file extension, missing package.json |
+| logic-error | Internal analysis logic fails | AST parsing error, module resolution failure |
+| resource-error | Required resources missing | package.json not found, Node.js not installed |
+| configuration-error | Environment misconfiguration | ESLint not installed, incompatible Node.js version |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$js_file" 2>/dev/null; then
+    record_issue "mossy-js" "tool-error" "read_file" "$js_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading JavaScript file for analysis" || true
+fi
+
+# When file extension is invalid
+if [[ ! "$file_ext" =~ \.(js|mjs|cjs)$ ]]; then
+    record_issue "mossy-js" "validation-error" "N/A" "$js_file" \
+        "Invalid JavaScript file extension: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Prefer ES Modules over CommonJS for new code

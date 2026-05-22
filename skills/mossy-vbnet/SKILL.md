@@ -101,6 +101,43 @@ Accepts:
 - `/mossy:vbnet --check events` - Check event handling
 - `/mossy:vbnet --refactor` - Refactor VB.NET code
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on .vb file, grep for patterns fails |
+| validation-error | VB.NET specific validation fails | Invalid file extension, missing .vbproj |
+| logic-error | Internal analysis logic fails | Symbol resolution failure, COM interop error |
+| resource-error | Required resources missing | .vbproj not found, .NET Framework missing |
+| configuration-error | Environment misconfiguration | VB compiler not available, Option Strict/Explicit misconfigured |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$vb_file" 2>/dev/null; then
+    record_issue "mossy-vbnet" "tool-error" "read_file" "$vb_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading VB.NET file for analysis" || true
+fi
+
+# When file extension is invalid
+if [[ "$file_ext" != ".vb" ]]; then
+    record_issue "mossy-vbnet" "validation-error" "N/A" "$vb_file" \
+        "Invalid VB.NET file extension: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Always use Option Strict On

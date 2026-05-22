@@ -335,6 +335,50 @@ git diff <file> > .flow/reviews/current/<file>.diff
 | MINOR | Nice to fix | Style issues, minor refactoring |
 | STYLE | Formatting/lint | Line length, indentation |
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on non-existent source file, grep pattern error |
+| validation-error | Review target invalid | Invalid file path, unsupported file type, missing metadata |
+| logic-error | Internal analysis logic fails | Inconsistent analysis results, validation loop |
+| resource-error | Required resources missing | .flow/reviews/ directory creation fails, git not available |
+| configuration-error | Environment misconfiguration | Linter not installed but configured, missing review backend |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$file_path" 2>/dev/null; then
+    record_issue "mossy-review" "tool-error" "read_file" "$file_path" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Task: $task_id, Reading file for review" || true
+fi
+
+# When file type is unsupported
+if [[ ! "$file_ext" =~ \.(py|cpp|cs|js|ts|gd|vb)$ ]]; then
+    record_issue "mossy-review" "validation-error" "N/A" "$file_path" \
+        "Unsupported file type for review: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+
+# When linter check fails
+if ! run_linter "$file_path" 2>/dev/null; then
+    record_issue "mossy-review" "tool-error" "bash" "$file_path" \
+        "Linter check failed with exit code $?" \
+        "Phase: verification, Running style checks" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Never automatically commit code

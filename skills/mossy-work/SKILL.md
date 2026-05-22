@@ -193,6 +193,50 @@ If flowctl not available:
 - Done: set `status: "done"`, `updated_at: <timestamp>`
 - No dependency validation in fallback mode
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during task execution | read_file on non-existent source file, search_replace pattern not found |
+| validation-error | Task/spec metadata invalid | Missing task_id, invalid spec format, acceptance criteria missing |
+| logic-error | Internal execution logic fails | Circular dependency in task execution, workspace corruption |
+| resource-error | Required resources missing | .flow/work/ directory creation fails, flowctl not found |
+| configuration-error | Environment misconfiguration | Missing required environment variables, incompatible tool versions |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during task execution
+if ! read_file path="$target_file" 2>/dev/null; then
+    record_issue "mossy-work" "tool-error" "read_file" "$target_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: implementation, Task: $task_id, Reading source file for modification" || true
+fi
+
+# When search_replace fails
+if ! search_replace file_path="$file" content="$changes" 2>/dev/null; then
+    record_issue "mossy-work" "tool-error" "search_replace" "$file" \
+        "search_replace failed: pattern not found or file unchanged" \
+        "Phase: implementation, Task: $task_id, Applying changes to $file" || true
+fi
+
+# When task metadata is invalid
+if [ -z "$task_id" ] || ! [[ "$task_id" =~ ^fn-[0-9]+\.[0-9]+$ ]]; then
+    record_issue "mossy-work" "validation-error" "N/A" "$input" \
+        "Invalid task ID format: expected fn-N.M pattern" \
+        "Phase: input parsing, Validating task ID $input" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Never modify files outside workspace without explicit task instruction

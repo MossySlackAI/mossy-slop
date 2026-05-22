@@ -277,6 +277,80 @@ fi
 
 A dedicated internal skill that wraps flowctl for other mossy skills to use. Other skills should delegate to `mossy-flowctl` rather than calling flowctl directly.
 
+## Error Recording Requirements
+
+**ALL mossy skills MUST implement error recording** to track tool errors and other problems that cost time and tokens to resolve.
+
+### Quick Reference
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| Issue files | `.flow/issues/` | Individual error records |
+| Recording script | `scripts/record-issue.sh` | Shared recording utility |
+| Full guide | `ISSUE_RECORDING.md` | Complete documentation |
+| Template | `.flow/issues/ISSUE_TEMPLATE.md` | Issue file format |
+
+### When to Record
+
+Record errors **immediately** for:
+
+1. **Tool Errors**: Any Vibe tool call failure (read_file, write_file, search_replace, grep, bash, etc.)
+2. **Validation Errors**: Invalid input, missing required arguments, format mismatches
+3. **Logic Errors**: Internal skill logic failures, unexpected state
+4. **Resource Errors**: Missing files, directories, or external resources
+5. **Configuration Errors**: Environment issues, missing dependencies, version incompatibilities
+
+### Minimum Requirements for Each Skill
+
+Every skill's SKILL.md MUST include:
+
+1. **Error Recording Section**: `## Error Recording` with:
+   - Reference to `ISSUE_RECORDING.md` guide
+   - Table of skill-specific error types with examples
+   - Bash integration examples using `scripts/record-issue.sh`
+
+2. **Integration Code**: Show how to use `record_issue` function:
+   ```bash
+   source scripts/record-issue.sh 2>/dev/null || true
+   record_issue "SKILL_NAME" "ERROR_TYPE" "TOOL" "TARGET" "ERROR_MSG" "CONTEXT" || true
+   ```
+
+3. **Error Types Table**: Document skill-specific error categories:
+   - tool-error
+   - validation-error
+   - logic-error
+   - resource-error
+   - configuration-error
+
+### Pattern for Error Handling
+
+```bash
+# Wrap tool calls with error recording
+if ! read_file path="$target" 2>/dev/null; then
+    record_issue "mossy-SKILL" "tool-error" "read_file" "$target" \
+        "read_file failed: $?" \
+        "Phase: analysis, Task: $task_id" || true
+    # Handle error or continue
+fi
+```
+
+**Note**: Always use `|| true` to prevent recording failures from breaking skill execution.
+
+### Existing Implementations
+
+All 13 skills currently implement error recording:
+- Core: mossy-plan, mossy-work, mossy-review, mossy-refactor, mossy-analyze, mossy-flowctl
+- Language: mossy-cpp, mossy-csharp, mossy-vbnet, mossy-js, mossy-ts, mossy-gdscript, mossy-py
+
+### For New Skills
+
+When adding a new skill:
+1. Add `## Error Recording` section to SKILL.md
+2. Document skill-specific error types
+3. Include integration examples
+4. Test error recording works
+5. Reference `ISSUE_RECORDING.md` for details
+
 ## Constraints
 
 - Keep skills < 500 lines each

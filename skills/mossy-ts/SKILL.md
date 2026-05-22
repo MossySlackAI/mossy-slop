@@ -123,6 +123,43 @@ Accepts:
 - `/mossy:ts --refactor` - Refactor TS code
 - `/mossy:ts --interfaces` - Extract interfaces from code
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on .ts file, grep for patterns fails |
+| validation-error | TypeScript specific validation fails | Invalid file extension, missing tsconfig.json |
+| logic-error | Internal analysis logic fails | Type inference error, symbol resolution failure |
+| resource-error | Required resources missing | tsconfig.json not found, TypeScript compiler not installed |
+| configuration-error | Environment misconfiguration | tsc not available, incompatible TypeScript version |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$ts_file" 2>/dev/null; then
+    record_issue "mossy-ts" "tool-error" "read_file" "$ts_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading TypeScript file for analysis" || true
+fi
+
+# When file extension is invalid
+if [[ ! "$file_ext" =~ \.(ts|tsx|d\.ts)$ ]]; then
+    record_issue "mossy-ts" "validation-error" "N/A" "$ts_file" \
+        "Invalid TypeScript file extension: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Prefer interfaces over type aliases for object shapes

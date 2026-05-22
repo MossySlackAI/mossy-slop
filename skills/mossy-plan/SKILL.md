@@ -104,6 +104,43 @@ After plan creation, user can:
 - `/mossy:plan --list` - List all specs
 - `/mossy:plan --show <id>` - Show spec + tasks
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during spec parsing | read_file on non-existent spec file |
+| validation-error | Spec format doesn't match expected schema | Missing Goal section, invalid task IDs |
+| logic-error | Internal planning logic fails | Circular dependency detection, invalid task ordering |
+| resource-error | Required resources missing | .flow/specs/ directory not found |
+| configuration-error | Environment misconfiguration | flowctl.py missing but referenced |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during spec parsing
+if ! read_file path="$spec_path" 2>/dev/null; then
+    record_issue "mossy-plan" "tool-error" "read_file" "$spec_path" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: parsing, Attempting to read spec file $spec_path" || true
+fi
+
+# When spec format is invalid
+if ! grep -q "## Goal" "$spec_path"; then
+    record_issue "mossy-plan" "validation-error" "N/A" "$spec_path" \
+        "Invalid spec format: missing Goal section" \
+        "Phase: parsing, Validating spec structure" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Never use markdown TODOs

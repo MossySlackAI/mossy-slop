@@ -127,6 +127,43 @@ Accepts:
 - `/mossy:py --async` - Convert to async/await
 - `/mossy:py --typing` - Add type hints
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during analysis | read_file on .py file, grep for patterns fails |
+| validation-error | Python specific validation fails | Invalid file extension, missing setup.py/pyproject.toml |
+| logic-error | Internal analysis logic fails | Import resolution failure, symbol analysis error |
+| resource-error | Required resources missing | Requirements file not found, Python interpreter not available |
+| configuration-error | Environment misconfiguration | Missing linter (flake8/pylint/ruff), mypy not installed |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during analysis
+if ! read_file path="$py_file" 2>/dev/null; then
+    record_issue "mossy-py" "tool-error" "read_file" "$py_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading Python file for analysis" || true
+fi
+
+# When file extension is invalid
+if [[ ! "$file_ext" =~ \.(py|pyw|pyx|pyi)$ ]]; then
+    record_issue "mossy-py" "validation-error" "N/A" "$py_file" \
+        "Invalid Python file extension: $file_ext" \
+        "Phase: target resolution, Validating file type" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Follow PEP 8 style guide

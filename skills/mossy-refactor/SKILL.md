@@ -326,6 +326,50 @@ mossy-flowctl done <task-id> --summary-file .flow/refactors/<id>/summary.md
 - `/mossy:refactor --list` - List available refactorings
 - `/mossy:refactor --show src/file.py` - Show refactoring candidates
 
+## Error Recording
+
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+
+### Error Types Recorded
+
+| Error Type | Trigger | Example |
+|------------|---------|---------|
+| tool-error | Vibe tool calls fail during refactoring | read_file on target, search_replace pattern not found, write_file permission denied |
+| validation-error | Refactoring preconditions not met | Unsupported operation for language, invalid target format |
+| logic-error | Internal refactoring logic fails | AST parsing error, scope resolution failure |
+| resource-error | Required resources missing | .flow/refactors/ directory creation fails, required build tools missing |
+| configuration-error | Environment misconfiguration | Missing language runtime, incompatible tool versions |
+
+### Integration
+
+```bash
+# At skill start, source the recording utility
+source scripts/record-issue.sh 2>/dev/null || true
+
+# When a tool fails during refactoring
+if ! read_file path="$target_file" 2>/dev/null; then
+    record_issue "mossy-refactor" "tool-error" "read_file" "$target_file" \
+        "read_file failed: file not found or permission denied" \
+        "Phase: analysis, Reading target file for refactoring" || true
+fi
+
+# When operation is unsupported for language
+if ! is_supported_operation "$operation" "$language"; then
+    record_issue "mossy-refactor" "validation-error" "N/A" "$operation on $language" \
+        "Unsupported operation: $operation for language $language" \
+        "Phase: validation, Checking operation support" || true
+fi
+
+# When search_replace fails to apply changes
+if ! search_replace file_path="$file" content="$changes" 2>/dev/null; then
+    record_issue "mossy-refactor" "tool-error" "search_replace" "$file" \
+        "search_replace failed: $?" \
+        "Phase: implementation, Applying refactoring changes" || true
+fi
+```
+
+**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
 ## Guardrails
 
 - Never modify files without explicit operation

@@ -242,21 +242,39 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 
 ## Error Handling
 
+**Error Recording:** All errors MUST be recorded to `.flow/issues/` using the shared utility:
+
+```bash
+# At the beginning of workflow execution, source the recording script
+source scripts/record-issue.sh 2>/dev/null || true
+
+# Record any error encountered
+record_issue "mossy-work" "$ERROR_TYPE" "$TOOL" "$TARGET" "$ERROR_MSG" "$CONTEXT" || true
+```
+
+Where:
+- `$ERROR_TYPE`: tool-error, validation-error, logic-error, resource-error, or configuration-error
+- `$TOOL`: The Vibe tool that failed (read_file, write_file, search_replace, grep, bash, etc.) or "N/A"
+- `$TARGET`: The file path, pattern, or resource being accessed
+- `$ERROR_MSG`: The complete error message
+- `$CONTEXT`: Phase, task ID, and what was being attempted
+
 **Recoverable errors:**
-- File not found during read: log, continue with creation
-- Test failure: document, mark acceptance as FAIL
-- Parse error in task description: ask clarifying question, continue
+- File not found during read: log, **record issue**, continue with creation
+- Test failure: document, **record issue**, mark acceptance as FAIL
+- Parse error in task description: ask clarifying question, **record issue**, continue
 
 **Unrecoverable errors:**
-- Task already claimed by another: abort with error
-- Missing required metadata: abort with error
-- Permission denied on file operation: abort with error
+- Task already claimed by another: abort with error, **record issue**
+- Missing required metadata: abort with error, **record issue**
+- Permission denied on file operation: abort with error, **record issue**
 
 **Workflow on error:**
-1. Log error details to summary.md
-2. Update task status appropriately
-3. Preserve workspace
-4. Report to user with next steps
+1. **Record issue** to `.flow/issues/` with full context
+2. Log error details to summary.md
+3. Update task status appropriately
+4. Preserve workspace
+5. Report to user with next steps
 
 ## State Recovery
 
