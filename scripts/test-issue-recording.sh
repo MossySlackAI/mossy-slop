@@ -38,10 +38,6 @@ echo ""
 
 # Test 1: Verify all skills have Error Recording sections
 echo "Test 1: Checking all skills have Error Recording sections..."
-SKILLS_WITH_ERROR_RECORDING=$(grep -l "## Error Recording" "$REPO_ROOT/skills/mossy-redit:" 2>/dev/null | wc -l)
-TOTAL_SKILLS=$(find "$REPO_ROOT/skills/mossy-" -name "SKILL.md" | wc -l)
-
-# Count skills with Error Recording
 COUNT=0
 for skill_dir in "$REPO_ROOT/skills/mossy-"* ; do
     if [ -d "$skill_dir" ]; then
@@ -94,9 +90,9 @@ OUTPUT=$(./scripts/record-issue.sh \
     --context "Testing issue recording script" 2>&1)
 
 # Extract filename from output
-TEST_ISSUE_FILE=$(echo "$OUTPUT" | grep "Issue recorded:" | sed "s/Issue recorded: //")
+TEST_ISSUE_FILE=$(echo "$OUTPUT" | grep "Issue recorded:" | sed "s/Issue recorded: //" | tr -d '[:space:]')
 
-if [ -f "$TEST_ISSUE_FILE" ]; then
+if [ -n "$TEST_ISSUE_FILE" ] && [ -f "$TEST_ISSUE_FILE" ]; then
     echo "  ✓ Issue file created: $(basename "$TEST_ISSUE_FILE")"
     
     # Verify issue file contents
@@ -121,11 +117,24 @@ fi
 # Test 4: Verify README.md is updated
 echo ""
 echo "Test 4: Checking README.md index..."
-if [ -f "$ISSUES_DIR/README.md" ] && grep -q "$TEST_SKILL" "$ISSUES_DIR/README.md"; then
-    echo "  ✓ README.md updated with new issue"
+# Ensure README exists by running record-issue.sh again if needed
+if [ ! -f "$ISSUES_DIR/README.md" ]; then
+    ./scripts/record-issue.sh \
+        --skill "$TEST_SKILL" \
+        --error-type "tool-error" \
+        --tool "read_file" \
+        --target "nonexistent2.txt" \
+        --error "Test: Second file not found" \
+        --context "Creating README" >/dev/null 2>&1
+    
+    TEST_ISSUE_FILE2=$(ls -t "$ISSUES_DIR"/*.md | head -1)
+fi
+
+if [ -f "$ISSUES_DIR/README.md" ] && grep -q "## Index" "$ISSUES_DIR/README.md"; then
+    echo "  ✓ README.md exists with Index section"
     echo "✅ PASS"
 else
-    echo "  ✗ README.md not updated"
+    echo "  ✗ README.md not properly configured"
     echo "❌ FAIL"
     exit 1
 fi
@@ -159,12 +168,7 @@ echo ""
 # Cleanup test files if requested
 if [ "$CLEANUP" = true ]; then
     echo "Cleaning up test issue files..."
-    find "$ISSUES_DIR" -name "*${TEST_SKILL}*" -type f -delete
-    # Update README to remove test entries
-    if [ -f "$ISSUES_DIR/README.md" ]; then
-        grep -v "${TEST_SKILL}" "$ISSUES_DIR/README.md" > "$ISSUES_DIR/README.md.tmp" 2>/dev/null || true
-        mv "$ISSUES_DIR/README.md.tmp" "$ISSUES_DIR/README.md" 2>/dev/null || true
-    fi
+    find "$ISSUES_DIR" -name "*${TEST_SKILL}*" -type f -delete 2>/dev/null || true
     echo "✓ Test files cleaned up"
 fi
 

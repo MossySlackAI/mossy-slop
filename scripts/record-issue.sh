@@ -1,57 +1,5 @@
 #!/bin/bash
-# ensure_issues_dir - Create .flow/issues/ if it doesn't exist
-# =============================================================================
-ensure_issues_dir() {
-    if [ ! -d "$ISSUES_DIR" ]; then
-        mkdir -p "$ISSUES_DIR"
-        # Create a README to explain the directory
-        cat > "$ISSUES_DIR/README.md" << 'EOF'
-# Recorded Issues
-
-This directory contains automatically recorded issues from mossy skill execution.
-Each file represents a problem encountered during tool use or skill operation.
-
-## Issue File Format
-
-Each issue file follows this structure:
-- **Naming**: `<date>-<time>-<skill>-<error-type>-<sequence>.md`
-- **Content**: Tool invocation, error log, problem description, context
-
-## Index
-
-EOF
-        chmod 644 "$ISSUES_DIR/README.md"
-    fi
-}
-=======
-# =============================================================================
-# ensure_issues_dir - Create .flow/issues/ if it doesn't exist
-# =============================================================================
-ensure_issues_dir() {
-    if [ ! -d "$ISSUES_DIR" ]; then
-        mkdir -p "$ISSUES_DIR"
-    fi
-    
-    # Ensure README.md exists with Index section
-    if [ ! -f "$ISSUES_DIR/README.md" ] || ! grep -q "## Index" "$ISSUES_DIR/README.md"; then
-        cat > "$ISSUES_DIR/README.md" << 'EOF'
-# Recorded Issues
-
-This directory contains automatically recorded issues from mossy skill execution.
-Each file represents a problem encountered during tool use or skill operation.
-
-## Issue File Format
-
-Each issue file follows this structure:
-- **Naming**: `<date>-<time>-<skill>-<error-type>-<sequence>.md`
-- **Content**: Tool invocation, error log, problem description, context
-
-## Index
-
-EOF
-        chmod 644 "$ISSUES_DIR/README.md"
-    fi
-}record-issue.sh - Record tool errors and problems for mossy skills
+# record-issue.sh - Record tool errors and problems for mossy skills
 # Usage: source this file, then call record_issue function
 # Or run directly: ./record-issue.sh --skill X --error-type Y ...
 
@@ -70,7 +18,10 @@ SEVERITY_DEFAULT="medium"
 ensure_issues_dir() {
     if [ ! -d "$ISSUES_DIR" ]; then
         mkdir -p "$ISSUES_DIR"
-        # Create a README to explain the directory
+    fi
+    
+    # Ensure README.md exists with Index section
+    if [ ! -f "$ISSUES_DIR/README.md" ] || ! grep -q "## Index" "$ISSUES_DIR/README.md"; then
         cat > "$ISSUES_DIR/README.md" << 'EOF'
 # Recorded Issues
 
@@ -148,98 +99,80 @@ record_issue() {
     issue_id=$(generate_issue_id "$skill" "$error_type")
     local filename="$ISSUES_DIR/${issue_id}.md"
     
-    # Escape newlines for here-doc (replace with literal \n)
-    error_msg=$(echo "$error_msg" | sed 's/$/\\n/g')
-    context=$(echo "$context" | sed 's/$/\\n/g')
-    
     # Get current timestamp in ISO format
     local iso_timestamp
     iso_timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     
     # Create the issue file
-    cat > "$filename" << EOF
-# Issue: ${error_msg%%\\n*}
-
-**ID:** ${issue_id}
-**Skill:** ${skill}
-**Timestamp:** ${iso_timestamp}
-**Severity:** ${SEVERITY_DEFAULT}
-**Status:** open
-**Error Type:** ${error_type}
-
-## Tool Invocation
-
-timestamp: ${iso_timestamp}
-EOF
+    {
+    echo "# Issue: ${error_msg%%\n*}"
+    echo ""
+    echo "**ID:** ${issue_id}"
+    echo "**Skill:** ${skill}"
+    echo "**Timestamp:** ${iso_timestamp}"
+    echo "**Severity:** ${SEVERITY_DEFAULT}"
+    echo "**Status:** open"
+    echo "**Error Type:** ${error_type}"
+    echo ""
+    echo "## Tool Invocation"
+    echo ""
+    echo "timestamp: ${iso_timestamp}"
     
     # Add tool information if provided
     if [ -n "$tool" ]; then
-        cat >> "$filename" << EOF
-tool: ${tool}
-EOF
+        echo "tool: ${tool}"
         if [ -n "$target" ]; then
-            cat >> "$filename" << EOF
-target: ${target}
-EOF
+            echo "target: ${target}"
         fi
     else
-        cat >> "$filename" << EOF
-tool: N/A
-EOF
+        echo "tool: N/A"
     fi
     
-    cat >> "$filename" << EOF
-
-## Error Log
-
-${error_msg}
-
-## Problem Description
-
-${error_msg%%\\n*}
-
-## Context
-
-${context}
-
-## Reproduction Steps
-
-1. Skill: ${skill}
-2. Error Type: ${error_type}
-EOF
+    echo ""
+    echo "## Error Log"
+    echo ""
+    echo "${error_msg}"
+    echo ""
+    echo "## Problem Description"
+    echo ""
+    echo "${error_msg%%\n*}"
+    echo ""
+    echo "## Context"
+    echo ""
+    echo "${context}"
+    echo ""
+    echo "## Reproduction Steps"
+    echo ""
+    echo "1. Skill: ${skill}"
+    echo "2. Error Type: ${error_type}"
     
     if [ -n "$tool" ]; then
-        cat >> "$filename" << EOF
-3. Tool: ${tool}
-EOF
+        echo "3. Tool: ${tool}"
         if [ -n "$target" ]; then
-            cat >> "$filename" << EOF
-4. Target: ${target}
-EOF
+            echo "4. Target: ${target}"
         fi
     fi
     
-    cat >> "$filename" << EOF
-
-## Impact
-
-- Skill execution may have been interrupted
-- Task may require manual intervention
-
-## Resolution Notes
-
-[TBD - To be filled when issue is resolved]
-
-## Related Issues
-
-- None known
-EOF
+    echo ""
+    echo "## Impact"
+    echo ""
+    echo "- Skill execution may have been interrupted"
+    echo "- Task may require manual intervention"
+    echo ""
+    echo "## Resolution Notes"
+    echo ""
+    echo "[TBD - To be filled when issue is resolved]"
+    echo ""
+    echo "## Related Issues"
+    echo ""
+    echo "- None known"
+    } > "$filename"
     
     # Make file readable
     chmod 644 "$filename"
     
     # Update README index
-    update_issues_index "$issue_id" "${error_msg%%\\n*}" "$skill" "$error_type" "$filename"
+    update_issues_index "$issue_id" "${error_msg%%\n*}" "$skill" "$error_type" "$filename"
     
     echo "Issue recorded: $filename"
     return 0
