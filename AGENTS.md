@@ -74,6 +74,7 @@ argument-hint: "[args]"
 |-------|---------|---------|
 | `mossy-flowctl` | N/A (internal) | Wrapper for flowctl.py operations |
 | `mossy-plan` | `/mossy:plan` | Create execution plan from spec |
+| `mossy-interview` | `/mossy:interview` | Technical interview to refine specs before planning |
 | `mossy-work` | `/mossy:work` | Execute plan tasks |
 | `mossy-review` | `/mossy:review` | Review changes before commit |
 | `mossy-refactor` | `/mossy:refactor` | Language-aware refactoring |
@@ -104,6 +105,9 @@ argument-hint: "[args]"
 │   ├── mossy-plan/
 │   │   ├── SKILL.md
 │   │   └── workflow.md
+│   ├── mossy-interview/
+│   │   ├── SKILL.md
+│   │   └── questions-technical.md
 │   ├── mossy-work/
 │   │   ├── SKILL.md
 │   │   └── workflow.md
@@ -129,6 +133,7 @@ argument-hint: "[args]"
 │       └── SKILL.md
 └── commands/             # Slash command definitions
     ├── mossy-plan.md
+    ├── mossy-interview.md
     ├── mossy-work.md
     ├── mossy-review.md
     ├── mossy-refactor.md
@@ -338,8 +343,8 @@ fi
 
 ### Existing Implementations
 
-All 13 skills currently implement error recording:
-- Core: mossy-plan, mossy-work, mossy-review, mossy-refactor, mossy-analyze, mossy-flowctl
+All 14 skills currently implement error recording:
+- Core: mossy-plan, mossy-interview, mossy-work, mossy-review, mossy-refactor, mossy-analyze, mossy-flowctl
 - Language: mossy-cpp, mossy-csharp, mossy-vbnet, mossy-js, mossy-ts, mossy-gdscript, mossy-py
 
 ### For New Skills
