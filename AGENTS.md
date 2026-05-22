@@ -103,8 +103,7 @@ argument-hint: "[args]"
 │   ├── mossy-flowctl/
 │   │   └── SKILL.md
 │   ├── mossy-plan/
-│   │   ├── SKILL.md
-│   │   └── workflow.md
+│   │   └── SKILL.md
 │   ├── mossy-interview/
 │   │   ├── SKILL.md
 │   │   └── questions-technical.md
