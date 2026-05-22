@@ -1,0 +1,204 @@
+---
+name: mossy-work
+description: Execute plan tasks. Claims tasks from ready queue, performs implementation, and marks complete with evidence.
+user-invocable: false
+allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
+---
+
+# mossy-work
+
+This is a leaner alternative to flow-next, compatible with Mistral Vibe.
+
+The focus is the code; code is the single source of truth, it should be able to speak for itself. Inline comments provide the documentation.
+
+The human retains full control and responsibility. They can verify the quality of individual steps during or after processing.
+
+It is the user's choice whether individual steps are committed to git, and whether auto-generated plan metadata gets committed or not.
+
+When questions arise during processing, they are logged to human-readable output immediately but processing continues; open questions are asked in bulk at the end.
+
+Speed and token conservation are valued higher than exhaustive question discovery.
+
+## Execute
+
+Claim and execute tasks from the ready queue.
+
+## Input
+
+$ARGUMENTS
+
+Accepts:
+- Task ID: `fn-1.1` - Execute specific task
+- Spec ID: `fn-1` - Execute all ready tasks for spec
+- `--next` - Execute next ready task across all specs
+- `--list` - List ready tasks
+- `--show <id>` - Show task details
+
+## Flow
+
+1. **Resolve target**
+   - If task ID: execute that task
+   - If spec ID: find ready tasks for that spec, execute in order
+   - If `--next`: find first ready task across all specs
+   - If `--list`: show ready tasks and exit
+   - If `--show <id>`: display task details and exit
+
+2. **Claim task**
+   - Use `mossy-flowctl start <task-id>` or fallback
+   - Verify claim succeeded
+   - Load task metadata: description, acceptance criteria, dependencies
+
+3. **Prepare workspace**
+   - Create working directory: `.flow/work/<task-id>/`
+   - Write task context to `.flow/work/<task-id>/context.md`
+   - Initialize summary file: `.flow/work/<task-id>/summary.md`
+
+4. **Execute task**
+   - Parse task description for file paths and actions
+   - Use appropriate tools (search_replace, write_file, etc.)
+   - Track changes in summary with evidence
+   - Handle questions inline, collect for bulk ask at end
+
+5. **Verify acceptance**
+   - Check each acceptance criterion (R-IDs)
+   - Run tests if specified
+   - Collect evidence: file diffs, test output, screenshots
+
+6. **Mark complete**
+   - Write summary with changes and evidence
+   - Use `mossy-flowctl done <task-id> --summary-file <path>` or fallback
+   - Update task status to done
+   - Clean up workspace (optional, user choice)
+
+## Task Execution Phases
+
+### Phase 1: Analysis (Read-Only)
+- Read relevant files
+- Understand current state
+- Identify exact changes needed
+- NO modifications in this phase
+
+### Phase 2: Planning
+- List files to modify/create
+- Define change strategy
+- Identify risks and mitigations
+- Estimate effort (logged, not blocking)
+
+### Phase 3: Implementation
+- Apply changes incrementally
+- Verify each change immediately
+- Track all modifications in summary
+
+### Phase 4: Verification
+- Run acceptance checks
+- Execute tests
+- Capture evidence
+- Iterate if incomplete
+
+## Workspace Structure
+
+```
+.flow/
+├── work/
+│   └── <task-id>/
+│       ├── context.md      # Task metadata + loaded context
+│       ├── summary.md      # Execution summary (grows during work)
+│       ├── evidence/
+│       │   ├── diffs/
+│       │   │   └── <file>.diff
+│       │   ├── tests/
+│       │   │   └── <test>.log
+│       │   └── screenshots/
+│       └── questions.log    # Collected questions for bulk ask
+└── tasks/
+    └── <task-id>.json      # Task state (updated by flowctl)
+```
+
+## Summary Format
+
+```markdown
+# Task <task-id> Summary
+
+**Spec:** <spec-id>
+**Description:** <description>
+**Acceptance:** <R-IDs>
+**Started:** <timestamp>
+**Completed:** <timestamp>
+
+## Changes
+
+### Modified Files
+- `<file>`: <brief description of change>
+
+### New Files
+- `<file>`: <purpose>
+
+### Deleted Files
+- `<file>`: <reason>
+
+## Acceptance Checks
+- R1: <status> - <evidence/notes>
+- R2: <status> - <evidence/notes>
+
+## Tests Run
+```
+<test output>
+```
+
+## Evidence
+- Diffs: `.flow/work/<task-id>/evidence/diffs/`
+- Test logs: `.flow/work/<task-id>/evidence/tests/`
+
+## Questions
+<list of questions that arose during execution>
+
+## Blockers
+<list of blockers if task not completed>
+```
+
+## Commands for Users
+
+After task execution:
+- `/mossy:work <task-id>` - Re-execute task
+- `/mossy:work <spec-id>` - Execute all ready tasks for spec
+- `/mossy:work --next` - Execute next ready task
+- `/mossy:work --list` - List ready tasks
+- `/mossy:work --show <id>` - Show task details
+- `/mossy:work --continue <task-id>` - Resume partially completed task
+
+## Integration with mossy-flowctl
+
+All `.flow/` state operations MUST use `mossy-flowctl`:
+
+```bash
+# Claim task
+mossy-flowctl start <task-id>
+
+# Mark complete
+mossy-flowctl done <task-id> --summary-file .flow/work/<task-id>/summary.md
+
+# List ready tasks
+mossy-flowctl ready --json
+
+# Show task
+mossy-flowctl show <task-id>
+```
+
+## Fallback Behavior
+
+If flowctl not available:
+- Task state tracked in `.flow/tasks/<id>.json` with `status`, `claimed_at` fields
+- Ready tasks: those with `status: "todo"` and no `blocked_reason`
+- Claim: set `status: "in_progress"`, `claimed_at: <timestamp>`, `assignee: "mossy-work"`
+- Done: set `status: "done"`, `updated_at: <timestamp>`
+- No dependency validation in fallback mode
+
+## Guardrails
+
+- Never modify files outside workspace without explicit task instruction
+- Never commit to git without user confirmation
+- All modifications tracked in summary with diffs
+- Questions collected and asked in bulk at end (unless blocking)
+- Blocking questions asked immediately
+- Task workspace preserved until user confirms completion
+- Evidence directory always created, even if empty
