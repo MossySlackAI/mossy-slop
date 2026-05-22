@@ -6,7 +6,9 @@ This repository provides alternative skills to flow-next, designed for Mistral V
 
 ## Mission Statement
 
-The focus should be the code; the code is the single source of truth. Inline comments should provide the documentation.
+This is supposed to become a leaner alternative, compatible with Mistral.
+
+The focus should be the code; the code is the single source of truth, it should be able to speak for itself. Inline comments should provide the documentation.
 
 The human should retain full control and responsibility. They should be able to verify the quality of individual steps of the process if they want to, or later when everything is done.
 
