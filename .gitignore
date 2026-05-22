@@ -1,0 +1,2 @@
+# Keep the task log locally avaivalbe, but do not pollute git
+.flow
