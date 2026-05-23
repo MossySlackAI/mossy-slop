@@ -1,12 +1,10 @@
 # Mossy Slop
 
-So some techbro bamboozled our bosses to go all in with his framework called flow-next. It gives good results, admittedly, but burns tokens like there is no tomorrow. Which, you know... 
+So some techbro bamboozled our bosses to go all in with his framework called flow-next. It gives passable results, admittedly, but burns tokens like there is no tomorrow. Which, you know... 
 
 ## Mission Statement
 
-This is supposed to become a leaner alternative, compatible with Mistral.
-
-Project identifier: **mossy-slop**
+This is supposed to become a leaner alternative, compatible flow-next's state files, and compatible with Mistral.
 
 The focus should be the code; the code is the single source of truth, it should be able to speak for itself. Inline comments should provide the documentation.
 
@@ -18,6 +16,8 @@ When questions arise during processing, they should be logged to the human reada
 
 A reasonable effort should be made in the planing phase to discover open questions, but speed and token conservation are valued higher.
 
-## Authorshiip
+## Authorship
 
-This readme file is entirely human written. No AI edits allowed here. It serves both as a guide to the AI writing the rest of the system, and information to human users.
+This readme file is entirely human written. It serves both as a guide to the AI writing the rest of the system, and information to human users.
+
+The rest of the system is mostly written by Mistral itself, with tweaks by humans.
