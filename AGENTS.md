@@ -5,6 +5,7 @@
 This repository provides alternative skills to flow-next, designed for Mistral Vibe. They are intentionally minimal — no unnecessary verbosity, no token-wasting patterns.
 
 The original plugin source can be found at git@github.com:gmickel/flow-next.git. To reference it, clone it here into .upstream.
+The ID of the last seen commit is 98372214c773ff00c0af9f73c575164c2724e093.
 
 ## Mission Statement
 
