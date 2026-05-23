@@ -42,19 +42,8 @@ jobs:
           #!/bin/bash
           set -e
           
-          REPO_ROOT=$(pwd)
-          
           # Extract skill paths from marketplace.json
-          SKILLS=$(python3 -c "
-import json
-with open('.github/plugin/marketplace.json') as f:
-    data = json.load(f)
-skills = []
-for plugin in data.get('plugins', []):
-    for skill in plugin.get('skills', []):
-        skills.append(skill)
-print('\n'.join(skills))
-")
+          SKILLS=$(python3 .github/scripts/validate_copilot_skills.py)
           
           echo "Checking skills listed in Copilot manifest..."
           for skill_path in $SKILLS; do
