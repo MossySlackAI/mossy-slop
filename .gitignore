@@ -1,2 +1,6 @@
 # Keep the task log locally avaivalbe, but do not pollute git
 .flow
+
+# these two are links used for dog fooding
+.vibe/commands
+.vibe/skills
