@@ -1,5 +1,5 @@
 ---
-name: mossy:py
+name: mossy-py
 description: Python language-specific skill for analysis, refactoring, and code generation.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--package <name>|--check <feature>|--list]"

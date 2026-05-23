@@ -1,5 +1,5 @@
 ---
-name: mossy:work
+name: mossy-work
 description: Execute plan tasks. Claim and execute tasks from the ready queue.
 axis: 1
 argument-hint: "<task-id|spec-id> [--list|--show <id>|--next|--continue <task-id>]"

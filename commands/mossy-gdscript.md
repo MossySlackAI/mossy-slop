@@ -1,5 +1,5 @@
 ---
-name: mossy:gdscript
+name: mossy-gdscript
 description: GDScript language-specific skill for Godot Engine analysis, refactoring, and code generation.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--scene <path>|--check <feature>|--list]"

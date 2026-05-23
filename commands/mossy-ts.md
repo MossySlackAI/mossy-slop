@@ -1,5 +1,5 @@
 ---
-name: mossy:ts
+name: mossy-ts
 description: TypeScript language-specific skill for type-aware analysis, refactoring, and code generation.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--strict|--check <feature>|--list]"

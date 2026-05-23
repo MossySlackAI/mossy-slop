@@ -4,6 +4,8 @@
 
 This repository provides alternative skills to flow-next, designed for Mistral Vibe. They are intentionally minimal — no unnecessary verbosity, no token-wasting patterns.
 
+The original plugin source can be found at git@github.com:gmickel/flow-next.git. To reference it, clone it here into .upstream.
+
 ## Mission Statement
 
 This is supposed to become a leaner alternative, compatible with Mistral.
@@ -229,7 +231,7 @@ Frontmatter template:
 ---
 name: mossy-<name>
 description: <1 line description>
-user-invocable: false
+user-invocable: true
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 ```
@@ -237,7 +239,7 @@ allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,t
 Command template:
 ```yaml
 ---
-name: mossy:<name>
+name: mossy-<name>
 description: <1 line description>
 argument-hint: "[args]"
 ---

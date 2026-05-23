@@ -1,5 +1,5 @@
 ---
-name: mossy:vbnet
+name: mossy-vbnet
 description: VB.NET language-specific skill for .NET analysis, refactoring, and code generation.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--project <path>|--check <feature>|--list]"

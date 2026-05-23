@@ -1,5 +1,5 @@
 ---
-name: mossy:cpp
+name: mossy-cpp
 description: C++ language-specific skill for analysis, refactoring, and code generation.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--check <feature>|--list]"

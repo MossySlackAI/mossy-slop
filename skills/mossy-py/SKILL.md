@@ -1,7 +1,7 @@
 ---
 name: mossy-py
 description: Python language-specific skill. Handles Python file analysis, refactoring, and code generation.
-user-invocable: false
+user-invocable: true
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 

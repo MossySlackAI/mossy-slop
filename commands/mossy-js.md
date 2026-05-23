@@ -1,5 +1,5 @@
 ---
-name: mossy:js
+name: mossy-js
 description: JavaScript language-specific skill for analysis, refactoring, and code generation.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--module <name>|--check <feature>|--list]"

@@ -1,7 +1,7 @@
 ---
 name: mossy-refactor
 description: Language-aware code refactoring. Extract functions, rename symbols, restructure code, and apply mechanical transformations across supported languages.
-user-invocable: false
+user-invocable: true
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 

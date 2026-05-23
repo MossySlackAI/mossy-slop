@@ -1,7 +1,7 @@
 ---
 name: mossy-work
 description: Execute plan tasks. Claims tasks from ready queue, performs implementation, and marks complete with evidence.
-user-invocable: false
+user-invocable: true
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 

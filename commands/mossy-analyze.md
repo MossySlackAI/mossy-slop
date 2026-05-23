@@ -1,5 +1,5 @@
 ---
-name: mossy:analyze
+name: mossy-analyze
 description: Static analysis across languages. Scans code for quality, security, style, and correctness issues.
 axis: 1
 argument-hint: "<file|directory> [--pattern <glob>|--check <name>|--language <lang>|--list|--quick|--security|--style|--full]"
