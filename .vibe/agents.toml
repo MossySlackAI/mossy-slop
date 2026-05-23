@@ -1,13 +1,13 @@
-# Mossy Skills - Mistral Vibe Agent Configuration
-# This file registers mossy-skills as an agent for Mistral Vibe
+# Mossy Slop - Mistral Vibe Agent Configuration
+# This file registers mossy-slop as an agent for Mistral Vibe
 # Users can either:
-# 1. Symlink this repo to ~/.vibe/agents/mossy-skills
+# 1. Symlink this repo to ~/.vibe/agents/mossy-slop
 # 2. Add this repository path to their ~/.config/vibe/agents.toml
 
 [[agents]]
-name = "mossy-skills"
+name = "mossy-slop"
 path = "."
-description = "Mossy Code Flow Skills - Lean, token-efficient skills for planning and executing code changes"
+description = "Mossy Slop - Lean, token-efficient skills for planning and executing code changes"
 # Optional: If you want to reference a specific version
 tag = "main"
 

@@ -1,4 +1,4 @@
-# Mossy Code Flow Skills
+# Mossy Slop
 
 **Lean, token-efficient skills for planning and executing code changes.**
 
@@ -7,6 +7,8 @@ This repository provides alternative skills to flow-next, designed for Mistral V
 ## Mission Statement
 
 This is supposed to become a leaner alternative, compatible with Mistral.
+
+The project identifier is **mossy-slop**.
 
 The focus should be the code; the code is the single source of truth, it should be able to speak for itself. Inline comments should provide the documentation.
 
@@ -193,8 +195,8 @@ Add to `~/.config/vibe/agents.toml`:
 
 ```toml
 [[agents]]
-name = "mossy-skills"
-path = "~/.dotfiles/vibe/flow-skills"
+name = "mossy-slop"
+path = "~/.dotfiles/vibe/mossy-slop"
 ```
 
 Or symlink into Vibe's agents directory.

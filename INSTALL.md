@@ -1,6 +1,8 @@
-# Mossy Skills Installation
+# Mossy Slop Installation
 
-Mossy Code Flow Skills are lean, token-efficient skills for planning and executing code changes. This document describes how to install them for different AI coding assistants.
+Mossy Slop are lean, token-efficient skills for planning and executing code changes. This document describes how to install them for different AI coding assistants.
+
+Project identifier: **mossy-slop**
 
 ## Quick Start
 
@@ -16,10 +18,10 @@ GitHub Copilot CLI uses a marketplace system for plugin discovery.
 
 ```bash
 # Add this repository as a marketplace
-/plugin marketplace add manuel/flow-skills
+/plugin marketplace add manuel/mossy-slop
 
-# Install the mossy-skills plugin
-/plugin install mossy-skills@github-copilot-plugins
+# Install the mossy-slop plugin
+/plugin install mossy-slop@github-copilot-plugins
 ```
 
 ### Manual Installation
@@ -28,8 +30,8 @@ If the marketplace method doesn't work, you can manually install:
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/flow-skills.git
-cd flow-skills
+git clone https://github.com/manuel/mossy-slop.git
+cd mossy-slop
 
 # Copy skills to Copilot's skills directory
 cp -r skills/* ~/.github/copilot/skills/
@@ -42,8 +44,8 @@ cp -r commands/* ~/.github/copilot/commands/
 # List installed skills
 /plugin list
 
-# Check mossy-skills are available
-/plugin show mossy-skills
+# Check mossy-slop are available
+/plugin show mossy-slop
 ```
 
 ---
@@ -56,10 +58,10 @@ Claude Code supports plugins through its marketplace system.
 
 ```bash
 # Add this repository as a marketplace
-/plugin marketplace add manuel/flow-skills
+/plugin marketplace add manuel/mossy-slop
 
-# Install the mossy-skills plugin
-/plugin install mossy-skills@claude-code-skills
+# Install the mossy-slop plugin
+/plugin install mossy-slop@claude-code-skills
 ```
 
 ### Alternative: Install All Skills Individually
@@ -76,8 +78,8 @@ Claude Code supports plugins through its marketplace system.
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/flow-skills.git
-cd flow-skills
+git clone https://github.com/manuel/mossy-slop.git
+cd mossy-slop
 
 # Copy skills to Claude's skills directory
 mkdir -p ~/.claude/skills
@@ -110,35 +112,35 @@ Add the following to your `~/.config/vibe/agents.toml`:
 
 ```toml
 [[agents]]
-name = "mossy-skills"
-path = "~/.dotfiles/vibe/flow-skills"
-description = "Mossy Code Flow Skills"
+name = "mossy-slop"
+path = "~/.dotfiles/vibe/mossy-slop"
+description = "Mossy Slop"
 ```
 
 Or symlink the agents.toml from this repo:
 
 ```bash
 mkdir -p ~/.config/vibe/
-ln -s ~/.dotfiles/vibe/flow-skills/.vibe/agents.toml ~/.config/vibe/agents.toml
+ln -s ~/.dotfiles/vibe/mossy-slop/.vibe/agents.toml ~/.config/vibe/agents.toml
 ```
 
 ### Option 2: Clone and Symlink
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/flow-skills.git ~/.vibe/agents/mossy-skills
+git clone https://github.com/manuel/mossy-slop.git ~/.vibe/agents/mossy-slop
 
 # Symlink commands (optional - Vibe may auto-discover)
 mkdir -p ~/.vibe/commands
-ln -s ~/.vibe/agents/mossy-skills/commands/*.md ~/.vibe/commands/
+ln -s ~/.vibe/agents/mossy-slop/commands/*.md ~/.vibe/commands/
 ```
 
 ### Option 3: Development Setup
 
-If you're developing mossy-skills:
+If you're developing mossy-slop:
 
 ```bash
-cd ~/.dotfiles/vibe/flow-skills
+cd ~/.dotfiles/vibe/mossy-slop
 ./scripts/dev-setup.sh
 ```
 
@@ -163,7 +165,7 @@ If your tool isn't listed above or you prefer manual setup:
 ### Directory Structure
 
 ```
-flow-skills/
+mossy-slop/
 ├── skills/                    # Skill definitions
 │   ├── mossy-flowctl/
 │   │   └── SKILL.md
@@ -219,8 +221,8 @@ Find your tool's skill directory and copy the files there:
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/flow-skills.git
-cd flow-skills
+git clone https://github.com/manuel/mossy-slop.git
+cd mossy-slop
 
 # Copy to your tool's directory
 # Adjust TOOL_DIR to match your tool
@@ -238,10 +240,10 @@ To pin to a specific version:
 
 ```bash
 # Clone a specific version
-git clone --branch v1.0.0 https://github.com/manuel/flow-skills.git
+git clone --branch v1.0.0 https://github.com/manuel/mossy-slop.git
 
 # Or checkout a tag after cloning
-cd flow-skills
+cd mossy-slop
 git checkout v1.0.0
 ```
 
@@ -252,14 +254,14 @@ git checkout v1.0.0
 To update to the latest version:
 
 ```bash
-cd ~/.dotfiles/vibe/flow-skills  # or wherever you cloned it
+cd ~/.dotfiles/vibe/mossy-slop  # or wherever you cloned it
 git pull origin main
 ```
 
 If you installed via marketplace, use:
 
 ```bash
-/plugin update mossy-skills
+/plugin update mossy-slop
 ```
 
 ---
@@ -269,15 +271,15 @@ If you installed via marketplace, use:
 ### GitHub Copilot
 
 ```bash
-/plugin uninstall mossy-skills
-/plugin marketplace remove manuel/flow-skills
+/plugin uninstall mossy-slop
+/plugin marketplace remove manuel/mossy-slop
 ```
 
 ### Claude Code
 
 ```bash
-/plugin uninstall mossy-skills
-/plugin marketplace remove manuel/flow-skills
+/plugin uninstall mossy-slop
+/plugin marketplace remove manuel/mossy-slop
 ```
 
 ### Mistral Vibe
@@ -315,8 +317,8 @@ Delete the copied files from your tool's skill directory.
 
 ## Repository
 
-- **Homepage**: https://github.com/manuel/flow-skills
-- **Issues**: https://github.com/manuel/flow-skills/issues
+- **Homepage**: https://github.com/manuel/mossy-slop
+- **Issues**: https://github.com/manuel/mossy-slop/issues
 - **License**: MIT
 
 ## Support

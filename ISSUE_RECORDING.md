@@ -611,4 +611,4 @@ For questions about issue recording:
 
 ---
 
-*This guide is part of the mossy-skills project. See AGENTS.md for more information.*
+*This guide is part of the mossy-slop project. See AGENTS.md for more information.*

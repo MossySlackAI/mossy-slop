@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document summarizes the execution of the plan to create a canonical distribution system for Mossy Code Flow Skills and establish a dogfooding workflow.
+This document summarizes the execution of the plan to create a canonical distribution system for Mossy Slop and establish a dogfooding workflow.
+
+Project identifier: **mossy-slop**
 
 ## Phases Executed
 
@@ -145,7 +147,7 @@ python3 -c "import tomllib; tomllib.load(open('.vibe/agents.toml', 'rb'))"
 
 ## Next Steps
 
-1. **Publish to GitHub:** Push the repository to `manuel/flow-skills` to enable marketplace discovery
+1. **Publish to GitHub:** Push the repository to `manuel/mossy-slop` to enable marketplace discovery
 2. **Test with Actual Tools:** Test D1.5-D1.7 with actual GitHub Copilot, Claude Code, and Mistral Vibe installations
 3. **Optional Enhancements:** Consider implementing E3.1, E3.2, E3.4 in future iterations
 4. **Version Tagging:** Create v1.0.0 tag after verification
@@ -160,7 +162,7 @@ python3 -c "import tomllib; tomllib.load(open('.vibe/agents.toml', 'rb'))"
 
 ## Success Criteria Met
 
-✅ Users can install mossy-skills with a single command in each major AI tool (pending repository publishing)
+✅ Users can install mossy-slop with a single command in each major AI tool (pending repository publishing)
 ✅ The development workflow uses the skills themselves to maintain the project (demonstrated with df2-* example)
 ✅ Plugin manifests are valid and tested
 ✅ Installation instructions are clear and accurate

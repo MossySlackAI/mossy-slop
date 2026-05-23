@@ -1,6 +1,6 @@
-# Contributing to Mossy Skills
+# Contributing to Mossy Slop
 
-Thank you for your interest in contributing to Mossy Code Flow Skills! This project follows a **dogfooding** philosophy: we use the skills themselves to develop and maintain the project.
+Thank you for your interest in contributing to Mossy Slop! This project follows a **dogfooding** philosophy: we use the skills themselves to develop and maintain the project.
 
 ## Dogfooding Principle
 
@@ -14,7 +14,7 @@ Thank you for your interest in contributing to Mossy Code Flow Skills! This proj
 
 1. **Note from the human in the loop** This entire thing is 99.9% slopped. I have not done what is demanded here myself. Have your AI tool do it for you.
 2. **Setup your development environment** (see below)
-3. **Read the AGENTS.md** to understand the project structure
+3. **Read the AGENTS.md** to understand the mossy-slop project structure
 4. **Read the existing skills** to understand the patterns and conventions
 
 ## Development Environment Setup
@@ -23,8 +23,8 @@ Thank you for your interest in contributing to Mossy Code Flow Skills! This proj
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/flow-skills.git
-cd flow-skills
+git clone https://github.com/manuel/mossy-slop.git
+cd mossy-slop
 
 # Run the development setup script
 ./scripts/dev-setup.sh
@@ -142,7 +142,7 @@ To add a new skill (e.g., `mossy-rust`):
 
 ```
 # Plan the new skill
-/mossy:plan "Add mossy-rust skill"
+/mossy:plan "Add mossy-rust skill for mossy-slop"
 
 # Work through the tasks
 /mossy:work <task-id>
@@ -171,7 +171,7 @@ If you must do it manually (e.g., the skills aren't working yet):
 
    # mossy-rust
 
-   Rust language awareness for the mossy framework.
+   Rust language awareness for the mossy-slop framework.
    ```
 
 3. **Create the command file** in `commands/mossy-rust.md`:

@@ -1,12 +1,12 @@
 #!/bin/bash
-# Mossy Skills - Local Development Setup Script
+# Mossy Slop - Local Development Setup Script
 # This script sets up symlinks for local development and testing
 
 set -e
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
- echo "Mossy Skills - Local Development Setup"
+echo "Mossy Slop - Local Development Setup"
 echo "========================================"
 echo "Repository root: $REPO_ROOT"
 echo ""
@@ -36,13 +36,13 @@ echo "  ✓ .vibe/skills -> skills"
 
 # Create local agents.toml for development
 cat > "$REPO_ROOT/.vibe/agents-local.toml" << 'EOF'
-# Local development agent configuration for Mossy Skills
+# Local development agent configuration for Mossy Slop
 # This file is for development purposes only
 
 [[agents]]
 name = "mossy-local"
 path = "."
-description = "Local development instance of mossy-skills - all skills loaded from current directory"
+description = "Local development instance of mossy-slop - all skills loaded from current directory"
 EOF
 
 echo "  ✓ .vibe/agents-local.toml created"
@@ -79,7 +79,7 @@ echo "  2. Run Vibe from $REPO_ROOT"
 echo "  3. Or add this to ~/.config/vibe/agents.toml:"
 echo ""
 echo "[[agents]]"
-echo "name = \"mossy-local\""
+echo "name = \"mossy-slop\""
 echo "path = \"$REPO_ROOT\""
 echo ""
 echo "Symlinked directories:"
