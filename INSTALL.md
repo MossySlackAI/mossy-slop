@@ -18,7 +18,7 @@ GitHub Copilot CLI uses a marketplace system for plugin discovery.
 
 ```bash
 # Add this repository as a marketplace
-/plugin marketplace add manuel/mossy-slop
+/plugin marketplace add MossySlackAI/mossy-slop
 
 # Install the mossy-slop plugin
 /plugin install mossy-slop@github-copilot-plugins
@@ -30,7 +30,7 @@ If the marketplace method doesn't work, you can manually install:
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/mossy-slop.git
+git clone https://github.com/MossySlackAI/mossy-slop.git
 cd mossy-slop
 
 # Copy skills to Copilot's skills directory
@@ -58,7 +58,7 @@ Claude Code supports plugins through its marketplace system.
 
 ```bash
 # Add this repository as a marketplace
-/plugin marketplace add manuel/mossy-slop
+/plugin marketplace add MossySlackAI/mossy-slop
 
 # Install the mossy-slop plugin
 /plugin install mossy-slop@claude-code-skills
@@ -78,7 +78,7 @@ Claude Code supports plugins through its marketplace system.
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/mossy-slop.git
+git clone https://github.com/MossySlackAI/mossy-slop.git
 cd mossy-slop
 
 # Copy skills to Claude's skills directory
@@ -128,7 +128,7 @@ ln -s ~/.dotfiles/vibe/mossy-slop/.vibe/agents.toml ~/.config/vibe/agents.toml
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/mossy-slop.git ~/.vibe/agents/mossy-slop
+git clone https://github.com/MossySlackAI/mossy-slop.git ~/.vibe/agents/mossy-slop
 
 # Symlink commands (optional - Vibe may auto-discover)
 mkdir -p ~/.vibe/commands
@@ -221,7 +221,7 @@ Find your tool's skill directory and copy the files there:
 
 ```bash
 # Clone the repository
-git clone https://github.com/manuel/mossy-slop.git
+git clone https://github.com/MossySlackAI/mossy-slop.git
 cd mossy-slop
 
 # Copy to your tool's directory
@@ -240,7 +240,7 @@ To pin to a specific version:
 
 ```bash
 # Clone a specific version
-git clone --branch v1.0.0 https://github.com/manuel/mossy-slop.git
+git clone --branch v1.0.0 https://github.com/MossySlackAI/mossy-slop.git
 
 # Or checkout a tag after cloning
 cd mossy-slop
@@ -272,14 +272,14 @@ If you installed via marketplace, use:
 
 ```bash
 /plugin uninstall mossy-slop
-/plugin marketplace remove manuel/mossy-slop
+/plugin marketplace remove MossySlackAI/mossy-slop
 ```
 
 ### Claude Code
 
 ```bash
 /plugin uninstall mossy-slop
-/plugin marketplace remove manuel/mossy-slop
+/plugin marketplace remove MossySlackAI/mossy-slop
 ```
 
 ### Mistral Vibe
@@ -317,8 +317,8 @@ Delete the copied files from your tool's skill directory.
 
 ## Repository
 
-- **Homepage**: https://github.com/manuel/mossy-slop
-- **Issues**: https://github.com/manuel/mossy-slop/issues
+- **Homepage**: https://github.com/MossySlackAI/mossy-slop
+- **Issues**: https://github.com/MossySlackAI/mossy-slop/issues
 - **License**: MIT
 
 ## Support
