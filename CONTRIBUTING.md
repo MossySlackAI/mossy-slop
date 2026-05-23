@@ -4,7 +4,7 @@ Thank you for your interest in contributing to Mossy Code Flow Skills! This proj
 
 ## Dogfooding Principle
 
-**All contributions to this project MUST use the mossy skills themselves.** This ensures:
+**All contributions to this project are encouraged use the mossy skills themselves.** This ensures:
 1. We eat our own dog food
 2. The skills are continuously tested and improved
 3. We discover issues early
@@ -12,9 +12,10 @@ Thank you for your interest in contributing to Mossy Code Flow Skills! This proj
 
 ## Before You Start
 
-1. **Setup your development environment** (see below)
-2. **Read the AGENTS.md** to understand the project structure
-3. **Read the existing skills** to understand the patterns and conventions
+1. **Note from the human in the loop** This entire thing is 99.9% slopped. I have not done what is demanded here myself. Have your AI tool do it for you.
+2. **Setup your development environment** (see below)
+3. **Read the AGENTS.md** to understand the project structure
+4. **Read the existing skills** to understand the patterns and conventions
 
 ## Development Environment Setup
 
