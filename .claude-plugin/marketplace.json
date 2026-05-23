@@ -1,0 +1,49 @@
+{
+  "name": "mossy-skills",
+  "description": "Lean, token-efficient skills for planning and executing code changes. Compatible with Mistral Vibe, designed as a leaner alternative to flow-next.",
+  "version": "1.0.0",
+  "owner": {
+    "name": "manuel",
+    "url": "https://github.com/manuel/flow-skills"
+  },
+  "homepage": "https://github.com/manuel/flow-skills",
+  "repository": "https://github.com/manuel/flow-skills",
+  "metadata": {
+    "description": "Mossy Code Flow Skills - 14 skills for code planning, execution, review, refactoring, and analysis across C++, C#, VB.NET, JavaScript, TypeScript, GDScript, and Python.",
+    "version": "1.0.0",
+    "license": "MIT"
+  },
+  "plugins": [
+    {
+      "name": "mossy-core",
+      "source": "./skills",
+      "description": "Core mossy skills: flowctl, plan, interview, work, review, refactor, analyze",
+      "version": "1.0.0",
+      "category": "development",
+      "keywords": [
+        "planning",
+        "workflow",
+        "task-management",
+        "code-review",
+        "refactoring",
+        "static-analysis"
+      ]
+    },
+    {
+      "name": "mossy-languages",
+      "source": "./skills",
+      "description": "Language-specific mossy skills: C++, C#, VB.NET, JavaScript, TypeScript, GDScript, Python",
+      "version": "1.0.0",
+      "category": "language-support",
+      "keywords": [
+        "c++",
+        "csharp",
+        "vb.net",
+        "javascript",
+        "typescript",
+        "gdscript",
+        "python"
+      ]
+    }
+  ]
+}

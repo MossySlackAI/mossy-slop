@@ -1,0 +1,197 @@
+name: Validate Manifests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/plugin/marketplace.json'
+      - '.claude-plugin/marketplace.json'
+      - '.vibe/agents.toml'
+      - 'skills/**/SKILL.md'
+      - 'commands/**/*.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/plugin/marketplace.json'
+      - '.claude-plugin/marketplace.json'
+      - '.vibe/agents.toml'
+      - 'skills/**/SKILL.md'
+      - 'commands/**/*.md'
+  workflow_dispatch:
+
+jobs:
+  validate-json:
+    name: Validate JSON Manifests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate GitHub Copilot marketplace.json
+        run: |
+          python3 -m json.tool .github/plugin/marketplace.json
+          echo "✓ GitHub Copilot marketplace.json is valid JSON"
+
+      - name: Validate Claude Code marketplace.json
+        run: |
+          python3 -m json.tool .claude-plugin/marketplace.json
+          echo "✓ Claude Code marketplace.json is valid JSON"
+
+      - name: Check all skills listed in Copilot manifest exist
+        run: |
+          #!/bin/bash
+          set -e
+          
+          REPO_ROOT=$(pwd)
+          
+          # Extract skill paths from marketplace.json
+          SKILLS=$(python3 -c "
+import json
+with open('.github/plugin/marketplace.json') as f:
+    data = json.load(f)
+skills = []
+for plugin in data.get('plugins', []):
+    for skill in plugin.get('skills', []):
+        skills.append(skill)
+print('\n'.join(skills))
+")
+          
+          echo "Checking skills listed in Copilot manifest..."
+          for skill_path in $SKILLS; do
+            # Remove leading ./
+            path=${skill_path#./}
+            if [ -d "$path" ]; then
+              if [ -f "$path/SKILL.md" ]; then
+                echo "  ✓ $skill_path (SKILL.md exists)"
+              else
+                echo "  ✗ $skill_path (SKILL.md missing)"
+                exit 1
+              fi
+            else
+              echo "  ✗ $skill_path (directory missing)"
+              exit 1
+            fi
+          done
+          echo "✓ All Copilot skills exist and have SKILL.md files"
+
+  validate-toml:
+    name: Validate TOML Manifests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Vibe agents.toml
+        run: |
+          python3 -c "import tomllib; tomllib.load(open('.vibe/agents.toml', 'rb'))"
+          echo "✓ Vibe agents.toml is valid TOML"
+
+  validate-skill-frontmatter:
+    name: Validate Skill Frontmatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check all SKILL.md files have required frontmatter
+        run: |
+          #!/bin/bash
+          set -e
+          
+          REQUIRED_FIELDS=("name" "description" "user-invocable" "allowed-tools")
+          
+          echo "Checking all SKILL.md files..."
+          for skill_file in skills/mossy-*/SKILL.md; do
+            if [ ! -f "$skill_file" ]; then
+              echo "  ✗ $skill_file not found"
+              exit 1
+            fi
+            
+            echo "  Checking $skill_file..."
+            
+            # Check for YAML frontmatter
+            if ! head -1 "$skill_file" | grep -q '^---$'; then
+              echo "    ✗ Missing YAML frontmatter delimiter"
+              exit 1
+            fi
+            
+            # Check for each required field
+            for field in "${REQUIRED_FIELDS[@]}"; do
+              if ! grep -q "^$field:" "$skill_file"; then
+                echo "    ✗ Missing required field: $field"
+                exit 1
+              fi
+            done
+            
+            echo "    ✓ All required fields present"
+          done
+          echo "✓ All SKILL.md files have valid frontmatter"
+
+  validate-command-frontmatter:
+    name: Validate Command Frontmatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check all command files have required frontmatter
+        run: |
+          #!/bin/bash
+          set -e
+          
+          REQUIRED_FIELDS=("name" "description")
+          
+          echo "Checking all command files..."
+          for cmd_file in commands/mossy-*.md; do
+            if [ ! -f "$cmd_file" ]; then
+              echo "  ✗ $cmd_file not found"
+              exit 1
+            fi
+            
+            echo "  Checking $cmd_file..."
+            
+            # Check for YAML frontmatter
+            if ! head -1 "$cmd_file" | grep -q '^---$'; then
+              echo "    ✗ Missing YAML frontmatter delimiter"
+              exit 1
+            fi
+            
+            # Check for each required field
+            for field in "${REQUIRED_FIELDS[@]}"; do
+              if ! grep -q "^$field:" "$cmd_file"; then
+                echo "    ✗ Missing required field: $field"
+                exit 1
+              fi
+            done
+            
+            # Check that command references a skill
+            if ! grep -qi "invoke skill" "$cmd_file" && ! grep -qi "skill" "$cmd_file"; then
+              echo "    ⚠ Warning: Command may not reference a skill"
+            fi
+            
+            echo "    ✓ Valid frontmatter"
+          done
+          echo "✓ All command files have valid frontmatter"
+
+  check-symlinks:
+    name: Check Repository Symlinks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify no broken symlinks
+        run: |
+          #!/bin/bash
+          set -e
+          
+          echo "Checking for broken symlinks..."
+          BROKEN=$(find . -type l -xtype l 2>/dev/null | grep -v ".git" || true)
+          
+          if [ -z "$BROKEN" ]; then
+            echo "✓ No broken symlinks found"
+          else
+            echo "  ✗ Broken symlinks found:"
+            echo "$BROKEN"
+            exit 1
+          fi
