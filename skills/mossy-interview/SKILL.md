@@ -80,9 +80,11 @@ if [ -f "$MOSSY_CONFIG" ]; then
     COMMIT_POLICY=$(grep -E '^commit-policy:' "$MOSSY_CONFIG" | awk '{print $2}')
     NEW_BRANCH_PER_SPEC=$(grep -E '^new-branch-per-spec:' "$MOSSY_CONFIG" | awk '{print $2}')
     AUTO_PUSH=$(grep -E '^auto-push:' "$MOSSY_CONFIG" | awk '{print $2}')
-    CO_AUTHORED_BY=$(grep -E '^co-authored-by:' "$MOSSY_CONFIG" | sed 's/^co-authored-by: *//')
-    # Fallback to hardcoded default if not set
-    if [ -z "$CO_AUTHORED_BY" ]; then
+    # For co-authored-by: only use default if key doesn't exist, not if explicitly empty
+    CO_AUTHORED_BY_LINE=$(grep -E '^co-authored-by:' "$MOSSY_CONFIG")
+    if [ -n "$CO_AUTHORED_BY_LINE" ]; then
+        CO_AUTHORED_BY=$(echo "$CO_AUTHORED_BY_LINE" | sed 's/^co-authored-by: *//')
+    else
         CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
     fi
     # Apply defaults: if new-branch-per-spec=false, force auto-push=false
