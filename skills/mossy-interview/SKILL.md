@@ -80,6 +80,11 @@ if [ -f "$MOSSY_CONFIG" ]; then
     COMMIT_POLICY=$(grep -E '^commit-policy:' "$MOSSY_CONFIG" | awk '{print $2}')
     NEW_BRANCH_PER_SPEC=$(grep -E '^new-branch-per-spec:' "$MOSSY_CONFIG" | awk '{print $2}')
     AUTO_PUSH=$(grep -E '^auto-push:' "$MOSSY_CONFIG" | awk '{print $2}')
+    CO_AUTHORED_BY=$(grep -E '^co-authored-by:' "$MOSSY_CONFIG" | sed 's/^co-authored-by: *//')
+    # Fallback to hardcoded default if not set
+    if [ -z "$CO_AUTHORED_BY" ]; then
+        CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
+    fi
     # Apply defaults: if new-branch-per-spec=false, force auto-push=false
     if [ "$NEW_BRANCH_PER_SPEC" = "false" ] && [ "$AUTO_PUSH" != "false" ]; then
         AUTO_PUSH="false"
@@ -87,6 +92,13 @@ if [ -f "$MOSSY_CONFIG" ]; then
     if [ "$NEW_BRANCH_PER_SPEC" = "true" ] && [ "$AUTO_PUSH" != "true" ]; then
         AUTO_PUSH="true"
     fi
+fi
+# If no config file at all, use hardcoded defaults
+if [ ! -f "$MOSSY_CONFIG" ]; then
+    COMMIT_POLICY="manual"
+    NEW_BRANCH_PER_SPEC="false"
+    AUTO_PUSH="false"
+    CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
 fi
 ```
 
@@ -115,8 +127,10 @@ If input is idea text, scan for config overrides in format `key=value`:
 - `commit-policy=manual|auto-per-change|auto-per-spec|batch`
 - `new-branch-per-spec=true|false`
 - `auto-push=true|false`
+- `co-authored-by=<string>` (freeform, supports spaces if quoted)
 
 Override global config defaults with parsed values, then apply R3 logic.
+For co-authored-by, extract value after `=` (handles quoted strings for spaces).
 
 ### Phase 2: Pre-Question Codebase Investigation
 
@@ -211,6 +225,7 @@ After interview completes, write refined spec back:
 - commit-policy: <manual|auto-per-change|auto-per-spec|batch>
 - new-branch-per-spec: <true|false>
 - auto-push: <true|false>
+- co-authored-by: <string>
 
 ## Acceptance Criteria
 - R1: <criterion>
@@ -294,6 +309,7 @@ Canonical spec template follows mossy convention (simplified from flow-next):
 - commit-policy: <manual|auto-per-change|auto-per-spec|batch>
 - new-branch-per-spec: <true|false>
 - auto-push: <true|false>
+- co-authored-by: <string>
 
 ## Acceptance Criteria
 - R1: <verifiable criterion>

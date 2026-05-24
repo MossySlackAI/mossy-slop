@@ -39,8 +39,9 @@ Accepts:
 0. **Load config**
    - Auto-install default config if missing: source scripts/ensure-mossy-config.sh and call ensure_mossy_config
    - Read `.flow/mossy-config` for commit policy settings
-   - Parse: commit-policy, new-branch-per-spec, auto-push
+   - Parse: commit-policy, new-branch-per-spec, auto-push, co-authored-by
    - Apply R3 defaults: if new-branch-per-spec=false, force auto-push=false
+   - co-authored-by defaults to 'Mistral Vibe <vibe@mistral.ai>' if not set
 
 1. **Resolve target**
    - If task ID: execute that task
@@ -80,6 +81,7 @@ Accepts:
      - auto-per-change: Auto-commit changes
      - auto-per-spec: Auto-commit when spec is complete
      - batch: Defer commit
+   - Construct commit message with co-authored-by from config
    - If new-branch-per-spec=true: create new branch before committing
    - If auto-push=true: push after commit
    - Clean up workspace (optional, user choice)

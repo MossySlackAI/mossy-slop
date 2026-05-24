@@ -23,3 +23,8 @@ new-branch-per-spec: false
 #   - If new-branch-per-spec=true: auto-push defaults to true
 # Override these defaults by explicitly setting auto-push below
 auto-push: false
+
+# Co-Authored-By trailer for commit messages
+# Freeform string. Used when mossy skills execute git commits.
+# Default: Mistral Vibe <vibe@mistral.ai>
+co-authored-by: Mistral Vibe <vibe@mistral.ai>

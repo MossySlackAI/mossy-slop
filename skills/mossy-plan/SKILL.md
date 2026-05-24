@@ -37,8 +37,9 @@ Accepts:
 0. **Load config**
    - Auto-install default config if missing: source scripts/ensure-mossy-config.sh and call ensure_mossy_config
    - Read `.flow/mossy-config` for commit policy settings
-   - Parse: commit-policy, new-branch-per-spec, auto-push
+   - Parse: commit-policy, new-branch-per-spec, auto-push, co-authored-by
    - Apply R3 defaults: if new-branch-per-spec=false, force auto-push=false
+   - co-authored-by defaults to 'Mistral Vibe <vibe@mistral.ai>' if not set
 
 1. **Parse input**
    - If ID: read `.flow/specs/<id>.md`
