@@ -192,6 +192,13 @@ All skills use the Vibe CLI tool set. Reference by canonical name:
 - `ask_user_question` - blocking user input
 - `task` - dispatch subagents
 
+## Utility Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/record-issue.sh` | Record tool errors and problems for mossy skills |
+| `scripts/watch_specs.py` | Watch for file changes in `.flow/specs/` directory, waiting until a change occurs plus an additional second for stability |
+
 ## Registering with Vibe
 
 Add to `~/.config/vibe/agents.toml`:
