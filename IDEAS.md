@@ -8,7 +8,15 @@ For humans. AI can take a peek, but these are not yet actionable items until exp
 
 ### Customize committing. No commits, after every step, once at the end.
 
-### A 'complete all work and commit' skill.
+### Python progress monitor
+
+Window with a checklist for each specification, list items are the tasks, get checked when done. Unplanned specifications and completed specifications are collapsed on the left hand side, unplanned ones on top, completed ones on the bottom. In progress ones are on the right. It should be possible to delete specifications, which also deletes the associated tasks. Completions of tasks should trigger notifications. It should be possible to collapse the program to the system tray and still see what is going on.
+
+### Specifications: Guard against race conditions
+
+Specifications should have a clear marker that shows when they are ready for planning, the plan and workaholic skills should only pick them up when they are ready.
+
+### A 'complete all work and commit' skill mossy-workaholic.
 
 If there are open specifications:
 If there are neither open specifications nor work items:
