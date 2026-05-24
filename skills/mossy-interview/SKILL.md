@@ -7,9 +7,9 @@ allowed-tools: read_file,write_file,grep,bash,ask_user_question
 
 # mossy-interview
 
-**🔴 CRITICAL: THIS SKILL ONLY WRITES SPEC FILES TO `.flow/specs/`. IT MUST NOT PERFORM ANY ACTUAL WORK, CODE CHANGES, OR FILE CREATION OUTSIDE OF SPEC FILES.**
+**CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work.**
 
-Technical interview skill for mossy code flow. Conducts pre-planning interview to extract complete implementation details through deep questioning, then creates or refines a spec.
+Technical interview skill for mossy code flow. Extracts implementation details via targeted questions, then creates or refines a spec.
 
 **Inspiration**: flow-next interview skill (technical mode only, no business mode overhead).
 
@@ -44,12 +44,11 @@ Examples:
 
 ## Role
 
-**Technical interviewer, spec refiner ONLY.** Does NOT implement, does NOT create files outside `.flow/specs/`, does NOT execute work. Planning happens in `/mossy:plan`, execution in `/mossy:work`.
+Technical interviewer, spec refiner. No implementation. No files outside `.flow/specs/`.
 
 ## Guardrails
 
-- **🔴 CRITICAL: NO ACTUAL WORK - SPEC FILES ONLY**
-  This skill MUST NOT perform any implementation, file creation outside `.flow/specs/`, code changes, or other work. Its ONLY output is a spec file written to `.flow/specs/<id>.md`. Any request to do actual work must be refused in favor of creating/refining a spec first.
+- **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
 - **Never use markdown TODOs**
 - **Never use TodoWrite**
 - **All state in `.flow/`**

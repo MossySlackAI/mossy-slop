@@ -2,7 +2,7 @@
 
 **Lean, token-efficient skills for planning and executing code changes.**
 
-This repository provides alternative skills to flow-next, designed for Mistral Vibe. They are intentionally minimal — no unnecessary verbosity, no token-wasting patterns.
+This repository provides alternative skills to flow-next, designed for Mistral Vibe. They are intentionally minimal — **every word costs tokens; eliminate all that are not strictly necessary.**
 
 The original plugin source can be found at git@github.com:gmickel/flow-next.git. To reference it, clone it here into .upstream.
 The ID of the last seen commit is 98372214c773ff00c0af9f73c575164c2724e093.
@@ -154,7 +154,7 @@ argument-hint: "[args]"
 ## Design Principles
 
 ### 1. Token Efficiency
-- No unnecessary words
+- **Every word costs tokens. Eliminate all that are not strictly necessary.**
 - No markdown fluff (emojis, gratuitous formatting)
 - Direct, imperative language
 - Minimal context in prompts
@@ -369,6 +369,7 @@ When adding a new skill:
 
 ## Constraints
 
+- **Token efficiency first**
 - Keep skills < 500 lines each
 - Prefer single-file skills over multi-file
 - No external API calls
@@ -377,4 +378,4 @@ When adding a new skill:
 
 ## Post-Mortem Analysis
 
-During post-mortem analysis, **do not blame the LLM**. Always look for reasons in the input files, skill instructions, and workflow definitions first. The LLM executes what the skills tell it to do — if something went wrong, the root cause is almost certainly in what the skill told it to do, not in the LLM's interpretation.
+Do not blame the LLM. Look for reasons in input files first.
