@@ -1,6 +1,7 @@
 # Contributing to Mossy Slop
 
 Thank you for your interest in contributing to Mossy Slop! This project follows a **dogfooding** philosophy: we use the skills themselves to develop and maintain the project.
+Manual edits by real people are explicitly welcome!
 
 ## Dogfooding Principle
 
