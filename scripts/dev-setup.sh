@@ -34,6 +34,14 @@ echo "  ✓ .vibe/commands -> commands"
 ln -sfn "$REPO_ROOT/skills" "$REPO_ROOT/.vibe/skills"
 echo "  ✓ .vibe/skills -> skills"
 
+# Install default mossy-config if not exists
+if [ ! -f "$REPO_ROOT/.flow/mossy-config" ] && [ -f "$REPO_ROOT/config/mossy-config.default" ]; then
+    cp "$REPO_ROOT/config/mossy-config.default" "$REPO_ROOT/.flow/mossy-config"
+    echo "  ✓ .flow/mossy-config installed from default template"
+else
+    echo "  - .flow/mossy-config already exists, not overwriting"
+fi
+
 # Create local agents.toml for development
 cat > "$REPO_ROOT/.vibe/agents-local.toml" << 'EOF'
 # Local development agent configuration for Mossy Slop

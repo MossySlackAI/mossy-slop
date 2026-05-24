@@ -1,0 +1,25 @@
+# Mossy Commit Policy Configuration (Default Template)
+# 
+# Copy this file to .flow/mossy-config to enable commit policy features.
+# If .flow/mossy-config already exists, it will NOT be overwritten.
+#
+# Format: YAML-like (key: value) for simple parsing
+
+# Commit policy modes:
+#   manual - User explicitly requests each commit (default)
+#   auto-per-change - Auto-commit after each file change
+#   auto-per-spec - Auto-commit when spec is complete
+#   batch - Commit only at end of session
+commit-policy: manual
+
+# Whether to create a new git branch for each specification
+#   true - Creates isolated branch per spec
+#   false - Works on current branch (default)
+new-branch-per-spec: false
+
+# Whether to automatically push when a specification is complete
+# Default behavior:
+#   - If new-branch-per-spec=false: auto-push defaults to false
+#   - If new-branch-per-spec=true: auto-push defaults to true
+# Override these defaults by explicitly setting auto-push below
+auto-push: false
