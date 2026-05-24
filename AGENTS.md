@@ -374,3 +374,7 @@ When adding a new skill:
 - No external API calls
 - No global state
 - All state in `.flow/` directory
+
+## Post-Mortem Analysis
+
+During post-mortem analysis, **do not blame the LLM**. Always look for reasons in the input files, skill instructions, and workflow definitions first. The LLM executes what the skills tell it to do — if something went wrong, the root cause is almost certainly in what the skill told it to do, not in the LLM's interpretation.
