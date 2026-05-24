@@ -34,14 +34,20 @@ Accepts:
 
 ## Flow
 
+0. **Load config**
+   - Read `.flow/mossy-config` for commit policy settings
+   - Parse: commit-policy, new-branch-per-spec, auto-push
+   - Apply R3 defaults: if new-branch-per-spec=false, force auto-push=false
+
 1. **Parse input**
    - If ID: read `.flow/specs/<id>.md`
    - If path: read file, extract title, create spec
    - If text: create minimal spec with goal = text
 
-2. **Extract requirements**
+2. **Extract requirements and config**
    - Split spec into acceptance criteria (R-IDs)
    - Number them sequentially: R1, R2, R3...
+   - **Read Mossy-Config section from spec if present, override global config**
    - Log questions immediately but continue processing; ask in bulk at end
 
 3. **Break into tasks**
@@ -51,10 +57,10 @@ Accepts:
    - Speed and token conservation > exhaustive question discovery
 
 4. **Write artifacts**
-   - Spec file: `.flow/specs/<id>.md` with R-IDs
+   - Spec file: `.flow/specs/<id>.md` with R-IDs and Mossy-Config section
    - Task files: `.flow/tasks/<id>.M.md` per task
    - Summary: `.flow/specs/<id>-plan.md` with dependency graph
-   - **NOT committed to git by default** — user choice
+   - **Commit behavior**: Respect commit-policy from config (default: manual, no auto-commit)
 
 ## Spec Format
 

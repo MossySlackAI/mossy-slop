@@ -68,6 +68,22 @@ mkdir -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues"
 
 # Source error recording utility
 source scripts/record-issue.sh 2>/dev/null || true
+
+# Load global commit policy config
+MOSSY_CONFIG="$FLOW_DIR/mossy-config"
+if [ -f "$MOSSY_CONFIG" ]; then
+    # Parse YAML-like config (simple key=value format for now)
+    COMMIT_POLICY=$(grep -E '^commit-policy:' "$MOSSY_CONFIG" | awk '{print $2}')
+    NEW_BRANCH_PER_SPEC=$(grep -E '^new-branch-per-spec:' "$MOSSY_CONFIG" | awk '{print $2}')
+    AUTO_PUSH=$(grep -E '^auto-push:' "$MOSSY_CONFIG" | awk '{print $2}')
+    # Apply defaults: if new-branch-per-spec=false, force auto-push=false
+    if [ "$NEW_BRANCH_PER_SPEC" = "false" ] && [ "$AUTO_PUSH" != "false" ]; then
+        AUTO_PUSH="false"
+    fi
+    if [ "$NEW_BRANCH_PER_SPEC" = "true" ] && [ "$AUTO_PUSH" != "true" ]; then
+        AUTO_PUSH="true"
+    fi
+fi
 ```
 
 ### Phase 1: Parse Input
@@ -88,6 +104,15 @@ Detect input type:
 
 4. **Idea text**: everything else
    - Create minimal spec with goal = text
+
+### Phase 1a: Parse Config Overrides
+
+If input is idea text, scan for config overrides in format `key=value`:
+- `commit-policy=manual|auto-per-change|auto-per-spec|batch`
+- `new-branch-per-spec=true|false`
+- `auto-push=true|false`
+
+Override global config defaults with parsed values, then apply R3 logic.
 
 ### Phase 2: Pre-Question Codebase Investigation
 
@@ -178,6 +203,11 @@ After interview completes, write refined spec back:
 ## Goal
 <1-2 sentences>
 
+## Mossy-Config
+- commit-policy: <manual|auto-per-change|auto-per-spec|batch>
+- new-branch-per-spec: <true|false>
+- auto-push: <true|false>
+
 ## Acceptance Criteria
 - R1: <criterion>
 - R2: <criterion>
@@ -204,6 +234,7 @@ After interview completes, write refined spec back:
 - Append new R-IDs to Acceptance Criteria (never renumber existing)
 - Write/refine technical sections (Architecture, API Contracts, Edge Cases)
 - Append to Resolved via Codebase
+- Add/update Mossy-Config section with effective settings
 
 **Never overwrite**:
 - Existing R-IDs (append only)
@@ -254,6 +285,11 @@ Canonical spec template follows mossy convention (simplified from flow-next):
 
 ## Goal
 <1-2 sentences describing the objective>
+
+## Mossy-Config
+- commit-policy: <manual|auto-per-change|auto-per-spec|batch>
+- new-branch-per-spec: <true|false>
+- auto-push: <true|false>
 
 ## Acceptance Criteria
 - R1: <verifiable criterion>

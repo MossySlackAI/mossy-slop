@@ -36,6 +36,11 @@ Accepts:
 
 ## Flow
 
+0. **Load config**
+   - Read `.flow/mossy-config` for commit policy settings
+   - Parse: commit-policy, new-branch-per-spec, auto-push
+   - Apply R3 defaults: if new-branch-per-spec=false, force auto-push=false
+
 1. **Resolve target**
    - If task ID: execute that task
    - If spec ID: find ready tasks for that spec, execute in order
@@ -47,6 +52,7 @@ Accepts:
    - Use `mossy-flowctl start <task-id>` or fallback
    - Verify claim succeeded
    - Load task metadata: description, acceptance criteria, dependencies
+   - **Read spec's Mossy-Config section and override global config**
 
 3. **Prepare workspace**
    - Create working directory: `.flow/work/<task-id>/`
@@ -68,6 +74,13 @@ Accepts:
    - Write summary with changes and evidence
    - Use `mossy-flowctl done <task-id> --summary-file <path>` or fallback
    - Update task status to done
+   - **Commit behavior**: Respect commit-policy from config
+     - manual: Do not commit (user must explicitly request)
+     - auto-per-change: Auto-commit changes
+     - auto-per-spec: Auto-commit when spec is complete
+     - batch: Defer commit
+   - If new-branch-per-spec=true: create new branch before committing
+   - If auto-push=true: push after commit
    - Clean up workspace (optional, user choice)
 
 ## Task Execution Phases
@@ -240,7 +253,7 @@ fi
 ## Guardrails
 
 - Never modify files outside workspace without explicit task instruction
-- Never commit to git without user confirmation
+- Never commit to git without user confirmation **OR** commit-policy != manual
 - All modifications tracked in summary with diffs
 - Questions collected and asked in bulk at end (unless blocking)
 - Blocking questions asked immediately
