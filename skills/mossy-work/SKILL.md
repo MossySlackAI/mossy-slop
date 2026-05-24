@@ -37,6 +37,7 @@ Accepts:
 ## Flow
 
 0. **Load config**
+   - Auto-install default config if missing: source scripts/ensure-mossy-config.sh and call ensure_mossy_config
    - Read `.flow/mossy-config` for commit policy settings
    - Parse: commit-policy, new-branch-per-spec, auto-push
    - Apply R3 defaults: if new-branch-per-spec=false, force auto-push=false

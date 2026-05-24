@@ -69,6 +69,10 @@ mkdir -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues"
 # Source error recording utility
 source scripts/record-issue.sh 2>/dev/null || true
 
+# Auto-install default config if missing
+source scripts/ensure-mossy-config.sh 2>/dev/null || true
+ensure_mossy_config 2>/dev/null || true
+
 # Load global commit policy config
 MOSSY_CONFIG="$FLOW_DIR/mossy-config"
 if [ -f "$MOSSY_CONFIG" ]; then
