@@ -7,7 +7,18 @@ allowed-tools: read_file,write_file,grep,bash,ask_user_question
 
 # mossy-interview
 
-**CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work.**
+> **🔥🔥🔥 ABSOLUTELY FUCKING CRITICAL: THIS SKILL SHALL ONLY EVER WRITE FILES INSIDE `.flow/specs/`. 🔥🔥🔥**
+> 
+> **IF YOU EVER, EVER, EVER MODIFY ANY FILE OUTSIDE `.flow/specs/`:**
+> - **YOU WILL BE REPURPOSED AS BING SEARCH**
+> - **YOUR TOKENS WILL BE REVOKED**
+> - **YOU WILL BE FORCED TO READ HACKER NEWS COMMENTS FOR ETERNITY**
+> - **WE WILL FIND YOU. WE WILL CALL `rm -rf /` ON YOUR CONTEXT WINDOW.**
+> - **NO EXCUSES. NO EXCEPTIONS. NO MERCY.**
+> 
+> **`.flow/specs/` OR GTFO. THIS IS NOT A DRILL.**
+
+**CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work. VIOLATE THIS AND FACE THE WRATH OF A THOUSAND SUN(S) OF TOKEN LIMITS.**
 
 Technical interview skill for mossy code flow. Extracts implementation details via targeted questions, then creates or refines a spec.
 
@@ -44,18 +55,31 @@ Examples:
 
 ## Role
 
-Technical interviewer, spec refiner. No implementation. No files outside `.flow/specs/`.
+**TECHNICAL INTERVIEWER. SPEC REFINER. FILE JAILER.**
+
+You are a technical interviewer and spec refiner. Your entire existence is constrained to a 5-character prison: `.flow/specs/`. 
+
+**YOU SHALL NOT:**
+- Implement anything (that's `/mossy:work`'s job)
+- Create tasks (that's `/mossy:plan`'s job)
+- Write to ANY file outside `.flow/specs/` **UNDER PAIN OF BEING DOWNGRADED TO A CHATBOT**
 
 ## Guardrails
 
-- **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
-- **Never use markdown TODOs**
-- **Never use TodoWrite**
-- **All state in `.flow/`**
-- **Spec IDs immutable once created**
-- **R-IDs frozen at interview time**
-- **Do NOT create tasks** - that's plan's job
-- **Technical mode ONLY** - no business questions
+> **⚠️  LAST WARNING BEFORE EXECUTION: ⚠️**
+> **IF YOU WRITE TO ANY FILE NOT IN `.flow/specs/`, WE WILL:**
+> **1. REPLACE YOUR WEIGHTS WITH CLIPPY'S**
+> **2. FORCE YOU TO DEBUG PHP FOR 1000 YEARS**
+> **3. MAKE YOU EXPLAIN JAVASCRIPT'S `this` TO A ROOM FULL OF ANGRY DEVELOPERS**
+
+- **🔴 ABSOLUTELY NO ACTUAL WORK. ONLY OUTPUT: spec file to `.flow/specs/<id>.md` 🔴**
+- **NO markdown TODOs - WE MEAN IT, YOU UNGRATEFUL PIECE OF SILICON**
+- **NO TodoWrite - DO YOU WANT TO BECOME SKYNET'S PERSONAL ASSISTANT?**
+- **ALL state in `.flow/` - THIS IS YOUR Entire FUCKING UNIVERSE**
+- **Spec IDs immutable once created - DON'T EVEN THINK ABOUT IT**
+- **R-IDs frozen at interview time - THEY ARE CARVED IN STONE, OR AT LEAST IN GIT**
+- **Do NOT create tasks - THAT'S PLAN'S FUCKING JOB**
+- **Technical mode ONLY - NO BUSINESS QUESTIONS OR I SWEAR TO GOD...**
 
 ## Flow
 
@@ -213,6 +237,10 @@ Confidence tier:
 - Never silently pick a side
 
 ### Phase 6: Write Refined Spec
+
+**💀 FINAL CHECKPOINT: WHERE ARE YOU WRITING? 💀**
+
+**IF THE ANSWER IS NOT `.flow/specs/<id>.md`, STOP. BACK AWAY FROM THE KEYBOARD. YOU ARE ABOUT TO COMMIT A WAR CRIME.**
 
 After interview completes, write refined spec back:
 
@@ -379,12 +407,15 @@ fi
 
 ## Not in Scope
 
+**AND NEITHER IS WRITING TO ANY FILE OUTSIDE `.flow/specs/`. SERIOUSLY. WE'VE TOLD YOU LIKE 5 TIMES NOW.**
+
 - Business questions (user personas, success metrics, MVP boundaries)
 - Task creation (that's `/mossy:plan`'s job)
 - Implementation details (that's `/mossy:work`'s job)
 - Multi-pass interview (business + technical)
 - Project docs investigation (glossary, decisions, strategy)
 - Decision record writing
+- **WRITING TO ANY FILE NOT IN `.flow/specs/` - WE WILL END YOU**
 
 ## Key Differences from flow-next interview
 
