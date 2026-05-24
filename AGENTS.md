@@ -67,7 +67,7 @@ allowed-tools: <comma-separated tool list>
 Via slash commands defined in `commands/mossy-<name>.md`:
 ```yaml
 ---
-name: mossy:<name>
+name: mossy-<name>
 description: <command description>
 argument-hint: "[args]"
 ---
@@ -78,24 +78,24 @@ argument-hint: "[args]"
 | Skill | Command | Purpose |
 |-------|---------|---------|
 | `mossy-flowctl` | N/A (internal) | Wrapper for flowctl.py operations |
-| `mossy-plan` | `/mossy:plan` | Create execution plan from spec |
-| `mossy-interview` | `/mossy:interview` | Technical interview to refine specs before planning |
-| `mossy-work` | `/mossy:work` | Execute plan tasks |
-| `mossy-review` | `/mossy:review` | Review changes before commit |
-| `mossy-refactor` | `/mossy:refactor` | Language-aware refactoring |
-| `mossy-analyze` | `/mossy:analyze` | Static analysis across languages |
+| `mossy-plan` | `/mossy-plan` | Create execution plan from spec |
+| `mossy-interview` | `/mossy-interview` | Technical interview to refine specs before planning |
+| `mossy-work` | `/mossy-work` | Execute plan tasks |
+| `mossy-review` | `/mossy-review` | Review changes before commit |
+| `mossy-refactor` | `/mossy-refactor` | Language-aware refactoring |
+| `mossy-analyze` | `/mossy-analyze` | Static analysis across languages |
 
 ## Language-Specific Skills
 
 | Skill | Command | Languages |
 |-------|---------|-----------|
-| `mossy-cpp` | `/mossy:cpp` | C++ |
-| `mossy-csharp` | `/mossy:csharp` | C# |
-| `mossy-vbnet` | `/mossy:vbnet` | VB.NET |
-| `mossy-js` | `/mossy:js` | JavaScript |
-| `mossy-ts` | `/mossy:ts` | TypeScript |
-| `mossy-gdscript` | `/mossy:gdscript` | GDScript |
-| `mossy-py` | `/mossy:py` | Python |
+| `mossy-cpp` | `/mossy-cpp` | C++ |
+| `mossy-csharp` | `/mossy-csharp` | C# |
+| `mossy-vbnet` | `/mossy-vbnet` | VB.NET |
+| `mossy-js` | `/mossy-js` | JavaScript |
+| `mossy-ts` | `/mossy-ts` | TypeScript |
+| `mossy-gdscript` | `/mossy-gdscript` | GDScript |
+| `mossy-py` | `/mossy-py` | Python |
 
 ## Directory Structure
 
@@ -175,10 +175,10 @@ Each language-specific skill knows:
 ### 4. Composable
 Skills can chain:
 ```
-/mossy:plan fn-1-add-feature
-/mossy:work fn-1-add-feature.1
-/mossy:review
-/mossy:cpp --check-style
+/mossy-plan fn-1-add-feature
+/mossy-work fn-1-add-feature.1
+/mossy-review
+/mossy-cpp --check-style
 ```
 
 ## Tool Usage
