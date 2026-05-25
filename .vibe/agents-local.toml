@@ -1,7 +1,0 @@
-# Local development agent configuration for Mossy Slop
-# This file is for development purposes only
-
-[[agents]]
-name = "mossy-local"
-path = "."
-description = "Local development instance of mossy-slop - all skills loaded from current directory"

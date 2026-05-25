@@ -42,19 +42,6 @@ else
     echo "  - .flow/mossy-config already exists, not overwriting"
 fi
 
-# Create local agents.toml for development
-mkdir -p "$REPO_ROOT/.vibe/agents"
-cat > "$REPO_ROOT/.vibe/agents/mossy-slop.toml" << 'EOF'
-# Local development agent configuration for Mossy Slop
-# This file is for development purposes only
-
-name = "mossy-local"
-path = "."
-description = "Local development instance of mossy-slop - all skills loaded from current directory"
-EOF
-
-echo "  ✓ .vibe/agents-local.toml created"
-
 # Verify symlinks
 echo ""
 echo "Verifying setup..."
