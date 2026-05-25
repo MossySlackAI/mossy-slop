@@ -43,11 +43,11 @@ else
 fi
 
 # Create local agents.toml for development
-cat > "$REPO_ROOT/.vibe/agents-local.toml" << 'EOF'
+mkdir -p "$REPO_ROOT/.vibe/agents"
+cat > "$REPO_ROOT/.vibe/agents/mossy-slop.toml" << 'EOF'
 # Local development agent configuration for Mossy Slop
 # This file is for development purposes only
 
-[[agents]]
 name = "mossy-local"
 path = "."
 description = "Local development instance of mossy-slop - all skills loaded from current directory"
