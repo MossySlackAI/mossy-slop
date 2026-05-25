@@ -43,6 +43,7 @@ echo "  ✓ .vibe/skills -> skills"
 
 # Install default mossy-config if not exists
 if [ ! -f "$REPO_ROOT/.flow/mossy-config" ] && [ -f "$REPO_ROOT_SOURCE/config/mossy-config.default" ]; then
+    mkdir -p "$REPO_ROOT/.flow"
     cp "$REPO_ROOT_SOURCE/config/mossy-config.default" "$REPO_ROOT/.flow/mossy-config"
     echo "  ✓ .flow/mossy-config installed from default template"
 else
@@ -78,11 +79,6 @@ echo ""
 echo "To use with Mistral Vibe from this directory:"
 echo "  1. Ensure Vibe is installed"
 echo "  2. Run Vibe from $REPO_ROOT"
-echo "  3. Or add this to ~/.config/vibe/agents.toml:"
-echo ""
-echo "[[agents]]"
-echo "name = \"mossy-slop\""
-echo "path = \"$REPO_ROOT\""
 echo ""
 echo "Symlinked directories:"
 echo "  .vibe/commands/mossy-slop -> $(readlink "$REPO_ROOT_SOURCE/.vibe/commands/mossy-slop")"
