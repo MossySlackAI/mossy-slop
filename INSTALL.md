@@ -4,6 +4,8 @@ Mossy Slop are lean, token-efficient skills for planning and executing code chan
 
 Project identifier: **mossy-slop**
 
+**Note:** In the examples below, `<mossy-slop-path>` is a placeholder for the path where you checked out this repository (e.g., `~/.dotfiles/vibe/mossy-slop`, `~/projects/mossy-slop`, etc.). Replace it with your actual installation path.
+
 ## Quick Start
 
 Choose your AI tool below and follow the instructions.
@@ -113,7 +115,7 @@ Add the following to your `~/.config/vibe/agents.toml`:
 ```toml
 [[agents]]
 name = "mossy-slop"
-path = "~/.dotfiles/vibe/mossy-slop"
+path = "<mossy-slop-path>"
 description = "Mossy Slop"
 ```
 
@@ -121,7 +123,7 @@ Or symlink the agents.toml from this repo:
 
 ```bash
 mkdir -p ~/.config/vibe/
-ln -s ~/.dotfiles/vibe/mossy-slop/.vibe/agents.toml ~/.config/vibe/agents.toml
+ln -s <mossy-slop-path>/.vibe/agents.toml ~/.config/vibe/agents.toml
 ```
 
 ### Option 2: Clone and Symlink
@@ -140,7 +142,7 @@ ln -s ~/.vibe/agents/mossy-slop/commands/*.md ~/.vibe/commands/
 If you're developing mossy-slop:
 
 ```bash
-cd ~/.dotfiles/vibe/mossy-slop
+cd <mossy-slop-path>
 ./scripts/dev-setup.sh
 ```
 
@@ -254,7 +256,7 @@ git checkout v1.0.0
 To update to the latest version:
 
 ```bash
-cd ~/.dotfiles/vibe/mossy-slop  # or wherever you cloned it
+cd <mossy-slop-path>  # or wherever you cloned it
 git pull origin main
 ```
 

@@ -206,8 +206,10 @@ Add to `~/.config/vibe/agents.toml`:
 ```toml
 [[agents]]
 name = "mossy-slop"
-path = "~/.dotfiles/vibe/mossy-slop"
+path = "<mossy-slop-path>"
 ```
+
+**Note:** Replace `<mossy-slop-path>` with the actual path where you checked out this repository.
 
 Or symlink into Vibe's agents directory.
 
