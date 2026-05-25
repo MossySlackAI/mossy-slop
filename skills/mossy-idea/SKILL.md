@@ -22,31 +22,25 @@ Accepts:
 
 ## Flow
 
-1. **Phase 1: Validate Input**
+1. **Phase 1: Setup**
+   - Source scripts: `ensure-flow-dir.sh`, `generate-spec-id.sh`, `record-issue.sh`
+   - Call `ensure_flow_dir` to create `.flow/specs/`
+
+2. **Phase 2: Validate Input**
    - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question
    - Strip leading/trailing whitespace from idea text
 
-2. **Phase 2: Generate Spec ID**
-   - List existing spec files in `.flow/specs/fn-*.md`
-   - Extract all N values from filenames matching pattern `fn-(\d+)-`
-   - Find maximum N, increment by 1
-   - If no existing specs, start from N=1
-   - Slugify idea text:
-     - Convert to lowercase
-     - Replace spaces and underscores with hyphens
-     - Remove all characters except alphanumeric and hyphens
-     - Remove leading/trailing hyphens
-   - Format: `fn-<N>-<slug>.md`
+3. **Phase 3: Generate Spec ID**
+   - Call `generate_spec_id "<idea-text>"` to get fn-<N>-<slug>.md
 
-3. **Phase 3: Create Spec File**
-   - Ensure `.flow/specs/` directory exists (mkdir -p)
-   - Create `.flow/specs/fn-<N>-<slug>.md`
+4. **Phase 4: Create Spec File**
+   - Create `.flow/specs/<spec-id>`
    - Title: Capitalize first letter of each word in idea text
    - Goal: The idea text as provided
 
-4. **Phase 4: Output Result**
-   - Print: `Spec written to .flow/specs/fn-<N>-<slug>.md`
-   - Print: `Next: /mossy-interview fn-<N>-<slug>`
+5. **Phase 5: Output Result**
+   - Print: `Spec written to .flow/specs/<spec-id>`
+   - Print: `Next: /mossy-interview <spec-id-without-.md>`
 
 ## Error Recording
 
@@ -63,8 +57,13 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration Code
 
 ```bash
-# At skill start, source the recording utility
+# At skill start, source required utilities
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
+source scripts/generate-spec-id.sh 2>/dev/null || true
 source scripts/record-issue.sh 2>/dev/null || true
+
+# Setup directories
+ensure_flow_dir || true
 
 # When write_file fails
 if ! write_file path="$spec_path" content="$content" 2>/dev/null; then
@@ -73,12 +72,12 @@ if ! write_file path="$spec_path" content="$content" 2>/dev/null; then
         "Phase: spec creation, Attempting to write spec file" || true
 fi
 
-# When no valid spec ID can be generated
-if [ -z "$next_n" ]; then
-    record_issue "mossy-idea" "logic-error" "N/A" "$idea" \
-        "Could not determine next spec number from existing files" \
-        "Phase: ID generation, No existing specs found and N=1 failed" || true
-fi
+# When spec ID generation fails
+spec_id=$(generate_spec_id "$idea" 2>/dev/null) || {
+    record_issue "mossy-idea" "logic-error" "generate-spec-id.sh" "$idea" \
+        "Could not generate spec ID" \
+        "Phase: ID generation" || true
+}
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.

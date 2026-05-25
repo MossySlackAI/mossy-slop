@@ -62,46 +62,16 @@ Technical interviewer, spec refiner. No implementation. No files outside `.flow/
 ### Phase 0: Setup
 
 ```bash
-# Ensure .flow/ directory exists
-FLOW_DIR=".flow"
-mkdir -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues"
-
-# Source error recording utility
+# Source required utilities
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
+source scripts/load-mossy-config.sh 2>/dev/null || true
 source scripts/record-issue.sh 2>/dev/null || true
 
-# Auto-install default config if missing
-source scripts/ensure-mossy-config.sh 2>/dev/null || true
-ensure_mossy_config 2>/dev/null || true
+# Setup directories
+ensure_flow_dir || true
 
-# Load global commit policy config
-MOSSY_CONFIG="$FLOW_DIR/mossy-config"
-if [ -f "$MOSSY_CONFIG" ]; then
-    # Parse YAML-like config (simple key=value format for now)
-    COMMIT_POLICY=$(grep -E '^commit-policy:' "$MOSSY_CONFIG" | awk '{print $2}')
-    NEW_BRANCH_PER_SPEC=$(grep -E '^new-branch-per-spec:' "$MOSSY_CONFIG" | awk '{print $2}')
-    AUTO_PUSH=$(grep -E '^auto-push:' "$MOSSY_CONFIG" | awk '{print $2}')
-    # For co-authored-by: only use default if key doesn't exist, not if explicitly empty
-    CO_AUTHORED_BY_LINE=$(grep -E '^co-authored-by:' "$MOSSY_CONFIG")
-    if [ -n "$CO_AUTHORED_BY_LINE" ]; then
-        CO_AUTHORED_BY=$(echo "$CO_AUTHORED_BY_LINE" | sed 's/^co-authored-by: *//')
-    else
-        CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
-    fi
-    # Apply defaults: if new-branch-per-spec=false, force auto-push=false
-    if [ "$NEW_BRANCH_PER_SPEC" = "false" ] && [ "$AUTO_PUSH" != "false" ]; then
-        AUTO_PUSH="false"
-    fi
-    if [ "$NEW_BRANCH_PER_SPEC" = "true" ] && [ "$AUTO_PUSH" != "true" ]; then
-        AUTO_PUSH="true"
-    fi
-fi
-# If no config file at all, use hardcoded defaults
-if [ ! -f "$MOSSY_CONFIG" ]; then
-    COMMIT_POLICY="manual"
-    NEW_BRANCH_PER_SPEC="false"
-    AUTO_PUSH="false"
-    CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
-fi
+# Load config
+load_mossy_config || true
 ```
 
 ### Phase 1: Parse Input
@@ -357,8 +327,14 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration Code
 
 ```bash
-# At skill start, source the recording utility
+# At skill start, source required utilities
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
+source scripts/load-mossy-config.sh 2>/dev/null || true
 source scripts/record-issue.sh 2>/dev/null || true
+
+# Setup and load config
+ensure_flow_dir || true
+load_mossy_config || true
 
 # When a tool fails during spec reading
 if ! read_file path="$spec_path" 2>/dev/null; then

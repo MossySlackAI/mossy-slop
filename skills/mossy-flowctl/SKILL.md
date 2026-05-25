@@ -29,9 +29,15 @@ All operations on `.flow/` metadata are user-initiated. Auto-generated files in 
 
 ## Detection
 
+Use `ensure_flow_dir` to create `.flow/` directory, then check for flowctl:
+
 ```bash
 FLOW_DIR=".flow"
 FLOWCTL="$FLOW_DIR/flowctl"
+
+# Ensure flow directory exists
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
+ensure_flow_dir || true
 
 # Check for executable flowctl (flow-next copies it here)
 if [[ -x "$FLOWCTL" && -f "$FLOWCTL" ]]; then
@@ -161,8 +167,12 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source the recording utility
+# At skill start, source required utilities
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
 source scripts/record-issue.sh 2>/dev/null || true
+
+# Setup directories
+ensure_flow_dir || true
 
 # When flowctl command fails
 FLOWCTL="$FLOW_DIR/flowctl"

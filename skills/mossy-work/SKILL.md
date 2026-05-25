@@ -37,11 +37,11 @@ Accepts:
 ## Flow
 
 0. **Load config**
-   - Auto-install default config if missing: source scripts/ensure-mossy-config.sh and call ensure_mossy_config
-   - Read `.flow/mossy-config` for commit policy settings
-   - Parse: commit-policy, new-branch-per-spec, auto-push, co-authored-by
-   - Apply R3 defaults: if new-branch-per-spec=false, force auto-push=false
-   - co-authored-by defaults to 'Mistral Vibe <vibe@mistral.ai>' if not set
+   - Source scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
+   - Call `ensure_flow_dir` to create directories
+   - Call `load_mossy_config` to parse commit policy settings
+   - Settings: commit-policy, new-branch-per-spec, auto-push, co-authored-by
+   - R3 defaults applied automatically
 
 1. **Resolve target**
    - If task ID: execute that task
@@ -226,8 +226,14 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source the recording utility
+# At skill start, source required utilities
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
+source scripts/load-mossy-config.sh 2>/dev/null || true
 source scripts/record-issue.sh 2>/dev/null || true
+
+# Setup and load config
+ensure_flow_dir || true
+load_mossy_config || true
 
 # When a tool fails during task execution
 if ! read_file path="$target_file" 2>/dev/null; then

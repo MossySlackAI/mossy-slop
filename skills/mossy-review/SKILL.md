@@ -349,11 +349,17 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/reviews/ directory creation fails, git not available |
 | configuration-error | Environment misconfiguration | Linter not installed but configured, missing review backend |
 
-### Integration
+#### Integration
 
 ```bash
-# At skill start, source the recording utility
+# At skill start, source required utilities
+source scripts/ensure-flow-dir.sh 2>/dev/null || true
+source scripts/load-mossy-config.sh 2>/dev/null || true
 source scripts/record-issue.sh 2>/dev/null || true
+
+# Setup and load config
+ensure_flow_dir || true
+load_mossy_config || true
 
 # When a tool fails during analysis
 if ! read_file path="$file_path" 2>/dev/null; then
