@@ -1,3 +1,7 @@
+# ATTENTION
+
+None of this is expected to work. The AI wrote it itself. The Mistral Vibe Dev setup works.
+
 # Mossy Slop Installation
 
 Mossy Slop are lean, token-efficient skills for planning and executing code changes. This document describes how to install them for different AI coding assistants.
