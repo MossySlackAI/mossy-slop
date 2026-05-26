@@ -1,7 +1,7 @@
 ---
 name: mossy-plan
 description: Create execution plan from spec. Breaks work into ordered tasks with clear acceptance criteria.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,grep,bash,ask_user_question
 ---
 

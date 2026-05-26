@@ -1,7 +1,7 @@
 ---
 name: mossy-ts
 description: TypeScript language-specific skill. Handles TS file analysis, refactoring, and code generation with type awareness.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 

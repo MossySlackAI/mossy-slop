@@ -1,7 +1,7 @@
 ---
 name: mossy-interview
 description: Technical interview to refine specs and clarify requirements before planning. Asks targeted questions to extract implementation details, similar to flow-next interview but technical mode only.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,grep,bash,ask_user_question
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: mossy-gdscript
 description: GDScript language-specific skill. Handles GDScript file analysis, refactoring, and code generation for Godot Engine.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 

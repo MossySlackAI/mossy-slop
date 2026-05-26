@@ -241,7 +241,7 @@ Frontmatter template:
 ---
 name: mossy-<name>
 description: <1 line description>
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 ```

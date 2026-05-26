@@ -1,7 +1,7 @@
 ---
 name: mossy-flowctl
 description: Internal wrapper for flowctl.py. Provides unified interface for other mossy skills to interact with .flow/ state. Do not invoke directly.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,bash
 ---
 

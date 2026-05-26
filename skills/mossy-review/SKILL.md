@@ -1,7 +1,7 @@
 ---
 name: mossy-review
 description: Review changes before commit. Analyzes code modifications against acceptance criteria, checks for issues, and produces structured review reports.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,grep,bash,ask_user_question,task
 ---
 

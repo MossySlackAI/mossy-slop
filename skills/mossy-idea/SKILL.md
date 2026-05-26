@@ -1,7 +1,7 @@
 ---
 name: mossy-idea
 description: Write a minimal spec file draft into .flow/specs/ for later refinement with mossy-interview.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,bash,ask_user_question
 ---
 

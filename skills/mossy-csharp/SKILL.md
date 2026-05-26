@@ -1,7 +1,7 @@
 ---
 name: mossy-csharp
 description: C# language-specific skill. Handles C# file analysis, refactoring, and code generation with .NET awareness.
-user-invocable: true
+user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---
 
