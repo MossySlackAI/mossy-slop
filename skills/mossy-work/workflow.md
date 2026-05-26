@@ -6,9 +6,9 @@ Phase-by-phase execution for task implementation.
 
 ```bash
 # Source required utilities
-source scripts/ensure-flow-dir.sh 2>/dev/null || true
-source scripts/load-mossy-config.sh 2>/dev/null || true
-source scripts/record-issue.sh 2>/dev/null || true
+source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
+source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
+source ../mossy-scripts/record-issue.sh 2>/dev/null || true
 
 # Setup directories
 ensure_flow_dir || true
@@ -267,9 +267,9 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 
 ```bash
 # At the beginning of workflow execution, source required scripts
-source scripts/ensure-flow-dir.sh 2>/dev/null || true
-source scripts/load-mossy-config.sh 2>/dev/null || true
-source scripts/record-issue.sh 2>/dev/null || true
+source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
+source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
+source ../mossy-scripts/record-issue.sh 2>/dev/null || true
 
 # Record any error encountered
 record_issue "mossy-work" "$ERROR_TYPE" "$TOOL" "$TARGET" "$ERROR_MSG" "$CONTEXT" || true

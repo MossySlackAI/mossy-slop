@@ -353,9 +353,9 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, source required utilities
-source scripts/ensure-flow-dir.sh 2>/dev/null || true
-source scripts/load-mossy-config.sh 2>/dev/null || true
-source scripts/record-issue.sh 2>/dev/null || true
+source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
+source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
+source ../mossy-scripts/record-issue.sh 2>/dev/null || true
 
 # Setup and load config
 ensure_flow_dir || true

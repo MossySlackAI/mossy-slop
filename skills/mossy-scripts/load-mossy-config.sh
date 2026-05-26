@@ -14,8 +14,8 @@ load_mossy_config() {
     CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
     
     # Try to ensure config exists first
-    if [ -f "scripts/ensure-mossy-config.sh" ]; then
-        source scripts/ensure-mossy-config.sh 2>/dev/null || true
+    if [ -f "./ensure-mossy-config.sh" ]; then
+        source ./ensure-mossy-config.sh 2>/dev/null || true
         ensure_mossy_config 2>/dev/null || true
     fi
     

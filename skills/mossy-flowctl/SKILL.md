@@ -36,7 +36,7 @@ FLOW_DIR=".flow"
 FLOWCTL="$FLOW_DIR/flowctl"
 
 # Ensure flow directory exists
-source scripts/ensure-flow-dir.sh 2>/dev/null || true
+source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
 ensure_flow_dir || true
 
 # Check for executable flowctl (flow-next copies it here)
@@ -168,8 +168,8 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, source required utilities
-source scripts/ensure-flow-dir.sh 2>/dev/null || true
-source scripts/record-issue.sh 2>/dev/null || true
+source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
+source ../mossy-scripts/record-issue.sh 2>/dev/null || true
 
 # Setup directories
 ensure_flow_dir || true

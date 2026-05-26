@@ -282,8 +282,8 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, source required utilities
-source scripts/ensure-flow-dir.sh 2>/dev/null || true
-source scripts/record-issue.sh 2>/dev/null || true
+source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
+source ../mossy-scripts/record-issue.sh 2>/dev/null || true
 
 # Setup directories
 ensure_flow_dir || true
