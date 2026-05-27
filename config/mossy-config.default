@@ -26,5 +26,5 @@ auto-push: false
 
 # Co-Authored-By trailer for commit messages
 # Freeform string. Used when mossy skills execute git commits.
-# Default: Mistral Vibe <vibe@mistral.ai>
-co-authored-by: Mistral Vibe <vibe@mistral.ai>
+# Default: Mistral Vibe with Mossy Slop <vibe@mistral.ai>
+co-authored-by: Mistral Vibe with Mossy Slop <vibe@mistral.ai>

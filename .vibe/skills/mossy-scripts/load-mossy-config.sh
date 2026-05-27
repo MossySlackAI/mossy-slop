@@ -11,7 +11,7 @@ load_mossy_config() {
     COMMIT_POLICY="manual"
     NEW_BRANCH_PER_SPEC="false"
     AUTO_PUSH="false"
-    CO_AUTHORED_BY="Mistral Vibe <vibe@mistral.ai>"
+    CO_AUTHORED_BY="Mistral Vibe with Mossy Slop <vibe@mistral.ai>"
     
     # Try to ensure config exists first
     if [ -f "./ensure-mossy-config.sh" ]; then
