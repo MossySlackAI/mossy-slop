@@ -1,9 +1,5 @@
 # Keep the task log locally avaivalbe, but do not pollute git
 .flow
 
-# these two are links used for dog fooding
-.vibe/commands
-.vibe/skills
-
 # AGENTS.md instructs us to check out flow-next here
 .upstream

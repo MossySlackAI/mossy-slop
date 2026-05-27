@@ -24,12 +24,12 @@ echo "Creating symlinks..."
 
 # Symlink commands directory
 mkdir -p "$REPO_ROOT/.vibe/commands"
-for f in "$REPO_ROOT_SOURCE/commands/*"; do ln -sfn $f "$REPO_ROOT/.vibe/commands/"; done
+for f in "$REPO_ROOT_SOURCE/.vibe/commands/*"; do ln -sfn $f "$REPO_ROOT/.vibe/commands/"; done
 echo "  ✓ .vibe/commands -> commands"
 
 # Symlink skills directory
 mkdir -p "$REPO_ROOT/.vibe/skills"
-for f in "$REPO_ROOT_SOURCE/skills/*"; do ln -sfn $f "$REPO_ROOT/.vibe/skills/"; done
+for f in "$REPO_ROOT_SOURCE/.vibe/skills/*"; do ln -sfn $f "$REPO_ROOT/.vibe/skills/"; done
 echo "  ✓ .vibe/skills -> skills"
 
 # Install default mossy-config if not exists
