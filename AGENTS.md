@@ -200,7 +200,7 @@ All skills use the Vibe CLI tool set. Reference by canonical name:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/record-issue.sh` | Record tool errors and problems for mossy skills |
+| `.vibe/skills/mossy-scripts/record-issue.sh` | Record tool errors and problems for mossy skills |
 | `scripts/watch_specs.py` | Watch for file changes in `.flow/specs/` directory, waiting until a change occurs plus an additional second for stability |
 
 ## Registering with Vibe
@@ -308,9 +308,9 @@ A dedicated internal skill that wraps flowctl for other mossy skills to use. Oth
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | Issue files | `.flow/issues/` | Individual error records |
-| Recording script | `scripts/record-issue.sh` | Shared recording utility |
-| Full guide | `ISSUE_RECORDING.md` | Complete documentation |
-| Template | `.flow/issues/ISSUE_TEMPLATE.md` | Issue file format |
+| Recording script | `.vibe/skills/mossy-scripts/record-issue.sh` | Shared recording utility |
+| Full guide | `.vibe/skills/mossy-scripts/ISSUE_RECORDING.md` | Complete documentation |
+| Template | `.vibe/skills/mossy-scripts/ISSUE_TEMPLATE.md` | Issue file format |
 
 ### When to Record
 
@@ -327,13 +327,13 @@ Record errors **immediately** for:
 Every skill's SKILL.md MUST include:
 
 1. **Error Recording Section**: `## Error Recording` with:
-   - Reference to `ISSUE_RECORDING.md` guide
+   - Reference to `.vibe/skills/mossy-scripts/ISSUE_RECORDING.md` guide
    - Table of skill-specific error types with examples
-   - Bash integration examples using `scripts/record-issue.sh`
+   - Bash integration examples using `.vibe/skills/mossy-scripts/record-issue.sh`
 
 2. **Integration Code**: Show how to use `record_issue` function:
    ```bash
-   source scripts/record-issue.sh 2>/dev/null || true
+   source ../mossy-scripts/record-issue.sh 2>/dev/null || true
    record_issue "SKILL_NAME" "ERROR_TYPE" "TOOL" "TARGET" "ERROR_MSG" "CONTEXT" || true
    ```
 
@@ -371,7 +371,7 @@ When adding a new skill:
 2. Document skill-specific error types
 3. Include integration examples
 4. Test error recording works
-5. Reference `ISSUE_RECORDING.md` for details
+5. Reference `.vibe/skills/mossy-scripts/ISSUE_RECORDING.md` for details
 
 ## Constraints
 

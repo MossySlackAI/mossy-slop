@@ -12,7 +12,7 @@
 | **File Format** | Markdown with structured sections |
 | **Naming** | `<timestamp>-<skill>-<error-type>-<sequence>.md` |
 | **When to Record** | All tool errors, validation failures, logic errors, resource issues |
-| **Script Available** | `scripts/record-issue.sh` |
+| **Script Available** | `../mossy-scripts/record-issue.sh` |
 
 ---
 
@@ -148,7 +148,7 @@ For skills that can execute bash commands:
 
 ```bash
 # Source the script and call the function
-source scripts/record-issue.sh
+source ../mossy-scripts/record-issue.sh
 record_issue "mossy-work" "tool-error" "read_file" "src/module.py" \
   "File not found: No such file or directory" \
   "Analysis phase: attempting to read file mentioned in task description"
@@ -157,7 +157,7 @@ record_issue "mossy-work" "tool-error" "read_file" "src/module.py" \
 Or call directly:
 
 ```bash
-./scripts/record-issue.sh \
+../mossy-scripts/record-issue.sh \
   --skill mossy-work \
   --error-type tool-error \
   --tool read_file \
@@ -237,7 +237,7 @@ record_tool_error() {
     local context="$4"
     
     # Call the recording script
-    ./scripts/record-issue.sh \
+    ../mossy-scripts/record-issue.sh \
         --skill "$(basename $0)" \
         --error-type "tool-error" \
         --tool "$tool" \
@@ -346,7 +346,7 @@ When creating or updating a skill:
 ```markdown
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -358,7 +358,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # Record an error
-source scripts/record-issue.sh
+source ../mossy-scripts/record-issue.sh
 record_issue "mossy-plan" "validation-error" "N/A" "specs/fn-1.md" \
   "Invalid spec format: missing Goal section" \
   "Parsing spec file for planning"
@@ -568,20 +568,23 @@ record_issue "mossy-py" "resource-error" "N/A" "pyproject.toml" \
     ├── 20240523-143022-mossy-work-tool-error-001.md
     ├── 20240523-150100-mossy-refactor-validation-error-002.md
     ├── 20240523-154530-mossy-analyze-logic-error-003.md
-    ├── ISSUE_TEMPLATE.md  # Template for manual issue creation
     └── README.md          # Auto-generated index of all issues
 
-scripts/
-└── record-issue.sh      # Shared recording utility
-
-ISSUE_RECORDING.md       # This guide
+.vibe/
+└── skills/
+    ├── mossy-scripts/
+    │   ├── ISSUE_TEMPLATE.md  # Template for manual issue creation
+    │   ├── record-issue.sh      # Shared recording utility
+    │   └── ISSUE_RECORDING.md   # This guide
+    └── mossy-*/
+        └── SKILL.md           # Individual skills
 ```
 
 ---
 
 ## Example Issue Files
 
-See `.flow/issues/ISSUE_TEMPLATE.md` for the complete template.
+See `../mossy-scripts/ISSUE_TEMPLATE.md` for the complete template.
 
 ---
 

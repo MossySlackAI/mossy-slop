@@ -39,7 +39,7 @@ echo ""
 # Test 1: Verify all skills have Error Recording sections
 echo "Test 1: Checking all skills have Error Recording sections..."
 COUNT=0
-for skill_dir in "$REPO_ROOT/skills/mossy-"* ; do
+for skill_dir in "$REPO_ROOT/.vibe/skills/mossy-"* ; do
     if [ -d "$skill_dir" ]; then
         skill_file="$skill_dir/SKILL.md"
         if [ -f "$skill_file" ] && grep -q "## Error Recording" "$skill_file"; then
@@ -50,7 +50,7 @@ for skill_dir in "$REPO_ROOT/skills/mossy-"* ; do
 done
 
 # Also check workflow.md
-if [ -f "$REPO_ROOT/skills/mossy-work/workflow.md" ] && grep -q "Error Recording" "$REPO_ROOT/skills/mossy-work/workflow.md"; then
+if [ -f "$REPO_ROOT/.vibe/skills/mossy-work/workflow.md" ] && grep -q "Error Recording" "$REPO_ROOT/.vibe/skills/mossy-work/workflow.md"; then
     COUNT=$((COUNT + 1))
     echo "  ✓ mossy-work/workflow.md"
 fi
@@ -66,11 +66,11 @@ fi
 # Test 2: Verify record-issue.sh script exists and is executable
 echo ""
 echo "Test 2: Checking record-issue.sh script..."
-if [ -x "$SCRIPT_DIR/record-issue.sh" ]; then
-    echo "  ✓ scripts/record-issue.sh exists and is executable"
+if [ -x "$REPO_ROOT/.vibe/skills/mossy-scripts/record-issue.sh" ]; then
+    echo "  ✓ record-issue.sh exists and is executable"
     echo "✅ PASS"
 else
-    echo "  ✗ scripts/record-issue.sh not found or not executable"
+    echo "  ✗ record-issue.sh not found or not executable"
     echo "❌ FAIL"
     exit 1
 fi
@@ -81,7 +81,7 @@ echo "Test 3: Testing issue recording..."
 cd "$REPO_ROOT"
 
 # Capture the output to get the filename
-OUTPUT=$(./scripts/record-issue.sh \
+OUTPUT=$($REPO_ROOT/.vibe/skills/mossy-scripts/record-issue.sh \
     --skill "$TEST_SKILL" \
     --error-type "tool-error" \
     --tool "read_file" \
@@ -119,7 +119,7 @@ echo ""
 echo "Test 4: Checking README.md index..."
 # Ensure README exists by running record-issue.sh again if needed
 if [ ! -f "$ISSUES_DIR/README.md" ]; then
-    ./scripts/record-issue.sh \
+    $REPO_ROOT/.vibe/skills/mossy-scripts/record-issue.sh \
         --skill "$TEST_SKILL" \
         --error-type "tool-error" \
         --tool "read_file" \

@@ -133,7 +133,7 @@ If you encounter any issues during development (tool errors, validation failures
 # Each issue gets its own file with full context
 ```
 
-See ISSUE_RECORDING.md for details on the error recording system.
+See `.vibe/skills/mossy-scripts/ISSUE_RECORDING.md` for details on the error recording system.
 
 ## Adding a New Skill
 
@@ -246,7 +246,7 @@ Optional fields:
 2. **Input**: What the skill accepts
 3. **Flow**: Step-by-step execution logic
 4. **Commands**: Related commands
-5. **Error Recording**: How errors are recorded (see ISSUE_RECORDING.md)
+5. **Error Recording**: How errors are recorded (see `.vibe/skills/mossy-scripts/ISSUE_RECORDING.md`)
 6. **Guardrails**: Constraints and rules
 
 ## Testing
