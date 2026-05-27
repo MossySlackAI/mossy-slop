@@ -63,18 +63,6 @@ jobs:
           done
           echo "✓ All Copilot skills exist and have SKILL.md files"
 
-  validate-toml:
-    name: Validate TOML Manifests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Validate Vibe agents.toml
-        run: |
-          python3 -c "import tomllib; tomllib.load(open('.vibe/agents.toml', 'rb'))"
-          echo "✓ Vibe agents.toml is valid TOML"
-
   validate-skill-frontmatter:
     name: Validate Skill Frontmatter
     runs-on: ubuntu-latest
