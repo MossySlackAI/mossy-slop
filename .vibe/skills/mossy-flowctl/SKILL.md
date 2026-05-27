@@ -5,6 +5,10 @@ user-invocable: false
 allowed-tools: read_file,bash
 ---
 
+## Quick Reference
+
+**File Writing**: Use `mossy-flowctl write <relative-path>` to write to `.flow/<relative-path>` via write-flow-file.sh
+
 # mossy-flowctl
 
 This is a leaner alternative to flow-next, compatible with Mistral Vibe.
@@ -91,7 +95,22 @@ All commands support `--json` for machine-readable output.
 | `config set` | `<key> <value>` | Set config value |
 | `review-backend` | | Get configured review backend |
 
+## Additional Commands (mossy extensions)
+
+### File Writing
+
+| Command | Args | Purpose |
+|---------|------|---------|
+| `write` | `<relative-path>` | Write stdin to `.flow/<relative-path>` using write-flow-file.sh |
+
 ## Usage Patterns for mossy Skills
+
+### 0. Setup write-flow-file
+
+```bash
+# Source write-flow-file.sh for file operations
+source ../mossy-scripts/write-flow-file.sh 2>/dev/null || true
+```
 
 ### 1. Check flowctl availability
 
@@ -119,13 +138,32 @@ mossy-flowctl ready --json
 mossy-flowctl done fn-1.1 --summary-file /tmp/summary.md
 ```
 
+### 5. Write file to .flow/
+
+```bash
+echo "$content" | mossy-flowctl write "specs/<id>.md"
+echo "$content" | mossy-flowctl write "tasks/<id>.M.md"
+```
+
 ## Fallback Behavior
 
 If flowctl not found:
-- Spec/Task files: read/write directly in `.flow/specs/` and `.flow/tasks/`
+- Spec/Task files: read/write directly in `.flow/specs/` and `.flow/tasks/` using write-flow-file.sh
 - State: use simple JSON files with `id`, `status`, `title`, `description` fields
 - No dependency tracking
 - No validation
+
+## Implementation: write command
+
+```bash
+# In mossy-flowctl, implement write command
+handle_write() {
+    local target_path="$1"
+    # Use write-flow-file.sh to write stdin to .flow/<target_path>
+    write_flow_file "$target_path"
+    return $?
+}
+```
 
 ## File Layout
 
@@ -170,6 +208,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 # At skill start, source required utilities
 source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
 source ../mossy-scripts/record-issue.sh 2>/dev/null || true
+source ../mossy-scripts/write-flow-file.sh 2>/dev/null || true
 
 # Setup directories
 ensure_flow_dir || true
@@ -187,6 +226,13 @@ else
         "flowctl not found or not executable" \
         "Phase: detection, Checking flowctl availability" || true
 fi
+
+# When write_flow_file fails
+if ! echo "$content" | write_flow_file "$target_path" 2>/dev/null; then
+    record_issue "mossy-flowctl" "tool-error" "write_flow_file" "$target_path" \
+        "write_flow_file failed: permission denied or path invalid" \
+        "Phase: writing, Attempting to write to .flow/$target_path" || true
+fi
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
@@ -198,8 +244,12 @@ Other mossy skills should call this via bash:
 ```bash
 # In any mossy skill, use:
 mossy-flowctl <command> [args]
+
+# For writing files to .flow/
+echo "$spec_content" | mossy-flowctl write "specs/<id>.md"
+echo "$task_content" | mossy-flowctl write "tasks/<id>.M.md"
 ```
 
 This skill translates to either:
-1. `$FLOW_DIR/flowctl <command> [args]` (if flowctl exists)
-2. Fallback implementation (if not)
+1. `$FLOW_DIR/flowctl <command> [args]` (if flowctl exists and supports the command)
+2. Fallback implementation using write-flow-file.sh (if not)

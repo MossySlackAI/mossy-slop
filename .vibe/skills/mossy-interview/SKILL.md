@@ -2,7 +2,7 @@
 name: mossy-interview
 description: Technical interview to refine specs and clarify requirements before planning. Asks targeted questions to extract implementation details, similar to flow-next interview but technical mode only.
 user-invocable: false
-allowed-tools: read_file,write_file,grep,bash,ask_user_question
+allowed-tools: read_file,grep,bash,ask_user_question
 ---
 
 # mossy-interview
@@ -72,6 +72,8 @@ ensure_flow_dir || true
 
 # Load config
 load_mossy_config || true
+
+# Use mossy-flowctl for all .flow/ operations
 ```
 
 ### Phase 1: Parse Input
@@ -210,7 +212,7 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **canonical spec template** defined in the [Spec Format](#spec-format) section below.
+After interview completes, write refined spec back using the **canonical spec template** defined in the [Spec Format](#spec-format) section below. Use `echo "$content" | mossy-flowctl write "specs/<id>.md"` to write to `.flow/specs/`.
 
 **For new specs**: Create `.flow/specs/<id>.md` with the canonical structure.
 
@@ -311,7 +313,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail | read_file on non-existent spec file |
+| tool-error | Vibe tool calls fail | mossy-flowctl write on non-writable .flow/specs/ |
 | validation-error | Input format invalid | Invalid Flow ID pattern, missing required sections |
 | logic-error | Internal logic fails | Circular question dependency, invalid spec state |
 | resource-error | Required resources missing | .flow/specs/ directory not writable |
@@ -334,6 +336,13 @@ if ! read_file path="$spec_path" 2>/dev/null; then
     record_issue "mossy-interview" "tool-error" "read_file" "$spec_path" \
         "read_file failed: file not found or permission denied" \
         "Phase: parsing, Attempting to read spec file $spec_path" || true
+fi
+
+# When mossy-flowctl write fails during spec writing
+if ! echo "$spec_content" | mossy-flowctl write "specs/$(basename "$spec_path")" 2>/dev/null; then
+    record_issue "mossy-interview" "tool-error" "mossy-flowctl write" "$spec_path" \
+        "mossy-flowctl write failed: permission denied or path invalid" \
+        "Phase: writing, Attempting to write spec file $spec_path" || true
 fi
 
 # When input format is invalid

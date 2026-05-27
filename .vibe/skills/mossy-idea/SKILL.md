@@ -2,7 +2,7 @@
 name: mossy-idea
 description: Write a minimal spec file draft into .flow/specs/ for later refinement with mossy-interview.
 user-invocable: false
-allowed-tools: read_file,write_file,bash,ask_user_question
+allowed-tools: read_file,bash,ask_user_question
 ---
 
 # mossy-idea
@@ -24,6 +24,7 @@ Accepts:
 
 1. **Phase 1: Setup**
    - Source scripts: `ensure-flow-dir.sh`, `generate-spec-id.sh`, `record-issue.sh`
+   - Use `mossy-flowctl` for all `.flow/` operations
    - Call `ensure_flow_dir` to create `.flow/specs/`
 
 2. **Phase 2: Validate Input**
@@ -34,7 +35,7 @@ Accepts:
    - Call `generate_spec_id "<idea-text>"` to get fn-<N>-<slug>.md
 
 4. **Phase 4: Create Spec File**
-   - Create `.flow/specs/<spec-id>`
+   - Use `echo "$content" | mossy-flowctl write "specs/<spec-id>"` to write to `.flow/specs/<spec-id>`
    - Title: Capitalize first letter of each word in idea text
    - Goal: The idea text as provided
 
@@ -50,7 +51,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail | write_file to non-writable .flow/specs/ |
+| tool-error | Vibe tool calls fail | mossy-flowctl write to non-writable .flow/specs/ |
 | validation-error | Input format invalid | Empty or whitespace-only idea text (before prompt) |
 | resource-error | Required resources missing | .flow/specs/ directory creation fails |
 
@@ -65,10 +66,10 @@ source ../mossy-scripts/record-issue.sh 2>/dev/null || true
 # Setup directories
 ensure_flow_dir || true
 
-# When write_file fails
-if ! write_file path="$spec_path" content="$content" 2>/dev/null; then
-    record_issue "mossy-idea" "tool-error" "write_file" "$spec_path" \
-        "write_file failed: permission denied or path invalid" \
+# When mossy-flowctl write fails
+if ! echo "$content" | mossy-flowctl write "specs/$(basename "$spec_path")" 2>/dev/null; then
+    record_issue "mossy-idea" "tool-error" "mossy-flowctl write" "$spec_path" \
+        "mossy-flowctl write failed: permission denied or path invalid" \
         "Phase: spec creation, Attempting to write spec file" || true
 fi
 
