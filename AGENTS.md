@@ -38,14 +38,16 @@ Aid in planning and executing code changes across:
 
 All skills use the `mossy-` prefix.
 
+> **Note:** The skills in `.vibe/skills/` and commands in `.vibe/commands/` are **executable** — they are invoked via slash commands and run as skills, not merely read as documentation or rough instructions.
+
 ## Architecture
 
 ### Skill Structure
 
-Each skill lives in `skills/mossy-<name>/` with:
+Each skill lives in `.vibe/skills/mossy-<name>/` with:
 
 ```
-skills/mossy-<name>/
+.vibe/skills/mossy-<name>/
 ├── SKILL.md          # Frontmatter + high-level description
 └── workflow.md       # Optional: phase-by-phase execution (if complex)
 ```
@@ -64,7 +66,7 @@ allowed-tools: <comma-separated tool list>
 
 ### Invocation
 
-Via slash commands defined in `commands/mossy-<name>.md`:
+Via slash commands defined in `.vibe/commands/mossy-<name>.md`:
 ```yaml
 ---
 name: mossy-<name>
@@ -104,51 +106,53 @@ argument-hint: "[args]"
 ├── AGENTS.md              # This file
 ├── README.md             # Repository overview
 ├── .gitlab-ci.yml        # CI configuration
-├── skills/               # All skills
-│   ├── mossy-flowctl/
-│   │   └── SKILL.md
-│   ├── mossy-plan/
-│   │   └── SKILL.md
-│   ├── mossy-interview/
-│   │   ├── SKILL.md
-│   │   └── questions-technical.md
-│   ├── mossy-work/
-│   │   ├── SKILL.md
-│   │   └── workflow.md
-│   ├── mossy-review/
-│   │   └── SKILL.md
-│   ├── mossy-refactor/
-│   │   └── SKILL.md
-│   ├── mossy-analyze/
-│   │   └── SKILL.md
-│   ├── mossy-cpp/
-│   │   └── SKILL.md
-│   ├── mossy-csharp/
-│   │   └── SKILL.md
-│   ├── mossy-vbnet/
-│   │   └── SKILL.md
-│   ├── mossy-js/
-│   │   └── SKILL.md
-│   ├── mossy-ts/
-│   │   └── SKILL.md
-│   ├── mossy-gdscript/
-│   │   └── SKILL.md
-│   └── mossy-py/
-│       └── SKILL.md
-└── commands/             # Slash command definitions
-    ├── mossy-plan.md
-    ├── mossy-interview.md
-    ├── mossy-work.md
-    ├── mossy-review.md
-    ├── mossy-refactor.md
-    ├── mossy-analyze.md
-    ├── mossy-cpp.md
-    ├── mossy-csharp.md
-    ├── mossy-vbnet.md
-    ├── mossy-js.md
-    ├── mossy-ts.md
-    ├── mossy-gdscript.md
-    └── mossy-py.md
+├── .vibe/                # Executable skills and commands
+│   ├── skills/           # All skills
+│   │   ├── mossy-flowctl/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-plan/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-interview/
+│   │   │   ├── SKILL.md
+│   │   │   └── questions-technical.md
+│   │   ├── mossy-work/
+│   │   │   ├── SKILL.md
+│   │   │   └── workflow.md
+│   │   ├── mossy-review/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-refactor/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-analyze/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-cpp/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-csharp/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-vbnet/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-js/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-ts/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-gdscript/
+│   │   │   └── SKILL.md
+│   │   └── mossy-py/
+│   │       └── SKILL.md
+│   └── commands/         # Slash command definitions
+│       ├── mossy-plan.md
+│       ├── mossy-interview.md
+│       ├── mossy-work.md
+│       ├── mossy-review.md
+│       ├── mossy-refactor.md
+│       ├── mossy-analyze.md
+│       ├── mossy-cpp.md
+│       ├── mossy-csharp.md
+│       ├── mossy-vbnet.md
+│       ├── mossy-js.md
+│       ├── mossy-ts.md
+│       ├── mossy-gdscript.md
+│       └── mossy-py.md
+└── scripts/             # Utility scripts
 ```
 
 ## Design Principles
@@ -231,8 +235,8 @@ We leave out:
 
 ## Adding a New Skill
 
-1. Create `skills/mossy-<name>/SKILL.md` with frontmatter
-2. Create `commands/mossy-<name>.md` for the slash command
+1. Create `.vibe/skills/mossy-<name>/SKILL.md` with frontmatter
+2. Create `.vibe/commands/mossy-<name>.md` for the slash command
 3. Add to the tables above
 4. Test locally
 
