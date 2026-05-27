@@ -210,42 +210,9 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back:
+After interview completes, write refined spec back using the **canonical spec template** defined in the [Spec Format](#spec-format) section below.
 
-**For new specs**: Create `.flow/specs/<id>.md` with structure:
-```markdown
-# <Title>
-
-## Goal
-<1-2 sentences>
-
-## Mossy-Config
-- commit-policy: <manual|auto-per-change|auto-per-spec|batch>
-- new-branch-per-spec: <true|false>
-- auto-push: <true|false>
-- co-authored-by: <string>
-
-## Acceptance Criteria
-- R1: <criterion>
-- R2: <criterion>
-...
-
-## Architecture & Data Models
-<key design decisions>
-
-## API Contracts
-<interfaces, endpoints>
-
-## Edge Cases & Constraints
-<boundaries, error handling>
-
-## Decision Context
-<load-bearing choices made>
-
-## Resolved via Codebase
-- <item> — <file:line evidence>
-...
-```
+**For new specs**: Create `.flow/specs/<id>.md` with the canonical structure.
 
 **For existing specs**: Preserve existing content byte-for-byte except for:
 - Append new R-IDs to Acceptance Criteria (never renumber existing)
