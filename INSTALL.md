@@ -1,10 +1,7 @@
-# ATTENTION
-
-None of this is expected to work. The AI wrote it itself. The Mistral Vibe Dev setup works.
-
 # Mossy Slop Installation
 
-Mossy Slop are lean, token-efficient skills for planning and executing code changes. This document describes how to install them for different AI coding assistants.
+Mossy Slop are lean, token-efficient skills for planning and executing code changes, state compatible with flow-next. 
+This document describes how to install them for different AI coding assistants.
 
 Project identifier: **mossy-slop**
 
@@ -15,6 +12,65 @@ Project identifier: **mossy-slop**
 Choose your AI tool below and follow the instructions.
 
 ---
+
+## Mistral Vibe
+
+Mistral Vibe uses skills and commands directly. There are also agents, but they are less flexible than one wishes... 
+For starters, they do not compose. If you get good results with agents, let me know how.
+
+### Option 1: Clone and Install for a Repository
+
+```bash
+# Clone the repository
+git clone https://github.com/MossySlackAI/mossy-slop.git <mossy-slop-path>
+
+# Install locally
+cd <your repository, ideally with git already set up>
+<mossy-slop-path>/scripts/local-setup.h
+# this creates skill and command links into the local .vibe directory.
+```
+
+### Option 1: Clone and Install for a User (and all Repositories)
+
+```bash
+# Clone the repository
+git clone https://github.com/MossySlackAI/mossy-slop.git <mossy-slop-path>
+
+# Install locally
+<mossy-slop-path>/scripts/user-setup.h
+# this creates skill and command links into your ~/.vibe directory.
+```
+
+### Option 3: Agent Setup
+(As mentioned above, good luck)
+
+```bash
+# Clone the repository directly into your agents directory:
+git clone https://github.com/MossySlackAI/mossy-slop.git ~/.vibe/agents/mossy-slop
+```
+
+### Option 4: Development Setup
+
+If you're developing mossy-slop, just clone the repository and start vibe from inside. 
+The skills are already in the right place to activate.
+
+### Verification
+
+Restart Vibe and check that mossy commands are available:
+
+```
+/mossy:plan --help
+/mossy:work --help
+/mossy:review --help
+```
+
+---
+
+
+# ATTENTION
+
+None of the the instructions below are expected to work. The AI wrote them itself. The Mistral setup above works.
+
 
 ## GitHub Copilot CLI
 
@@ -104,62 +160,6 @@ cp -r commands/mossy-* ~/.claude/commands/
 
 # Use a mossy skill
 /mossy:plan my-feature
-```
-
----
-
-## Mistral Vibe
-
-Mistral Vibe uses an agents system for skill management.
-
-### Option 1: Register as Agent (Recommended)
-
-Add the following to your `~/.config/vibe/agents.toml`:
-
-```toml
-[[agents]]
-name = "mossy-slop"
-path = "<mossy-slop-path>"
-description = "Mossy Slop"
-```
-
-Or symlink the agents.toml from this repo:
-
-```bash
-mkdir -p ~/.config/vibe/
-ln -s <mossy-slop-path>/.vibe/agents.toml ~/.config/vibe/agents.toml
-```
-
-### Option 2: Clone and Symlink
-
-```bash
-# Clone the repository
-git clone https://github.com/MossySlackAI/mossy-slop.git ~/.vibe/agents/mossy-slop
-
-# Symlink commands (optional - Vibe may auto-discover)
-mkdir -p ~/.vibe/commands
-ln -s ~/.vibe/agents/mossy-slop/commands/*.md ~/.vibe/commands/
-```
-
-### Option 3: Development Setup
-
-If you're developing mossy-slop:
-
-```bash
-cd <mossy-slop-path>
-./scripts/dev-setup.sh
-```
-
-This creates symlinks so you can test changes immediately.
-
-### Verification
-
-Restart Vibe and check that mossy commands are available:
-
-```
-/mossy:plan --help
-/mossy:work --help
-/mossy:review --help
 ```
 
 ---
