@@ -11,7 +11,7 @@ Before asking ANY question, classify it:
 | Category | Who Answers | Action | Examples |
 |----------|-------------|--------|----------|
 | **Codebase-answerable** | Agent | Investigate via Read/Grep/Glob | "What DB layer exists?" / "Where are API routes defined?" / "What test framework is used?" |
-| **User-judgment-required** | User | Ask via `AskUserQuestion` | "Should we add caching?" / "What's the priority?" / "Which tradeoff to make?" |
+| **User-judgment-required** | User | Ask via `ask_user_question` | "Should we add caching?" / "What's the priority?" / "Which tradeoff to make?" |
 
 **RULE**: If you can answer it with grep, DON'T ask the user.
 

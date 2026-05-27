@@ -111,7 +111,7 @@ For co-authored-by, extract value after `=` (handles quoted strings for spaces).
 | Category | Action | Examples |
 |----------|--------|----------|
 | **Codebase-answerable** | Agent investigates (Read/Grep/Glob) | "What DB is used?" / "Where do routes live?" / "What test framework?" |
-| **User-judgment-required** | Ask via `AskUserQuestion` | "Should we add caching?" / "What priority for offline?" / "Performance or simplicity?" |
+| **User-judgment-required** | Ask via `ask_user_question` | "Should we add caching?" / "What priority for offline?" / "Performance or simplicity?" |
 
 **Rule**: If you find yourself answering a "should" question via grep, STOP and ask the user.
 
@@ -125,17 +125,17 @@ Investigation order:
 
 ### Phase 3: Technical Interview
 
-**CRITICAL REQUIREMENT**: You MUST use the `AskUserQuestion` tool for every question that requires user judgment.
+**CRITICAL REQUIREMENT**: You MUST use the `ask_user_question` tool for every question that requires user judgment.
 
 - DO NOT output questions as text
 - DO NOT list questions in your response
-- ONLY ask questions via AskUserQuestion tool calls
+- ONLY ask questions via ask_user_question tool calls
 - Group 2-4 related questions per tool call when they share context
 - Expect 10-30 questions for typical specs (not 40+ like flow-next)
 
 **Question Format: Lead with Recommendation**
 
-Every `AskUserQuestion` body must include the agent's recommended option AND a confidence tier.
+Every `ask_user_question` call must include the agent's recommended option AND a confidence tier.
 
 Pattern:
 ```
@@ -151,6 +151,32 @@ The `[your-call]` tier is **mandatory** when the agent has no basis for a recomm
 
 Options should be neutral labels (no "(recommended)" markers).
 
+**ask_user_question Tool Usage:**
+
+Use the `ask_user_question` tool with proper JSON structure:
+- **Tool name**: `ask_user_question` (lowercase, with underscores)
+- **Required parameter**: `questions` array (1-4 questions)
+- **Each question must have**: `question` (string) and `options` (array of 2-4 choice objects)
+- **Each option must have**: `label` (string), optionally `description` (string)
+- **Optional parameters**: `header` (1-12 chars), `multi_select` (boolean), `hide_other` (boolean), `footer_note` (string)
+
+Example tool call:
+```json
+{
+  "questions": [
+    {
+      "question": "What database should we use for this feature?",
+      "header": "Database",
+      "options": [
+        {"label": "PostgreSQL", "description": "Relational, ACID compliant"},
+        {"label": "MongoDB", "description": "Document store, flexible schema"},
+        {"label": "SQLite", "description": "File-based, lightweight"}
+      ]
+    }
+  ]
+}
+```
+
 ### Phase 4: Question Tree Navigation
 
 Concrete rules:
@@ -158,7 +184,7 @@ Concrete rules:
 1. **Cap branch depth at 4** - don't go deeper than 4 levels of follow-up
 2. **Discover-as-you-go** - adapt next question based on prior answers
 3. **Surface abandoned branches** - explicitly state when pruning sub-trees
-4. **One `AskUserQuestion` call per turn** - never queue multiple tool calls back-to-back
+4. **One `ask_user_question` call per turn** - never queue multiple tool calls back-to-back
 
 Example:
 ```
@@ -172,7 +198,7 @@ Q: "Skipped DB questions — you said ephemeral. Next: how should state survive 
 
 When grep/Read reveals code disagrees with user assertion:
 
-Surface as `AskUserQuestion`:
+Surface as `ask_user_question`:
 - **header**: `Code mismatch?`
 - **body**: `Code shows <X> at <file:line>; you said <Y>. Recommended: <treat-code-as-source-of-truth | update-spec-to-match-code | revisit-the-area>. Confidence: [<tier>].`
 - **options**: `match-code` (revise spec to align), `update-code` (treat assertion as goal), `clarify` (user explains)
