@@ -64,6 +64,9 @@ Restart Vibe and check that mossy commands are available:
 /mossy:review --help
 ```
 
+Vibe may sometimes complain that the hyphen syntax mossy-plan, mossy-work,... is the correct one. As far as I can tell, it is wrong about that.
+The colon syntax more reliably leads to the 'Loaded skill:..." message.
+
 ---
 
 
