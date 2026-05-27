@@ -131,7 +131,7 @@ Investigation order:
 - DO NOT list questions in your response
 - ONLY ask questions via ask_user_question tool calls
 - Group 2-4 related questions per tool call when they share context
-- Expect 10-30 questions for typical specs (not 40+ like flow-next)
+- Expect 5-20 questions for typical specs
 
 **Question Format: Lead with Recommendation**
 
