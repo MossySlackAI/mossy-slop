@@ -174,3 +174,4 @@ fi
 - Respect Prettier configuration if present
 - Warn about synchronous operations in Node.js
 - Document function parameters and return types (JSDoc)
+- Questions via ask_user_question: header max 11 characters

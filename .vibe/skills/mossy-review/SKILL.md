@@ -391,7 +391,7 @@ fi
 - Never modify source files without explicit approval
 - All findings documented in report
 - User makes final decision on all issues
-- Questions collected and asked in bulk at end
+- Questions collected and asked in bulk at end (header max: 11 chars)
 - Blocking issues (CRITICAL) reported immediately
 - Review workspace preserved for user inspection
 - Evidence always captured for findings

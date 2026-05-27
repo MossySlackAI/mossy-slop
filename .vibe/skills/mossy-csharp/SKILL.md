@@ -159,3 +159,4 @@ fi
 - Use dotnet format if available
 - Warn about synchronous I/O in async methods
 - Respect C# version in project file
+- Questions via ask_user_question: header max 11 characters

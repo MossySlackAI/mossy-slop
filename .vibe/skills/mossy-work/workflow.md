@@ -349,6 +349,7 @@ Where:
 - Bulk non-blocking questions at end
 - Clear, specific questions
 - Provide context in question text
+- Header max length: 11 characters
 
 **task:**
 - Delegate complex refactoring to mossy-refactor

@@ -318,7 +318,7 @@ fi
 - Never auto-fix issues (user decision only)
 - All findings documented in report
 - User makes final decision on all issues
-- Questions collected and asked in bulk at end
+- Questions collected and asked in bulk at end (header max: 11 chars)
 - CRITICAL issues reported immediately
 - Workspace preserved for user inspection
 - Evidence always captured for findings

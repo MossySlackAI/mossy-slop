@@ -382,7 +382,7 @@ fi
 - Always validate syntax after refactoring
 - Preserve all comments and formatting
 - User must confirm before applying changes
-- Questions collected and asked in bulk at end
+- Questions collected and asked in bulk at end (header max: 11 chars)
 - Blocking issues reported immediately
 - Workspace preserved for user inspection
 - Roll back on any failure

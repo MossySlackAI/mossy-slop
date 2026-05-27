@@ -50,7 +50,7 @@ Accepts:
    - Split spec into acceptance criteria (R-IDs)
    - Number them sequentially: R1, R2, R3...
    - **Read Mossy-Config section from spec if present, override global config**
-   - Log questions immediately but continue processing; ask in bulk at end
+   - Log questions immediately but continue processing; ask in bulk at end (header max: 11 chars)
 
 3. **Break into tasks**
    - Each task implements 1+N requirements

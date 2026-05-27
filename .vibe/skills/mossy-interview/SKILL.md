@@ -158,7 +158,7 @@ Use the `ask_user_question` tool with proper JSON structure:
 - **Required parameter**: `questions` array (1-4 questions)
 - **Each question must have**: `question` (string) and `options` (array of 2-4 choice objects)
 - **Each option must have**: `label` (string), optionally `description` (string)
-- **Optional parameters**: `header` (1-12 chars), `multi_select` (boolean), `hide_other` (boolean), `footer_note` (string)
+- **Optional parameters**: `header` (1-11 chars max), `multi_select` (boolean), `hide_other` (boolean), `footer_note` (string)
 
 Example tool call:
 ```json
@@ -199,7 +199,7 @@ Q: "Skipped DB questions — you said ephemeral. Next: how should state survive 
 When grep/Read reveals code disagrees with user assertion:
 
 Surface as `ask_user_question`:
-- **header**: `Code mismatch?`
+- **header**: `Mismatch?` (max 11 chars)
 - **body**: `Code shows <X> at <file:line>; you said <Y>. Recommended: <treat-code-as-source-of-truth | update-spec-to-match-code | revisit-the-area>. Confidence: [<tier>].`
 - **options**: `match-code` (revise spec to align), `update-code` (treat assertion as goal), `clarify` (user explains)
 

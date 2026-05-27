@@ -151,3 +151,4 @@ fi
 - Document template parameters
 - Use clang-format if .clang-format exists
 - Warn about non-standard extensions
+- Questions via ask_user_question: header max 11 characters

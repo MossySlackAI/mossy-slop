@@ -27,7 +27,7 @@ Accepts:
    - Call `ensure_flow_dir` to create `.flow/specs/`
 
 2. **Phase 2: Validate Input**
-   - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question
+   - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question (header max: 11 chars)
    - Strip leading/trailing whitespace from idea text
 
 3. **Phase 3: Generate Spec ID**

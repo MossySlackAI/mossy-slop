@@ -176,3 +176,4 @@ fi
 - Use Prettier if available
 - Respect ESLint rules if .eslintrc exists
 - Warn about implicit any
+- Questions via ask_user_question: header max 11 characters

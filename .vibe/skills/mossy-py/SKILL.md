@@ -182,3 +182,4 @@ fi
 - Warn about bare except clauses
 - Warn about print() statements in production code
 - Warn about TODO and FIXME comments
+- Questions via ask_user_question: header max 11 characters
