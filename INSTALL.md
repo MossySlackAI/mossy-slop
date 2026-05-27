@@ -72,7 +72,7 @@ The colon syntax more reliably leads to the 'Loaded skill:..." message.
 
 # ATTENTION
 
-None of the the instructions below are expected to work. The AI wrote them itself. The Mistral setup above works.
+None of the the instructions below are expected to work. The AI wrote them itself. The edited Mistral setup above works, the original by Mistral did not.
 
 
 ## GitHub Copilot CLI
