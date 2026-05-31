@@ -77,8 +77,6 @@ def create_explore_loop() -> AgentLoop:
     - Uses the 'explore' system prompt (minimal, code-first responses)
     """
     
-    print(dir(VibeConfig))
-
     config = VibeConfig.load()
     
     return AgentLoop(
@@ -273,7 +271,6 @@ def ensure_api_key() -> None:
             line = config.readline()
             if line.startswith("MISTRAL_API_KEY"):
                 key = line.removeprefix("MISTRAL_API_KEY").replace("=", "").replace("'","").replace(" ","")
-                print(key)
                 os.environ["MISTRAL_API_KEY"] = key
 
 async def main_async(args: list[str]) -> None:
