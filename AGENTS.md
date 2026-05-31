@@ -86,6 +86,7 @@ argument-hint: "[args]"
 | `mossy-review` | `/mossy-review` | Review changes before commit |
 | `mossy-refactor` | `/mossy-refactor` | Language-aware refactoring |
 | `mossy-analyze` | `/mossy-analyze` | Static analysis across languages |
+| `mossy-scan` | `/mossy-scan` | Deep scan of the repository. Creates or updates AGENTS.md files |
 
 ## Language-Specific Skills
 
@@ -124,6 +125,8 @@ argument-hint: "[args]"
 │   │   │   └── SKILL.md
 │   │   ├── mossy-analyze/
 │   │   │   └── SKILL.md
+│   │   ├── mossy-scan/
+│   │   │   └── SKILL.md
 │   │   ├── mossy-cpp/
 │   │   │   └── SKILL.md
 │   │   ├── mossy-csharp/
@@ -145,6 +148,7 @@ argument-hint: "[args]"
 │       ├── mossy-review.md
 │       ├── mossy-refactor.md
 │       ├── mossy-analyze.md
+│       ├── mossy-scan.md
 │       ├── mossy-cpp.md
 │       ├── mossy-csharp.md
 │       ├── mossy-vbnet.md
