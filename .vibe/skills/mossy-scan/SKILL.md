@@ -30,12 +30,13 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
   * Perform the entire set of operations twice. Once top-down, starting with the top directory fist, processing subdirectories later. Once bottom-up, processing each subdirectory before its parent.
 
   * For the top AGENTS.md file: Make sure it contains a note about the recusive
-  AGENTS.md files, and instruct agents to read all relevant AGENT.md files before planning or making changes. Relevant would be the one in the affected directory and all parent directories inside the repository.
+  AGENTS.md files, and instruct agents to read all relevant AGENT.md files before planning or making changes. Relevant would be the one in the affected directory and all parent directories inside the repository. When changes are to the source are made, the individual AGENTS.md files should be updated as well.
 
 ### Guardrails
 
   * Only AGENTS.md is to be written to.
   * Do not read or write outside of the current repository; neither by following symbolic links nor by ascending the directory tree.
+  * Do not make changes over git, no commits, to checkouts, no branches.
 
 ### Guidelines
 
