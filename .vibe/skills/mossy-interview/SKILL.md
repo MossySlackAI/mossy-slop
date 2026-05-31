@@ -9,6 +9,8 @@ allowed-tools: read_file,grep,bash,ask_user_question
 
 **CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work.**
 
+**IMPORTANT**: When reading or writing in a directory, make sure you have read the AGENTS.md file there, as well as the AGENTS.md files of parents in the repository.
+
 Technical interview skill for mossy code flow. Extracts implementation details via targeted questions, then creates or refines a spec.
 
 **Inspiration**: flow-next interview skill (technical mode only, no business mode overhead).
