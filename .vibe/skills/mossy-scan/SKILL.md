@@ -29,11 +29,15 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
   * Update the local AGENTS.md with that output. Skip trivial wording changes.
   * Perform the entire set of operations twice. Once top-down, starting with the top directory fist, processing subdirectories later. Once bottom-up, processing each subdirectory before its parent.
 
+  * For the top AGENTS.md file: Make sure it contains a note about the recusive
+  AGENTS.md files, and instruct agents to read all relevant AGENT.md files before planning or making changes. Relevant would be the one in the affected directory and all parent directories inside the repository.
+
 ### Guardrails
 
   * Only AGENTS.md is to be written to.
+  * Do not read or write outside of the current repository; neither by following symbolic links nor by ascending the directory tree.
 
 ### Guidelines
 
   * During analysis, you may skip large files or implementation files (.c, .cpp, ...) as you see fit
-  * Do not follow links symbolic that lead outside the current repository
+  * Avoid explicit line references to source files, they can become outdated. Prefer just function and class names.
