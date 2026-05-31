@@ -194,7 +194,7 @@ Begin analysis now.
         print(f"  Summarizing {relative_path}...")
         
         # Clear previous messages for a fresh context
-        loop.messages.clear()
+        loop.messages.reset([])
         
         # Run the explore subagent on this task
         accumulated_response: list[str] = []
@@ -265,13 +265,17 @@ Format: Code-first, minimal context, structured output.
 
 def ensure_api_key() -> None:
     if not "MISTRAL_API_KEY" in os.environ:
-        config = open(Path.home() / ".vibe/.env")
-        line = "s"
-        while line != "":
-            line = config.readline()
-            if line.startswith("MISTRAL_API_KEY"):
-                key = line.removeprefix("MISTRAL_API_KEY").replace("=", "").replace("'","").replace(" ","")
-                os.environ["MISTRAL_API_KEY"] = key
+        env_path = Path.home() / ".vibe/.env"
+        if env_path.exists():
+            with open(env_path, 'r') as config:
+                for line in config:
+                    line = line.strip()
+                    if line.startswith("MISTRAL_API_KEY"):
+                        # Extract the key value, handling both quoted and unquoted
+                        if "=" in line:
+                            key = line.split("=", 1)[1].strip().strip("\'\"")
+                            os.environ["MISTRAL_API_KEY"] = key
+                            break
 
 async def main_async(args: list[str]) -> None:
     """Async main function."""
