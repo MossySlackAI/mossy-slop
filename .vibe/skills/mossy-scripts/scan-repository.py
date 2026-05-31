@@ -64,6 +64,7 @@ from vibe.core.agents.models import BuiltinAgentName
 from vibe.core.telemetry.build_metadata import build_entrypoint_metadata
 from vibe.core.types import LLMMessage, Role
 from vibe.core.config.harness_files._harness_manager import init_harness_files_manager
+from vibe import __version__
 
 def create_explore_loop() -> AgentLoop:
     """
@@ -87,6 +88,7 @@ def create_explore_loop() -> AgentLoop:
             agent_entrypoint="programmatic",
             client_name="repo_scanner",
             client_version="1.0",
+            agent_version=__version__
         ),
         enable_streaming=False,
         is_subagent=True,
