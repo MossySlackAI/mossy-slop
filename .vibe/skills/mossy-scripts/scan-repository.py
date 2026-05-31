@@ -21,6 +21,7 @@ import asyncio
 from pathlib import Path
 from contextlib import aclosing
 import sys
+import os
 
 # Add Vibe to path (adjust based on your installation)
 # Common locations:
@@ -62,7 +63,7 @@ from vibe.core.agent_loop import AgentLoop
 from vibe.core.agents.models import BuiltinAgentName
 from vibe.core.telemetry.build_metadata import build_entrypoint_metadata
 from vibe.core.types import LLMMessage, Role
-
+from vibe.core.config.harness_files._harness_manager import init_harness_files_manager
 
 def create_explore_loop() -> AgentLoop:
     """
@@ -74,6 +75,9 @@ def create_explore_loop() -> AgentLoop:
     - Designed for codebase exploration
     - Uses the 'explore' system prompt (minimal, code-first responses)
     """
+    
+    print(dir(VibeConfig))
+
     config = VibeConfig.load()
     
     return AgentLoop(
@@ -259,6 +263,16 @@ Format: Code-first, minimal context, structured output.
         output_file.write_text(result)
         print(f"  High-level summary written to {output_file.name}")
 
+def ensure_api_key() -> None:
+    if not "MISTRAL_API_KEY" in os.environ:
+        config = open(Path.home() / ".vibe/.env")
+        line = "s"
+        while line != "":
+            line = config.readline()
+            if line.startswith("MISTRAL_API_KEY"):
+                key = line.removeprefix("MISTRAL_API_KEY").replace("=", "").replace("'","").replace(" ","")
+                print(key)
+                os.environ["MISTRAL_API_KEY"] = key
 
 async def main_async(args: list[str]) -> None:
     """Async main function."""
@@ -303,6 +317,9 @@ async def main_async(args: list[str]) -> None:
     print(f"Output directory: {output_dir}")
     print(f"Max depth: {parsed_args.max_depth}")
     print()
+
+    ensure_api_key()
+    init_harness_files_manager()
 
     # Create the explore agent loop
     loop = create_explore_loop()
