@@ -37,9 +37,9 @@ Accepts:
 ## Flow
 
 0. **Load config**
-   - Source scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
-   - Call `ensure_flow_dir` to create directories
-   - Call `load_mossy_config` to parse commit policy settings
+   - Call scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
+   - Call `../mossy-scripts/ensure-flow-dir.sh` to create directories
+   - Call `../mossy-scripts/load-mossy-config.sh` to parse commit policy settings (returns JSON)
    - Settings: commit-policy, new-branch-per-spec, auto-push, co-authored-by
    - R3 defaults applied automatically
 
@@ -226,34 +226,36 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup and load config
-ensure_flow_dir || true
-load_mossy_config || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+config_json=$(../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
+COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
+NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
+AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
+CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
 
 # When a tool fails during task execution
 if ! read_file path="$target_file" 2>/dev/null; then
-    record_issue "mossy-work" "tool-error" "read_file" "$target_file" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: implementation, Task: $task_id, Reading source file for modification" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "tool-error" \
+        --tool "read_file" --target "$target_file" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: implementation, Task: $task_id, Reading source file for modification" || true
 fi
 
 # When search_replace fails
 if ! search_replace file_path="$file" content="$changes" 2>/dev/null; then
-    record_issue "mossy-work" "tool-error" "search_replace" "$file" \
-        "search_replace failed: pattern not found or file unchanged" \
-        "Phase: implementation, Task: $task_id, Applying changes to $file" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "tool-error" \
+        --tool "search_replace" --target "$file" \
+        --error "search_replace failed: pattern not found or file unchanged" \
+        --context "Phase: implementation, Task: $task_id, Applying changes to $file" || true
 fi
 
 # When task metadata is invalid
 if [ -z "$task_id" ] || ! [[ "$task_id" =~ ^fn-[0-9]+\.[0-9]+$ ]]; then
-    record_issue "mossy-work" "validation-error" "N/A" "$input" \
-        "Invalid task ID format: expected fn-N.M pattern" \
-        "Phase: input parsing, Validating task ID $input" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "validation-error" \
+        --tool "N/A" --target "$input" \
+        --error "Invalid task ID format: expected fn-N.M pattern" \
+        --context "Phase: input parsing, Validating task ID $input" || true
 fi
 ```
 

@@ -33,15 +33,14 @@ All operations on `.flow/` metadata are user-initiated. Auto-generated files in 
 
 ## Detection
 
-Use `ensure_flow_dir` to create `.flow/` directory, then check for flowctl:
+Use `../mossy-scripts/ensure-flow-dir.sh` to create `.flow/` directory, then check for flowctl:
 
 ```bash
 FLOW_DIR=".flow"
 FLOWCTL="$FLOW_DIR/flowctl"
 
 # Ensure flow directory exists
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-ensure_flow_dir || true
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Check for executable flowctl (flow-next copies it here)
 if [[ -x "$FLOWCTL" && -f "$FLOWCTL" ]]; then
@@ -108,8 +107,7 @@ All commands support `--json` for machine-readable output.
 ### 0. Setup write-flow-file
 
 ```bash
-# Source write-flow-file.sh for file operations
-source ../mossy-scripts/write-flow-file.sh 2>/dev/null || true
+# Use write-flow-file.sh for file operations (call directly)
 ```
 
 ### 1. Check flowctl availability
@@ -160,7 +158,7 @@ If flowctl not found:
 handle_write() {
     local target_path="$1"
     # Use write-flow-file.sh to write stdin to .flow/<target_path>
-    write_flow_file "$target_path"
+    cat | ../mossy-scripts/write-flow-file.sh "$target_path" >/dev/null 2>&1
     return $?
 }
 ```
@@ -205,33 +203,31 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-source ../mossy-scripts/write-flow-file.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When flowctl command fails
 FLOWCTL="$FLOW_DIR/flowctl"
 if [[ -x "$FLOWCTL" ]]; then
     if ! "$FLOWCTL" <command> [args] 2>/dev/null; then
-        record_issue "mossy-flowctl" "tool-error" "bash" "$FLOWCTL <command>" \
-            "flowctl command failed with exit code $?" \
-            "Phase: flowctl wrapper, Executing $FLOWCTL <command>" || true
+        ../mossy-scripts/record-issue.sh --skill "mossy-flowctl" --error-type "tool-error" \
+            --tool "bash" --target "$FLOWCTL <command>" \
+            --error "flowctl command failed with exit code $?" \
+            --context "Phase: flowctl wrapper, Executing $FLOWCTL <command>" || true
     fi
 else
-    record_issue "mossy-flowctl" "resource-error" "N/A" "$FLOWCTL" \
-        "flowctl not found or not executable" \
-        "Phase: detection, Checking flowctl availability" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-flowctl" --error-type "resource-error" \
+        --tool "N/A" --target "$FLOWCTL" \
+        --error "flowctl not found or not executable" \
+        --context "Phase: detection, Checking flowctl availability" || true
 fi
 
 # When write_flow_file fails
-if ! echo "$content" | write_flow_file "$target_path" 2>/dev/null; then
-    record_issue "mossy-flowctl" "tool-error" "write_flow_file" "$target_path" \
-        "write_flow_file failed: permission denied or path invalid" \
-        "Phase: writing, Attempting to write to .flow/$target_path" || true
+if ! echo "$content" | ../mossy-scripts/write-flow-file.sh "$target_path" >/dev/null 2>&1; then
+    ../mossy-scripts/record-issue.sh --skill "mossy-flowctl" --error-type "tool-error" \
+        --tool "write_flow_file" --target "$target_path" \
+        --error "write_flow_file failed: permission denied or path invalid" \
+        --context "Phase: writing, Attempting to write to .flow/$target_path" || true
 fi
 ```
 

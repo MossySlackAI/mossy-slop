@@ -35,10 +35,10 @@ Accepts:
 ## Flow
 
 0. **Load config**
-   - Source scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
+   - Call scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
    - Use `mossy-flowctl` for all `.flow/` file operations
-   - Call `ensure_flow_dir` to create directories
-   - Call `load_mossy_config` to parse commit policy settings
+   - Call `../mossy-scripts/ensure-flow-dir.sh` to create directories
+   - Call `../mossy-scripts/load-mossy-config.sh` to parse commit policy settings (returns JSON)
    - Settings: commit-policy, new-branch-per-spec, auto-push, co-authored-by
    - R3 defaults applied automatically
 
@@ -130,34 +130,36 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup and load config
-ensure_flow_dir || true
-load_mossy_config || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+config_json=$(../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
+COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
+NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
+AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
+CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
 
 # When a tool fails during spec parsing
 if ! read_file path="$spec_path" 2>/dev/null; then
-    record_issue "mossy-plan" "tool-error" "read_file" "$spec_path" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: parsing, Attempting to read spec file $spec_path" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
+        --tool "read_file" --target "$spec_path" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
 
 # When mossy-flowctl write fails during artifact writing
 if ! echo "$content" | mossy-flowctl write "$flow_path" 2>/dev/null; then
-    record_issue "mossy-plan" "tool-error" "mossy-flowctl write" "$flow_path" \
-        "mossy-flowctl write failed: permission denied or path invalid" \
-        "Phase: writing, Attempting to write to $flow_path" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
+        --tool "mossy-flowctl write" --target "$flow_path" \
+        --error "mossy-flowctl write failed: permission denied or path invalid" \
+        --context "Phase: writing, Attempting to write to $flow_path" || true
 fi
 
 # When spec format is invalid
 if ! grep -q "## Goal" "$spec_path"; then
-    record_issue "mossy-plan" "validation-error" "N/A" "$spec_path" \
-        "Invalid spec format: missing Goal section" \
-        "Phase: parsing, Validating spec structure" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "validation-error" \
+        --tool "N/A" --target "$spec_path" \
+        --error "Invalid spec format: missing Goal section" \
+        --context "Phase: parsing, Validating spec structure" || true
 fi
 ```
 

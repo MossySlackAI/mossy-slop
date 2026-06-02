@@ -118,25 +118,23 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$vb_file" 2>/dev/null; then
-    record_issue "mossy-vbnet" "tool-error" "read_file" "$vb_file" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: analysis, Reading VB.NET file for analysis" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-vbnet" --error-type "tool-error" \
+        --tool "read_file" --target "$vb_file" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: analysis, Reading VB.NET file for analysis" || true
 fi
 
 # When file extension is invalid
 if [[ "$file_ext" != ".vb" ]]; then
-    record_issue "mossy-vbnet" "validation-error" "N/A" "$vb_file" \
-        "Invalid VB.NET file extension: $file_ext" \
-        "Phase: target resolution, Validating file type" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-vbnet" --error-type "validation-error" \
+        --tool "N/A" --target "$vb_file" \
+        --error "Invalid VB.NET file extension: $file_ext" \
+        --context "Phase: target resolution, Validating file type" || true
 fi
 ```
 

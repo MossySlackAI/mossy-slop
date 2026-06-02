@@ -352,34 +352,36 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 #### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup and load config
-ensure_flow_dir || true
-load_mossy_config || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
+COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
+NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
+AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
+CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
 
 # When a tool fails during analysis
 if ! read_file path="$file_path" 2>/dev/null; then
-    record_issue "mossy-review" "tool-error" "read_file" "$file_path" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: analysis, Task: $task_id, Reading file for review" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-review" --error-type "tool-error" \
+        --tool "read_file" --target "$file_path" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: analysis, Task: $task_id, Reading file for review" || true
 fi
 
 # When file type is unsupported
 if [[ ! "$file_ext" =~ \.(py|cpp|cs|js|ts|gd|vb)$ ]]; then
-    record_issue "mossy-review" "validation-error" "N/A" "$file_path" \
-        "Unsupported file type for review: $file_ext" \
-        "Phase: target resolution, Validating file type" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-review" --error-type "validation-error" \
+        --tool "N/A" --target "$file_path" \
+        --error "Unsupported file type for review: $file_ext" \
+        --context "Phase: target resolution, Validating file type" || true
 fi
 
 # When linter check fails
 if ! run_linter "$file_path" 2>/dev/null; then
-    record_issue "mossy-review" "tool-error" "bash" "$file_path" \
-        "Linter check failed with exit code $?" \
-        "Phase: verification, Running style checks" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-review" --error-type "tool-error" \
+        --tool "bash" --target "$file_path" \
+        --error "Linter check failed with exit code $?" \
+        --context "Phase: verification, Running style checks" || true
 fi
 ```
 

@@ -5,16 +5,17 @@ Phase-by-phase execution for task implementation.
 ## Phase 0: Setup and Config Loading
 
 ```bash
-# Source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# Call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Load config
-load_mossy_config || true
+config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
+FLOW_DIR=$(echo "$config_json" | jq -r '.FLOW_DIR')
+MOSSY_CONFIG=$(echo "$config_json" | jq -r '.MOSSY_CONFIG')
+COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
+NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
+AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
+CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
 ```
 
 ## Phase 1: Input Parsing
@@ -266,13 +267,14 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 **Error Recording:** All errors MUST be recorded to `.flow/issues/` using the shared utility:
 
 ```bash
-# At the beginning of workflow execution, source required scripts
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
+# At the beginning of workflow execution, call required scripts
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
 
 # Record any error encountered
-record_issue "mossy-work" "$ERROR_TYPE" "$TOOL" "$TARGET" "$ERROR_MSG" "$CONTEXT" || true
+../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "$ERROR_TYPE" \
+    --tool "$TOOL" --target "$TARGET" \
+    --error "$ERROR_MSG" --context "$CONTEXT" || true
 ```
 
 Where:

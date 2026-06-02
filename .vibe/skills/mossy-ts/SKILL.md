@@ -140,25 +140,23 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$ts_file" 2>/dev/null; then
-    record_issue "mossy-ts" "tool-error" "read_file" "$ts_file" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: analysis, Reading TypeScript file for analysis" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-ts" --error-type "tool-error" \
+        --tool "read_file" --target "$ts_file" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: analysis, Reading TypeScript file for analysis" || true
 fi
 
 # When file extension is invalid
 if [[ ! "$file_ext" =~ \.(ts|tsx|d\.ts)$ ]]; then
-    record_issue "mossy-ts" "validation-error" "N/A" "$ts_file" \
-        "Invalid TypeScript file extension: $file_ext" \
-        "Phase: target resolution, Validating file type" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-ts" --error-type "validation-error" \
+        --tool "N/A" --target "$ts_file" \
+        --error "Invalid TypeScript file extension: $file_ext" \
+        --context "Phase: target resolution, Validating file type" || true
 fi
 ```
 

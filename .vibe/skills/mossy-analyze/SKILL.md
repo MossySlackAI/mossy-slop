@@ -281,32 +281,31 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$file_path" 2>/dev/null; then
-    record_issue "mossy-analyze" "tool-error" "read_file" "$file_path" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: analysis, Reading file for static analysis" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
+        --tool "read_file" --target "$file_path" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: analysis, Reading file for static analysis" || true
 fi
 
 # When file type is unsupported
 if ! is_supported_language "${file_path##*.}"; then
-    record_issue "mossy-analyze" "validation-error" "N/A" "$file_path" \
-        "Unsupported language for analysis: ${file_path##*.}" \
-        "Phase: target resolution, Detecting language from extension" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-analyze" --error-type "validation-error" \
+        --tool "N/A" --target "$file_path" \
+        --error "Unsupported language for analysis: ${file_path##*.}" \
+        --context "Phase: target resolution, Detecting language from extension" || true
 fi
 
 # When grep fails during pattern search
 if ! grep pattern="$pattern" path="$directory" 2>/dev/null; then
-    record_issue "mossy-analyze" "tool-error" "grep" "$directory" \
-        "grep failed with exit code $?" \
-        "Phase: analysis, Searching for pattern in codebase" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
+        --tool "grep" --target "$directory" \
+        --error "grep failed with exit code $?" \
+        --context "Phase: analysis, Searching for pattern in codebase" || true
 fi
 ```
 

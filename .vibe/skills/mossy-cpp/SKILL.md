@@ -117,25 +117,23 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$cpp_file" 2>/dev/null; then
-    record_issue "mossy-cpp" "tool-error" "read_file" "$cpp_file" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: analysis, Reading C++ file for analysis" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-cpp" --error-type "tool-error" \
+        --tool "read_file" --target "$cpp_file" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: analysis, Reading C++ file for analysis" || true
 fi
 
 # When file extension is invalid
 if [[ ! "$file_ext" =~ \.(cpp|h|hpp|cc|cxx|hxx|ipp)$ ]]; then
-    record_issue "mossy-cpp" "validation-error" "N/A" "$cpp_file" \
-        "Invalid C++ file extension: $file_ext" \
-        "Phase: target resolution, Validating file type" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-cpp" --error-type "validation-error" \
+        --tool "N/A" --target "$cpp_file" \
+        --error "Invalid C++ file extension: $file_ext" \
+        --context "Phase: target resolution, Validating file type" || true
 fi
 ```
 

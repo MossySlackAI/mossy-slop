@@ -139,25 +139,23 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$js_file" 2>/dev/null; then
-    record_issue "mossy-js" "tool-error" "read_file" "$js_file" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: analysis, Reading JavaScript file for analysis" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-js" --error-type "tool-error" \
+        --tool "read_file" --target "$js_file" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: analysis, Reading JavaScript file for analysis" || true
 fi
 
 # When file extension is invalid
 if [[ ! "$file_ext" =~ \.(js|mjs|cjs)$ ]]; then
-    record_issue "mossy-js" "validation-error" "N/A" "$js_file" \
-        "Invalid JavaScript file extension: $file_ext" \
-        "Phase: target resolution, Validating file type" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-js" --error-type "validation-error" \
+        --tool "N/A" --target "$js_file" \
+        --error "Invalid JavaScript file extension: $file_ext" \
+        --context "Phase: target resolution, Validating file type" || true
 fi
 ```
 

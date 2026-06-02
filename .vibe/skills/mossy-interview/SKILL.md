@@ -63,16 +63,13 @@ Technical interviewer, spec refiner. No implementation. No files outside `.flow/
 ### Phase 0: Setup
 
 ```bash
-# Source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
-
-# Load config
-load_mossy_config || true
+# Call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
+COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
+NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
+AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
+CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
 
 # Use mossy-flowctl for all .flow/ operations
 ```
@@ -323,34 +320,32 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration Code
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/load-mossy-config.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup and load config
-ensure_flow_dir || true
-load_mossy_config || true
+# At skill start, call required utilities
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
 
 # When a tool fails during spec reading
 if ! read_file path="$spec_path" 2>/dev/null; then
-    record_issue "mossy-interview" "tool-error" "read_file" "$spec_path" \
-        "read_file failed: file not found or permission denied" \
-        "Phase: parsing, Attempting to read spec file $spec_path" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
+        --tool "read_file" --target "$spec_path" \
+        --error "read_file failed: file not found or permission denied" \
+        --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
 
 # When mossy-flowctl write fails during spec writing
 if ! echo "$spec_content" | mossy-flowctl write "specs/$(basename "$spec_path")" 2>/dev/null; then
-    record_issue "mossy-interview" "tool-error" "mossy-flowctl write" "$spec_path" \
-        "mossy-flowctl write failed: permission denied or path invalid" \
-        "Phase: writing, Attempting to write spec file $spec_path" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
+        --tool "mossy-flowctl write" --target "$spec_path" \
+        --error "mossy-flowctl write failed: permission denied or path invalid" \
+        --context "Phase: writing, Attempting to write spec file $spec_path" || true
 fi
 
 # When input format is invalid
 if [[ ! "$input" =~ ^fn-[0-9]+ ]]; then
-    record_issue "mossy-interview" "validation-error" "N/A" "$input" \
-        "Invalid input format: expected fn-N or file path or idea text" \
-        "Phase: input parsing, Input: $input" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "validation-error" \
+        --tool "N/A" --target "$input" \
+        --error "Invalid input format: expected fn-N or file path or idea text" \
+        --context "Phase: input parsing, Input: $input" || true
 fi
 ```
 

@@ -23,16 +23,16 @@ Accepts:
 ## Flow
 
 1. **Phase 1: Setup**
-   - Source scripts: `ensure-flow-dir.sh`, `generate-spec-id.sh`, `record-issue.sh`
+   - Call scripts: `ensure-flow-dir.sh`, `generate-spec-id.sh`, `record-issue.sh`
    - Use `mossy-flowctl` for all `.flow/` operations
-   - Call `ensure_flow_dir` to create `.flow/specs/`
+   - Call `../mossy-scripts/ensure-flow-dir.sh` to create `.flow/specs/`
 
 2. **Phase 2: Validate Input**
    - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question (header max: 11 chars)
    - Strip leading/trailing whitespace from idea text
 
 3. **Phase 3: Generate Spec ID**
-   - Call `generate_spec_id "<idea-text>"` to get fn-<N>-<slug>.md
+   - Call `../mossy-scripts/generate-spec-id.sh "<idea-text>"` to get JSON with spec_id field
 
 4. **Phase 4: Create Spec File**
    - Use `echo "$content" | mossy-flowctl write "specs/<spec-id>"` to write to `.flow/specs/<spec-id>`
@@ -58,27 +58,25 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ### Integration Code
 
 ```bash
-# At skill start, source required utilities
-source ../mossy-scripts/ensure-flow-dir.sh 2>/dev/null || true
-source ../mossy-scripts/generate-spec-id.sh 2>/dev/null || true
-source ../mossy-scripts/record-issue.sh 2>/dev/null || true
-
-# Setup directories
-ensure_flow_dir || true
+# At skill start, setup directories
+../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When mossy-flowctl write fails
 if ! echo "$content" | mossy-flowctl write "specs/$(basename "$spec_path")" 2>/dev/null; then
-    record_issue "mossy-idea" "tool-error" "mossy-flowctl write" "$spec_path" \
-        "mossy-flowctl write failed: permission denied or path invalid" \
-        "Phase: spec creation, Attempting to write spec file" || true
+    ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "tool-error" \
+        --tool "mossy-flowctl write" --target "$spec_path" \
+        --error "mossy-flowctl write failed: permission denied or path invalid" \
+        --context "Phase: spec creation, Attempting to write spec file" || true
 fi
 
 # When spec ID generation fails
-spec_id=$(generate_spec_id "$idea" 2>/dev/null) || {
-    record_issue "mossy-idea" "logic-error" "generate-spec-id.sh" "$idea" \
-        "Could not generate spec ID" \
-        "Phase: ID generation" || true
+spec_json=$(../mossy-scripts/generate-spec-id.sh "$idea" 2>/dev/null) || {
+    ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "logic-error" \
+        --tool "generate-spec-id.sh" --target "$idea" \
+        --error "Could not generate spec ID" \
+        --context "Phase: ID generation" || true
 }
+spec_id=$(echo "$spec_json" | jq -r '.spec_id')
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
