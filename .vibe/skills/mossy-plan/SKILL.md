@@ -7,8 +7,6 @@ allowed-tools: read_file,grep,bash,ask_user_question
 
 # mossy-plan
 
-**IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
-
 This is a leaner alternative to flow-next, compatible with Mistral Vibe.
 
 The focus is the code; code is the single source of truth, it should be able to speak for itself. Inline comments provide the documentation.
@@ -167,6 +165,7 @@ fi
 
 ## Guardrails
 
+- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
 - Never use markdown TODOs
 - Never use TodoWrite
 - All state in `.flow/`

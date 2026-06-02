@@ -9,8 +9,6 @@ allowed-tools: read_file,grep,bash,ask_user_question
 
 **CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work.**
 
-**IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
-
 Technical interview skill for mossy code flow. Extracts implementation details via targeted questions, then creates or refines a spec.
 
 **Inspiration**: flow-next interview skill (technical mode only, no business mode overhead).
@@ -51,6 +49,7 @@ Technical interviewer, spec refiner. No implementation. No files outside `.flow/
 ## Guardrails
 
 - **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
+- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
 - **Never use markdown TODOs**
 - **Never use TodoWrite**
 - **All state in `.flow/`**

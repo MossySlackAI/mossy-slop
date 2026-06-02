@@ -7,8 +7,6 @@ allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,t
 
 # mossy-work
 
-**IMPORTANT**: Always read local AGENTS.md in the subdirectories you are working in.
-
 This is a leaner alternative to flow-next, compatible with Mistral Vibe.
 
 The focus is the code; code is the single source of truth, it should be able to speak for itself. Inline comments provide the documentation.
@@ -263,6 +261,7 @@ fi
 
 ## Guardrails
 
+- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are working in.
 - Never modify files outside workspace without explicit task instruction
 - Never commit to git without user confirmation **OR** commit-policy != manual
 - All modifications tracked in summary with diffs
