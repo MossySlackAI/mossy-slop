@@ -7,7 +7,7 @@ allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,t
 
 # mossy-work
 
-**IMPORTANT**: When reading or writing in a directory, make sure you have read the AGENTS.md file there, as well as the AGENTS.md files of parents in the repository.
+**IMPORTANT**: Always read local AGENTS.md in the subdirectories you are working in.
 
 This is a leaner alternative to flow-next, compatible with Mistral Vibe.
 
