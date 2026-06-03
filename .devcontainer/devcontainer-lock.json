@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/sliekens/devcontainer-features/mistral-vibe:1": {
+      "version": "1.2.0",
+      "resolved": "ghcr.io/sliekens/devcontainer-features/mistral-vibe@sha256:17ec53c1d80db2774e10970637376c9292146d23004234db455fb282fe99f262",
+      "integrity": "sha256:17ec53c1d80db2774e10970637376c9292146d23004234db455fb282fe99f262"
+    }
+  }
+}
