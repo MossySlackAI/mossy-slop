@@ -61,24 +61,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ```bash
 # At skill start, setup directories
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When flowctl.sh spec create fails
-if ! flowctl.sh spec create --title "$title" >/dev/null 2>&1; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "tool-error" \
-        --tool "flowctl.sh" --target "spec create" \
-        --error "flowctl.sh spec create failed" \
-        --context "Phase: spec creation, Attempting to create spec with title: $title" || true
-fi
-
-# When flowctl.sh spec set-plan fails
-if ! echo "$content" | flowctl.sh spec set-plan --file - "$spec_id" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "tool-error" \
-        --tool "flowctl.sh" --target "$spec_id" \
-        --error "flowctl.sh spec set-plan failed: permission denied or path invalid" \
-        --context "Phase: spec update, Attempting to update spec Overview section" || true
-fi
-
-
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
