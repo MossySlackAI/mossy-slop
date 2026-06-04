@@ -209,20 +209,28 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **canonical spec template** defined in the [Spec Format](#spec-format) section below. Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<id>.md"` to write to `.flow/specs/`.
+After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config section added after References. Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
 
-**For new specs**: Create `.flow/specs/<id>.md` with the canonical structure.
+**Section Mapping** (mossy sections → flowctl sections):
+- Goal → Overview (already filled by mossy-idea)
+- Architecture & Data Models → Approach
+- API Contracts → Scope
+- Edge Cases & Constraints → Add to Approach or create new section
+- Decision Context → Add to relevant sections or References
+- Resolved via Codebase → Keep as separate section after References
+- Mossy-Config → Add after References
 
-**For existing specs**: Preserve existing content byte-for-byte except for:
-- Append new R-IDs to Acceptance Criteria (never renumber existing)
-- Write/refine technical sections (Architecture, API Contracts, Edge Cases)
-- Append to Resolved via Codebase
-- Add/update Mossy-Config section with effective settings
+**For new specs**: Overwrite with complete refined spec in flowctl format + Mossy-Config.
+
+**For existing specs**: Replace entire content with refined spec (flowctl spec set-plan replaces whole file).
+
+**Format Requirements**:
+- Acceptance criteria use checkbox format: `- [ ] criterion text` (not R-IDs)
+- Quick commands section must be populated
+- Mossy-Config section must appear after References
 
 **Never overwrite**:
-- Existing R-IDs (append only)
-- Business sections if they exist
-- User's explicit decisions
+- User's explicit decisions (preserve in relevant sections)
 
 ### Phase 7: Handoff to Plan
 
@@ -261,13 +269,31 @@ Ask only **non-obvious** questions. Skip questions that:
 
 ## Spec Format
 
-Canonical spec template follows mossy convention (simplified from flow-next):
+Specs use **flowctl canonical skeleton format** (from `flowctl.py:4111-4133`) with Mossy-Config section added:
 
 ```markdown
-# <Title>
+# <spec-id> <Title>
 
-## Goal
-<1-2 sentences describing the objective>
+## Overview
+<1-2 sentences describing the objective>  (mapped from Goal)
+
+## Scope
+<scope and API contracts>  (mapped from API Contracts)
+
+## Approach
+<architecture and data models>  (mapped from Architecture & Data Models)
+
+## Quick commands
+<!-- Required: at least one smoke command for the repo -->
+- `# <test-command>`
+
+## Acceptance
+- [ ] <verifiable criterion>
+- [ ] <verifiable criterion>
+...
+
+## References
+- <reference> — <file:line>
 
 ## Mossy-Config
 - commit-policy: <manual|auto-per-change|auto-per-spec|batch>
@@ -275,32 +301,19 @@ Canonical spec template follows mossy convention (simplified from flow-next):
 - auto-push: <true|false>
 - co-authored-by: <string>
 
-## Acceptance Criteria
-- R1: <verifiable criterion>
-- R2: <verifiable criterion>
-...
+## Resolved via Codebase
+- <item> — <file:line>
 
-## Architecture & Data Models
-- Component boundaries
-- Key data structures
-- State management approach
-
-## API Contracts
-- Public interfaces
-- Data shapes
-- Integration points
+## Decision Context
+<Key decisions made during interview>
 
 ## Edge Cases & Constraints
 - Error conditions
 - Boundary cases
 - External dependencies
-
-## Decision Context
-<Key decisions made during interview>
-
-## Resolved via Codebase
-- <item> — <file:line>
 ```
+
+**Note**: Resolved via Codebase, Mossy-Config, Decision Context, and Edge Cases & Constraints are mossy-specific additions to the flowctl skeleton.
 
 ## Error Recording
 
@@ -310,11 +323,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail | write-flow-file.sh write on non-writable .flow/specs/ |
+| tool-error | Vibe tool calls fail | flowctl.sh spec set-plan fails |
 | validation-error | Input format invalid | Invalid Flow ID pattern, missing required sections |
 | logic-error | Internal logic fails | Circular question dependency, invalid spec state |
 | resource-error | Required resources missing | .flow/specs/ directory not writable |
-| configuration-error | Environment issue | Required scripts not found |
+| configuration-error | Environment issue | flowctl.sh not found |
 
 ### Integration Code
 
@@ -330,12 +343,12 @@ if ! read_file path="$spec_path" 2>/dev/null; then
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
 
-# When write-flow-file.sh fails during spec writing
-if ! echo "$spec_content" | ../mossy-scripts/write-flow-file.sh "specs/$(basename "$spec_path")" 2>/dev/null; then
+# When flowctl.sh spec set-plan fails during spec writing
+if ! echo "$spec_content" | flowctl.sh spec set-plan --file - "$spec_id" 2>/dev/null; then
     ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
-        --tool "write-flow-file.sh" --target "$spec_path" \
-        --error "write-flow-file.sh failed: permission denied or path invalid" \
-        --context "Phase: writing, Attempting to write spec file $spec_path" || true
+        --tool "flowctl.sh" --target "$spec_id" \
+        --error "flowctl.sh spec set-plan failed: permission denied or path invalid" \
+        --context "Phase: writing, Attempting to update spec file $spec_id" || true
 fi
 
 # When input format is invalid

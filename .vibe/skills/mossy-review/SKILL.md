@@ -58,8 +58,8 @@ Accepts:
    - Build list of modified/created/deleted files
 
 3. **Load context**
-   - For task: load acceptance criteria (R-IDs) from task metadata
-   - For spec: load all R-IDs from spec
+   - For task: load acceptance criteria (checkbox format) from task metadata
+   - For spec: load all acceptance criteria from spec (checkbox format)
    - For git modes: infer context from commit message or user input
    - Load relevant files for understanding
 
@@ -73,7 +73,7 @@ Accepts:
    - **Documentation**: Check for missing/outdated comments
 
 5. **Verify acceptance**
-   - For each R-ID: check if change satisfies criterion
+   - For each acceptance criterion: check if change satisfies criterion
    - Mark PASS/FAIL/UNCLEAR
    - Collect evidence for each check
 
@@ -106,8 +106,8 @@ Accepts:
 - Acceptance criteria: <passed>/<total>
 
 ## Acceptance Criteria Check
-- R1: PASS/FAIL/UNCLEAR - <notes>
-- R2: PASS/FAIL/UNCLEAR - <notes>
+- [ ] Criterion 1: PASS/FAIL/UNCLEAR - <notes>
+- [ ] Criterion 2: PASS/FAIL/UNCLEAR - <notes>
 ...
 
 ## Issues Found

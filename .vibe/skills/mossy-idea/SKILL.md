@@ -23,7 +23,7 @@ Accepts:
 ## Flow
 
 1. **Phase 1: Setup**
-   - Call scripts: `ensure-flow-dir.sh`, `generate-spec-id.sh`, `record-issue.sh`
+   - Call scripts: `ensure-flow-dir.sh`, `record-issue.sh`
    - Use `flowctl.sh` for all `.flow/` operations
    - Call `../mossy-scripts/ensure-flow-dir.sh` to create `.flow/specs/`
 
@@ -31,13 +31,14 @@ Accepts:
    - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question (header max: 11 chars)
    - Strip leading/trailing whitespace from idea text
 
-3. **Phase 3: Generate Spec ID**
-   - Call `../mossy-scripts/generate-spec-id.sh "<idea-text>"` to get JSON with spec_id field
-
-4. **Phase 4: Create Spec File**
-   - Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<spec-id>"` to write to `.flow/specs/<spec-id>`
-   - Title: Capitalize first letter of each word in idea text
-   - Goal: The idea text as provided
+3. **Phase 3: Create Spec File**
+   - Use `flowctl.sh spec create --title "<title>"` to create new spec with skeleton
+   - Capture spec_id from output (format: "Spec fn-N-<slug> created: <title>")
+   - Or scan `.flow/specs/` for newest spec matching pattern `fn-*-<slug>.md`
+   - Read generated skeleton from `.flow/specs/<spec-id>.md`
+   - Replace "## Overview\nTBD" with "## Overview\n<goal-content>" where goal-content is the idea text
+   - Write back using `echo "$content" | flowctl.sh spec set-plan --file - <spec-id>`
+   - Title: Capitalize first letter of each word in idea text (passed to spec create)
 
 5. **Phase 5: Output Result**
    - Print: `Spec written to .flow/specs/<spec-id>`
@@ -51,7 +52,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail | write-flow-file.sh write to non-writable .flow/specs/ |
+| tool-error | Vibe tool calls fail | flowctl.sh spec create or spec set-plan fails |
 | validation-error | Input format invalid | Empty or whitespace-only idea text (before prompt) |
 | resource-error | Required resources missing | .flow/specs/ directory creation fails |
 
@@ -61,22 +62,23 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 # At skill start, setup directories
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
-# When write-flow-file.sh fails
-if ! echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/$(basename "$spec_path")" 2>/dev/null; then
+# When flowctl.sh spec create fails
+if ! flowctl.sh spec create --title "$title" >/dev/null 2>&1; then
     ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "tool-error" \
-        --tool "write-flow-file.sh" --target "$spec_path" \
-        --error "write-flow-file.sh failed: permission denied or path invalid" \
-        --context "Phase: spec creation, Attempting to write spec file" || true
+        --tool "flowctl.sh" --target "spec create" \
+        --error "flowctl.sh spec create failed" \
+        --context "Phase: spec creation, Attempting to create spec with title: $title" || true
 fi
 
-# When spec ID generation fails
-spec_json=$(../mossy-scripts/generate-spec-id.sh "$idea" 2>/dev/null) || {
-    ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "logic-error" \
-        --tool "generate-spec-id.sh" --target "$idea" \
-        --error "Could not generate spec ID" \
-        --context "Phase: ID generation" || true
-}
-spec_id=$(echo "$spec_json" | jq -r '.spec_id')
+# When flowctl.sh spec set-plan fails
+if ! echo "$content" | flowctl.sh spec set-plan --file - "$spec_id" 2>/dev/null; then
+    ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "tool-error" \
+        --tool "flowctl.sh" --target "$spec_id" \
+        --error "flowctl.sh spec set-plan failed: permission denied or path invalid" \
+        --context "Phase: spec update, Attempting to update spec Overview section" || true
+fi
+
+
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.

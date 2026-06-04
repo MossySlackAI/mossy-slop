@@ -48,8 +48,8 @@ Accepts:
    - If text: create minimal spec with goal = text
 
 2. **Extract requirements and config**
-   - Split spec into acceptance criteria (R-IDs)
-   - Number them sequentially: R1, R2, R3...
+   - Split spec into acceptance criteria (checkbox format: `- [ ] criterion`)
+   - Number them sequentially for internal tracking: AC1, AC2, AC3...
    - **Read Mossy-Config section from spec if present, override global config**
    - Log questions immediately but continue processing; ask in bulk at end (header max: 11 chars)
 
@@ -60,32 +60,57 @@ Accepts:
    - Speed and token conservation > exhaustive question discovery
 
 4. **Write artifacts**
-   - Spec file: Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<id>.md"` for `.flow/specs/<id>.md` with R-IDs and Mossy-Config section
-   - Task files: Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "tasks/<id>.M.md"` for `.flow/tasks/<id>.M.md` per task
-   - Summary: Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<id>-plan.md"` for `.flow/specs/<id>-plan.md` with dependency graph
+   - Spec file: Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` for `.flow/specs/<id>.md` with flowctl skeleton format + Mossy-Config section
+   - Task files: Use `flowctl.sh task create --spec <spec-id> --title <title>` to create task, then `flowctl.sh task set-spec --file - <task-id>` to set task content
+   - **No plan.md files**: Do NOT create `.flow/specs/<id>-plan.md` files. All plan metadata lives in flowctl task system.
+   - **Dependency tracking**: Use `flowctl.sh task set-deps --deps <dep-list> <task-id>` to set task dependencies
    - **Commit behavior**: Respect commit-policy from config (default: manual, no auto-commit)
 
 ## Spec Format
 
+Specs use **flowctl canonical skeleton format** with Mossy-Config:
+
 ```markdown
-# <Title>
+# <spec-id> <Title>
 
-## Goal
-<1 sentence>
+## Overview
+<1 sentence>  (mapped from Goal)
 
-## Acceptance Criteria
-- R1: <criterion>
-- R2: <criterion>
+## Scope
+<scope and boundaries>
+
+## Approach
+<architecture and approach>
+
+## Quick commands
+- `# <test-command>`
+
+## Acceptance
+- [ ] <criterion>
+- [ ] <criterion>
 ...
 
-## Tasks
-- fn-<N>.1: <description>
-- fn-<N>.2: <description>
-...
+## References
+- <reference>
 
-## Dependencies
-- fn-<N>.2 depends on fn-<N>.1
+## Mossy-Config
+- commit-policy: <manual|auto-per-change|auto-per-spec|batch>
+- new-branch-per-spec: <true|false>
+- auto-push: <true|false>
+- co-authored-by: <string>
+
+## Resolved via Codebase
+- <item> — <file:line>
+
+## Decision Context
+<Key decisions>
+
+## Edge Cases & Constraints
+- Error conditions
+- Boundary cases
 ```
+
+**Note**: Tasks are stored in flowctl task system, not in spec file.
 
 ## Task Format
 
@@ -121,11 +146,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail during spec parsing | write-flow-file.sh write on non-writable .flow/ |
-| validation-error | Spec format doesn't match expected schema | Missing Goal section, invalid task IDs |
+| tool-error | Vibe tool calls fail during artifact writing | flowctl.sh spec set-plan or task create/set-spec fails |
+| validation-error | Spec format doesn't match expected schema | Missing Overview section, invalid task IDs |
 | logic-error | Internal planning logic fails | Circular dependency detection, invalid task ordering |
 | resource-error | Required resources missing | .flow/specs/ directory not found |
-| configuration-error | Environment misconfiguration | flowctl.py missing but referenced |
+| configuration-error | Environment misconfiguration | flowctl.sh not found |
 
 ### Integration
 
@@ -145,16 +170,32 @@ if ! read_file path="$spec_path" 2>/dev/null; then
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
 
-# When write-flow-file.sh fails during artifact writing
-if ! echo "$content" | ../mossy-scripts/write-flow-file.sh "$flow_path" 2>/dev/null; then
+# When flowctl.sh spec set-plan fails during spec writing
+if ! echo "$content" | flowctl.sh spec set-plan --file - "$spec_id" 2>/dev/null; then
     ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
-        --tool "write-flow-file.sh" --target "$flow_path" \
-        --error "write-flow-file.sh failed: permission denied or path invalid" \
-        --context "Phase: writing, Attempting to write to $flow_path" || true
+        --tool "flowctl.sh" --target "$spec_id" \
+        --error "flowctl.sh spec set-plan failed: permission denied or path invalid" \
+        --context "Phase: writing, Attempting to update spec file $spec_id" || true
+fi
+
+# When flowctl.sh task create fails
+if ! flowctl.sh task create --spec "$spec_id" --title "$title" >/dev/null 2>&1; then
+    ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
+        --tool "flowctl.sh" --target "task create" \
+        --error "flowctl.sh task create failed" \
+        --context "Phase: task creation, Attempting to create task with title: $title" || true
+fi
+
+# When flowctl.sh task set-spec fails
+if ! echo "$content" | flowctl.sh task set-spec --file - "$task_id" 2>/dev/null; then
+    ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
+        --tool "flowctl.sh" --target "$task_id" \
+        --error "flowctl.sh task set-spec failed: permission denied or path invalid" \
+        --context "Phase: writing, Attempting to update task file $task_id" || true
 fi
 
 # When spec format is invalid
-if ! grep -q "## Goal" "$spec_path"; then
+if ! grep -q "## Overview" "$spec_path"; then
     ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "validation-error" \
         --tool "N/A" --target "$spec_path" \
         --error "Invalid spec format: missing Goal section" \
