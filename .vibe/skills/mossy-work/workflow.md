@@ -9,13 +9,12 @@ Phase-by-phase execution for task implementation.
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Load config
-config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
-FLOW_DIR=$(echo "$config_json" | jq -r '.FLOW_DIR')
-MOSSY_CONFIG=$(echo "$config_json" | jq -r '.MOSSY_CONFIG')
-COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
-NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
-AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
-CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
+FLOW_DIR=$(/../mossy-scripts/load-mossy-config.sh FLOW_DIR 2>/dev/null) || true
+MOSSY_CONFIG=$(/../mossy-scripts/load-mossy-config.sh MOSSY_CONFIG 2>/dev/null) || true
+COMMIT_POLICY=$(/../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
+NEW_BRANCH_PER_SPEC=$(/../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
+AUTO_PUSH=$(/../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
+CO_AUTHORED_BY=$(/../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 ```
 
 ## Phase 1: Input Parsing
@@ -269,7 +268,6 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 ```bash
 # At the beginning of workflow execution, call required scripts
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
-config_json=$(/../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
 
 # Record any error encountered
 ../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "$ERROR_TYPE" \

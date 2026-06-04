@@ -39,7 +39,7 @@ Accepts:
 0. **Load config**
    - Call scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
    - Call `../mossy-scripts/ensure-flow-dir.sh` to create directories
-   - Call `../mossy-scripts/load-mossy-config.sh` to parse commit policy settings (returns JSON)
+   - Call `../mossy-scripts/load-mossy-config.sh <config-item>` to parse commit policy settings (returns individual values)
    - Settings: commit-policy, new-branch-per-spec, auto-push, co-authored-by
    - R3 defaults applied automatically
 
@@ -228,11 +228,10 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ```bash
 # At skill start, call required utilities
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
-config_json=$(../mossy-scripts/load-mossy-config.sh 2>/dev/null) || true
-COMMIT_POLICY=$(echo "$config_json" | jq -r '.COMMIT_POLICY')
-NEW_BRANCH_PER_SPEC=$(echo "$config_json" | jq -r '.NEW_BRANCH_PER_SPEC')
-AUTO_PUSH=$(echo "$config_json" | jq -r '.AUTO_PUSH')
-CO_AUTHORED_BY=$(echo "$config_json" | jq -r '.CO_AUTHORED_BY')
+COMMIT_POLICY=$(/../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
+NEW_BRANCH_PER_SPEC=$(/../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
+AUTO_PUSH=$(/../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
+CO_AUTHORED_BY=$(/../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 
 # When a tool fails during task execution
 if ! read_file path="$target_file" 2>/dev/null; then
