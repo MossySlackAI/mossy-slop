@@ -33,7 +33,7 @@ Accepts:
 
 3. **Phase 3: Create Spec File**
    - Use `flowctl.sh spec create --title "<title>"` to create new spec with skeleton
-   - Capture spec_id from output (format: "Spec fn-N-<slug> created: <title>")
+   - Capture spec_id from output (format: `Spec fn-N-<slug> created: <title>`)
    - Or scan `.flow/specs/` for newest spec matching pattern `fn-*-<slug>.md`
    - Read generated skeleton from `.flow/specs/<spec-id>.md`
    - Replace "## Overview\nTBD" with "## Overview\n<goal-content>" where goal-content is the idea text
@@ -42,11 +42,11 @@ Accepts:
 
 5. **Phase 5: Output Result**
    - Print: `Spec written to .flow/specs/<spec-id>`
-   - Print: `Next: /mossy-interview <spec-id-without-.md>`
+   - Print: `Next: /mossy:interview <spec-id-without-.md>`
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 

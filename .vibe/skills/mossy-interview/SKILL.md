@@ -317,7 +317,7 @@ Specs use **flowctl canonical skeleton format** (from `flowctl.py:4111-4133`) wi
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 

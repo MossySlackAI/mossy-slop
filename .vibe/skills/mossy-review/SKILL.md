@@ -337,7 +337,7 @@ git diff <file> > .flow/reviews/current/<file>.diff
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
