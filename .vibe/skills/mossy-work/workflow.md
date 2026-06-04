@@ -9,12 +9,12 @@ Phase-by-phase execution for task implementation.
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Load config
-FLOW_DIR=$(/../mossy-scripts/load-mossy-config.sh FLOW_DIR 2>/dev/null) || true
-MOSSY_CONFIG=$(/../mossy-scripts/load-mossy-config.sh MOSSY_CONFIG 2>/dev/null) || true
-COMMIT_POLICY=$(/../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
-NEW_BRANCH_PER_SPEC=$(/../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
-AUTO_PUSH=$(/../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
-CO_AUTHORED_BY=$(/../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
+FLOW_DIR=$(../mossy-scripts/load-mossy-config.sh FLOW_DIR 2>/dev/null) || true
+MOSSY_CONFIG=$(../mossy-scripts/load-mossy-config.sh MOSSY_CONFIG 2>/dev/null) || true
+COMMIT_POLICY=$(../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
+NEW_BRANCH_PER_SPEC=$(../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
+AUTO_PUSH=$(../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
+CO_AUTHORED_BY=$(../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 ```
 
 ## Phase 1: Input Parsing
