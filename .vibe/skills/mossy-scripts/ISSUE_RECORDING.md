@@ -465,18 +465,18 @@ record_issue "mossy-analyze" "validation-error" "N/A" "src/config.yaml" \
     "Phase: target resolution, Detecting language from extension"
 ```
 
-#### mossy-flowctl
-Records errors when wrapping flowctl:
+#### flowctl.sh
+Records errors when using flowctl.sh:
 ```bash
 # Resource error: flowctl not found
-record_issue "mossy-flowctl" "resource-error" "N/A" "$FLOW_DIR/flowctl" \
+record_issue "flowctl.sh" "resource-error" "N/A" "$FLOW_DIR/flowctl" \
     "flowctl not found or not executable" \
     "Phase: detection, Checking flowctl availability"
 
 # Tool error: flowctl command failed
-record_issue "mossy-flowctl" "tool-error" "bash" "flowctl start fn-1.1" \
+record_issue "flowctl.sh" "tool-error" "bash" "flowctl.sh start fn-1.1" \
     "flowctl command failed with exit code 1" \
-    "Phase: flowctl wrapper, Executing flowctl start"
+    "Phase: flowctl execution, Executing flowctl.sh start"
 ```
 
 ### Language-Specific Skills

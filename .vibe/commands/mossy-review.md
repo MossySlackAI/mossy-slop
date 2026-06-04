@@ -72,7 +72,7 @@ A structured review report containing:
 ## Integration
 
 Works with:
-- `mossy-flowctl` for spec/task metadata
+- `flowctl.sh` for spec/task metadata
 - Git for change detection
 - Language-specific linters when available
 

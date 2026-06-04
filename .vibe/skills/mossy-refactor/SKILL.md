@@ -260,15 +260,15 @@ Before applying any refactoring:
 - Conflicting changes: Report and ask user to resolve
 - Partial application: Roll back all changes
 
-## Integration with mossy-flowctl
+## Integration with flowctl.sh
 
 For spec/task-based refactoring:
 ```bash
 # Get task acceptance criteria
-mossy-flowctl show <task-id>
+flowctl.sh show <task-id>
 
 # Mark refactoring task complete
-mossy-flowctl done <task-id> --summary-file .flow/refactors/<id>/summary.md
+flowctl.sh done <task-id> --summary-file .flow/refactors/<id>/summary.md
 ```
 
 ## Workspace Structure

@@ -29,12 +29,12 @@ Parse order:
 ```
 
 **Actions:**
-- `--list`: Call `mossy-flowctl ready` or fallback, display table, exit
-- `--show <id>`: Call `mossy-flowctl show <id>`, display details, exit
-- `--next`: Call `mossy-flowctl ready`, take first, continue to Phase 2
+- `--list`: Call `flowctl.sh ready` or fallback, display table, exit
+- `--show <id>`: Call `flowctl.sh show <id>`, display details, exit
+- `--next`: Call `flowctl.sh ready`, take first, continue to Phase 2
 - `--continue <task-id>`: Load existing workspace, skip to Phase 4
 - `<task-id>`: Validate format, continue to Phase 2
-- `<spec-id>`: Find ready tasks for spec via `mossy-flowctl ready --spec <id>`, execute each in order
+- `<spec-id>`: Find ready tasks for spec via `flowctl.sh ready --spec <id>`, execute each in order
 
 ## Phase 2: Task Claim
 
@@ -43,10 +43,10 @@ For each task to execute:
 ```
 
 **Actions:**
-1. Check task exists: `mossy-flowctl show <task-id>`
+1. Check task exists: `flowctl.sh show <task-id>`
 2. Verify task is ready (status = todo, not blocked)
 3. Check dependencies: all `depends_on` tasks must be done
-4. Claim task: `mossy-flowctl start <task-id>`
+4. Claim task: `flowctl.sh start <task-id>`
 5. Load task metadata:
    - spec_id
    - description
@@ -58,7 +58,7 @@ For each task to execute:
    - Override global config variables with spec-level settings
    - Note: explicitly empty values override defaults
 
-**Fallback (no flowctl):**
+**Fallback (no flowctl.sh):**
 1. Read `.flow/tasks/<task-id>.json`
 2. Verify status is "todo" and no blocked_reason
 3. Update file: status = "in_progress", claimed_at = now, assignee = "mossy-work"
@@ -220,7 +220,7 @@ Workspace: .flow/work/<task-id>/
    - Construct message with proper formatting
 4. Mark task done:
    ```bash
-   mossy-flowctl done <task-id> --summary-file .flow/work/<task-id>/summary.md
+   flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
    ```
 5. Cleanup (optional, ask user):
    - Remove workspace: rm -rf .flow/work/<task-id>
@@ -239,7 +239,7 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 1. Document failures in summary.md
 2. Update task status to blocked or todo:
    ```bash
-   mossy-flowctl reset <task-id>
+   flowctl.sh reset <task-id>
    # Or update with blocked_reason
    ```
 3. Report to user with specific failure details
@@ -313,7 +313,7 @@ Where:
    - questions.log with unanswered questions
 3. User can:
    - Continue: re-run with --continue
-   - Abandon: `mossy-flowctl reset <task-id>`, delete workspace
+   - Abandon: `flowctl.sh reset <task-id>`, delete workspace
    - Manual fix: edit files directly, then mark done
 
 ## Tool Usage Guidelines

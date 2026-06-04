@@ -102,7 +102,7 @@ C++, C#, VB.NET, JavaScript, TypeScript, GDScript, Python.
 ## Integration
 
 Works with:
-- `mossy-flowctl` for spec/task-based refactoring
+- `flowctl.sh` for spec/task-based refactoring
 - Git for tracking changes
 - Language-specific syntax validation
 

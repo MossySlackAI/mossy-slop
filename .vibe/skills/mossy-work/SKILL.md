@@ -51,7 +51,7 @@ Accepts:
    - If `--show <id>`: display task details and exit
 
 2. **Claim task**
-   - Use `mossy-flowctl start <task-id>` or fallback
+   - Use `flowctl.sh start <task-id>` or fallback
    - Verify claim succeeded
    - Load task metadata: description, acceptance criteria, dependencies
    - **Read spec's Mossy-Config section and override global config**
@@ -74,7 +74,7 @@ Accepts:
 
 6. **Mark complete**
    - Write summary with changes and evidence
-   - Use `mossy-flowctl done <task-id> --summary-file <path>` or fallback
+   - Use `flowctl.sh done <task-id> --summary-file <path>` or fallback
    - Update task status to done
    - **Commit behavior**: Respect commit-policy from config
      - manual: Do not commit (user must explicitly request)
@@ -182,27 +182,27 @@ After task execution:
 - `/mossy:work --show <id>` - Show task details
 - `/mossy:work --continue <task-id>` - Resume partially completed task
 
-## Integration with mossy-flowctl
+## Integration with flowctl.sh
 
-All `.flow/` state operations MUST use `mossy-flowctl`:
+All `.flow/` state operations MUST use `flowctl.sh`:
 
 ```bash
 # Claim task
-mossy-flowctl start <task-id>
+flowctl.sh start <task-id>
 
 # Mark complete
-mossy-flowctl done <task-id> --summary-file .flow/work/<task-id>/summary.md
+flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
 
 # List ready tasks
-mossy-flowctl ready --json
+flowctl.sh ready --json
 
 # Show task
-mossy-flowctl show <task-id>
+flowctl.sh show <task-id>
 ```
 
 ## Fallback Behavior
 
-If flowctl not available:
+If flowctl.sh not available:
 - Task state tracked in `.flow/tasks/<id>.json` with `status`, `claimed_at` fields
 - Ready tasks: those with `status: "todo"` and no `blocked_reason`
 - Claim: set `status: "in_progress"`, `claimed_at: <timestamp>`, `assignee: "mossy-work"`

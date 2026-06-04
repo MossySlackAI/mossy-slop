@@ -24,7 +24,7 @@ Accepts:
 
 1. **Phase 1: Setup**
    - Call scripts: `ensure-flow-dir.sh`, `generate-spec-id.sh`, `record-issue.sh`
-   - Use `mossy-flowctl` for all `.flow/` operations
+   - Use `flowctl.sh` for all `.flow/` operations
    - Call `../mossy-scripts/ensure-flow-dir.sh` to create `.flow/specs/`
 
 2. **Phase 2: Validate Input**
@@ -35,7 +35,7 @@ Accepts:
    - Call `../mossy-scripts/generate-spec-id.sh "<idea-text>"` to get JSON with spec_id field
 
 4. **Phase 4: Create Spec File**
-   - Use `echo "$content" | mossy-flowctl write "specs/<spec-id>"` to write to `.flow/specs/<spec-id>`
+   - Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<spec-id>"` to write to `.flow/specs/<spec-id>`
    - Title: Capitalize first letter of each word in idea text
    - Goal: The idea text as provided
 
@@ -51,7 +51,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail | mossy-flowctl write to non-writable .flow/specs/ |
+| tool-error | Vibe tool calls fail | write-flow-file.sh write to non-writable .flow/specs/ |
 | validation-error | Input format invalid | Empty or whitespace-only idea text (before prompt) |
 | resource-error | Required resources missing | .flow/specs/ directory creation fails |
 
@@ -61,11 +61,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 # At skill start, setup directories
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
 
-# When mossy-flowctl write fails
-if ! echo "$content" | mossy-flowctl write "specs/$(basename "$spec_path")" 2>/dev/null; then
+# When write-flow-file.sh fails
+if ! echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/$(basename "$spec_path")" 2>/dev/null; then
     ../mossy-scripts/record-issue.sh --skill "mossy-idea" --error-type "tool-error" \
-        --tool "mossy-flowctl write" --target "$spec_path" \
-        --error "mossy-flowctl write failed: permission denied or path invalid" \
+        --tool "write-flow-file.sh" --target "$spec_path" \
+        --error "write-flow-file.sh failed: permission denied or path invalid" \
         --context "Phase: spec creation, Attempting to write spec file" || true
 fi
 

@@ -36,7 +36,7 @@ Accepts:
 
 0. **Load config**
    - Call scripts: `ensure-flow-dir.sh`, `load-mossy-config.sh`, `record-issue.sh`
-   - Use `mossy-flowctl` for all `.flow/` file operations
+   - Use `flowctl.sh` for all `.flow/` file operations
    - Call `../mossy-scripts/ensure-flow-dir.sh` to create directories
    - Call `../mossy-scripts/load-mossy-config.sh <config-item>` to parse commit policy settings (returns individual values)
    - Settings: commit-policy, new-branch-per-spec, auto-push, co-authored-by
@@ -60,9 +60,9 @@ Accepts:
    - Speed and token conservation > exhaustive question discovery
 
 4. **Write artifacts**
-   - Spec file: Use `echo "$content" | mossy-flowctl write "specs/<id>.md"` for `.flow/specs/<id>.md` with R-IDs and Mossy-Config section
-   - Task files: Use `echo "$content" | mossy-flowctl write "tasks/<id>.M.md"` for `.flow/tasks/<id>.M.md` per task
-   - Summary: Use `echo "$content" | mossy-flowctl write "specs/<id>-plan.md"` for `.flow/specs/<id>-plan.md` with dependency graph
+   - Spec file: Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<id>.md"` for `.flow/specs/<id>.md` with R-IDs and Mossy-Config section
+   - Task files: Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "tasks/<id>.M.md"` for `.flow/tasks/<id>.M.md` per task
+   - Summary: Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<id>-plan.md"` for `.flow/specs/<id>-plan.md` with dependency graph
    - **Commit behavior**: Respect commit-policy from config (default: manual, no auto-commit)
 
 ## Spec Format
@@ -121,7 +121,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail during spec parsing | mossy-flowctl write on non-writable .flow/ |
+| tool-error | Vibe tool calls fail during spec parsing | write-flow-file.sh write on non-writable .flow/ |
 | validation-error | Spec format doesn't match expected schema | Missing Goal section, invalid task IDs |
 | logic-error | Internal planning logic fails | Circular dependency detection, invalid task ordering |
 | resource-error | Required resources missing | .flow/specs/ directory not found |
@@ -145,11 +145,11 @@ if ! read_file path="$spec_path" 2>/dev/null; then
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
 
-# When mossy-flowctl write fails during artifact writing
-if ! echo "$content" | mossy-flowctl write "$flow_path" 2>/dev/null; then
+# When write-flow-file.sh fails during artifact writing
+if ! echo "$content" | ../mossy-scripts/write-flow-file.sh "$flow_path" 2>/dev/null; then
     ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
-        --tool "mossy-flowctl write" --target "$flow_path" \
-        --error "mossy-flowctl write failed: permission denied or path invalid" \
+        --tool "write-flow-file.sh" --target "$flow_path" \
+        --error "write-flow-file.sh failed: permission denied or path invalid" \
         --context "Phase: writing, Attempting to write to $flow_path" || true
 fi
 

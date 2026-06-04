@@ -70,7 +70,7 @@ NEW_BRANCH_PER_SPEC=$(/../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC
 AUTO_PUSH=$(/../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
 CO_AUTHORED_BY=$(/../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 
-# Use mossy-flowctl for all .flow/ operations
+# Use flowctl.sh for all .flow/ operations
 ```
 
 ### Phase 1: Parse Input
@@ -209,7 +209,7 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **canonical spec template** defined in the [Spec Format](#spec-format) section below. Use `echo "$content" | mossy-flowctl write "specs/<id>.md"` to write to `.flow/specs/`.
+After interview completes, write refined spec back using the **canonical spec template** defined in the [Spec Format](#spec-format) section below. Use `echo "$content" | ../mossy-scripts/write-flow-file.sh "specs/<id>.md"` to write to `.flow/specs/`.
 
 **For new specs**: Create `.flow/specs/<id>.md` with the canonical structure.
 
@@ -310,7 +310,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 | Error Type | Trigger | Example |
 |------------|---------|---------|
-| tool-error | Vibe tool calls fail | mossy-flowctl write on non-writable .flow/specs/ |
+| tool-error | Vibe tool calls fail | write-flow-file.sh write on non-writable .flow/specs/ |
 | validation-error | Input format invalid | Invalid Flow ID pattern, missing required sections |
 | logic-error | Internal logic fails | Circular question dependency, invalid spec state |
 | resource-error | Required resources missing | .flow/specs/ directory not writable |
@@ -330,11 +330,11 @@ if ! read_file path="$spec_path" 2>/dev/null; then
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
 
-# When mossy-flowctl write fails during spec writing
-if ! echo "$spec_content" | mossy-flowctl write "specs/$(basename "$spec_path")" 2>/dev/null; then
+# When write-flow-file.sh fails during spec writing
+if ! echo "$spec_content" | ../mossy-scripts/write-flow-file.sh "specs/$(basename "$spec_path")" 2>/dev/null; then
     ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
-        --tool "mossy-flowctl write" --target "$spec_path" \
-        --error "mossy-flowctl write failed: permission denied or path invalid" \
+        --tool "write-flow-file.sh" --target "$spec_path" \
+        --error "write-flow-file.sh failed: permission denied or path invalid" \
         --context "Phase: writing, Attempting to write spec file $spec_path" || true
 fi
 

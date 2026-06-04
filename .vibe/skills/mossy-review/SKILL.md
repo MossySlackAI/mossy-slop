@@ -206,24 +206,24 @@ Prioritizes security checks:
 - Input validation
 - Authentication/authorization
 
-## Integration with mossy-flowctl
+## Integration with flowctl.sh
 
-For task/spec reviews, use flowctl to load metadata:
+For task/spec reviews, use flowctl.sh to load metadata:
 
 ```bash
 # Get task details
-mossy-flowctl show <task-id>
+flowctl.sh show <task-id>
 
 # Get spec details  
-mossy-flowctl show <spec-id>
+flowctl.sh show <spec-id>
 
 # List tasks for spec
-mossy-flowctl tasks --spec <spec-id>
+flowctl.sh tasks --spec <spec-id>
 ```
 
 ## Fallback Behavior
 
-If flowctl not available:
+If flowctl.sh not available:
 - Read task metadata from `.flow/tasks/<id>.json`
 - Read spec from `.flow/specs/<id>.md` or `.json`
 - Parse acceptance criteria from markdown
