@@ -8,4 +8,4 @@ REPO_ROOT_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPO_ROOT=`git rev-parse --show-toplevel || pwd`
 
 # delegate
-`dirname $0`/setup.sh "$REPO_ROOT" "$REPO_ROOT_SOURCE"
+${REPO_ROOT_SOURCE}/scripts/setup.sh "$REPO_ROOT" "$REPO_ROOT_SOURCE"

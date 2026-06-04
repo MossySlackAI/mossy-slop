@@ -15,6 +15,7 @@ if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
     exit 1
 fi
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FLOW_DIR=".flow"
 MOSSY_CONFIG="$FLOW_DIR/mossy-config"
 
@@ -51,7 +52,7 @@ parse_config_file() {
 
 # Try to ensure config exists first
 if [ ! -f "$MOSSY_CONFIG" ]; then
-    `dirname $0`/ensure-flow-dir.sh 2>/dev/null 1>/dev/null || true
+    ${SCRIPT_DIR}/ensure-flow-dir.sh 2>/dev/null 1>/dev/null || true
 fi
 
 # Parse global config
