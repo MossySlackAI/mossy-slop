@@ -14,6 +14,13 @@ FLOW_DIR=".flow"
 # Create all required subdirectories
 if mkdir -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues" "$FLOW_DIR/work" "$FLOW_DIR/reviews" 2>/dev/null; then
     echo "Success: .flow/ directory structure created"
+    if ! test -r $FLOW_DIR/mossy-config; then
+        if cp `dirname $0`/mossy-config.default $FLOW_DIR/mossy-config; then
+            echo "Default configuration $FLOW_DIR/mossy-config created"
+        else
+            exit 1
+        fi
+    fi
     exit 0
 else
     echo "Error: Failed to create .flow/ directory structure" >&2

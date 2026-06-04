@@ -19,8 +19,8 @@ AUTO_PUSH="false"
 CO_AUTHORED_BY="Mistral Vibe with Mossy Slop <vibe@mistral.ai>"
 
 # Try to ensure config exists first
-if [ -f "./ensure-mossy-config.sh" ]; then
-    ./ensure-mossy-config.sh 2>/dev/null || true
+if [ ! -f "$MOSSY_CONFIG" ]; then
+    `dirname $0`/ensure-flow-dir.sh 2>/dev/null 1>/dev/null || true
 fi
 
 # If config file exists, parse it

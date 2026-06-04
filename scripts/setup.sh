@@ -33,7 +33,7 @@ for f in "$REPO_ROOT_SOURCE/.vibe/skills/*"; do ln -sfn $f "$REPO_ROOT/.vibe/ski
 echo "  ✓ .vibe/skills -> skills"
 
 # Install default mossy-config if not exists
-if [ ! -f "$REPO_ROOT/.flow/mossy-config" ] && [ -f "$REPO_ROOT_SOURCE/config/mossy-config.default" ]; then
+if [ ! -f "$REPO_ROOT/.flow/mossy-config" ] && [ -f "$REPO_ROOT_SOURCE/.vibe/skills/mossy-scripts/mossy-config.default" ]; then
     mkdir -p "$REPO_ROOT/.flow"
     cp "$REPO_ROOT_SOURCE/config/mossy-config.default" "$REPO_ROOT/.flow/mossy-config"
     echo "  ✓ .flow/mossy-config installed from default template"
