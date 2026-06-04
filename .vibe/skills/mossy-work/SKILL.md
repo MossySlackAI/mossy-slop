@@ -68,7 +68,7 @@ Accepts:
    - Handle questions inline, collect for bulk ask at end
 
 5. **Verify acceptance**
-   - Check each acceptance criterion (R-IDs)
+   - Check each acceptance criterion (checkbox format)
    - Run tests if specified
    - Collect evidence: file diffs, test output, screenshots
 
@@ -137,7 +137,7 @@ Accepts:
 
 **Spec:** <spec-id>
 **Description:** <description>
-**Acceptance:** <R-IDs>
+**Acceptance:** <checkbox criteria>
 **Started:** <timestamp>
 **Completed:** <timestamp>
 
@@ -153,8 +153,8 @@ Accepts:
 - `<file>`: <reason>
 
 ## Acceptance Checks
-- R1: <status> - <evidence/notes>
-- R2: <status> - <evidence/notes>
+- [ ] Criterion 1: <status> - <evidence/notes>
+- [ ] Criterion 2: <status> - <evidence/notes>
 
 ## Tests Run
 ```
