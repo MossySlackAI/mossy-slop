@@ -9,11 +9,6 @@ allowed-tools: bash, ask_user_question
 
 Write a minimal spec file draft into `.flow/specs/` for later refinement with `mossy-interview`. This skill is intentionally minimal — it only creates the initial Title and Goal sections, leaving all other details to the interview process.
 
-## Guardrails
-
- - No file reading, no file writing outside of `.flow/specs`.
- - No thinking, no planning.
-
 ## Purpose
 
 Create a starting point for new features, changes, or ideas. Produces a minimal spec file that `mossy-interview` can then refine into a complete specification.
@@ -55,3 +50,9 @@ Accepts:
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+
+## GUARDRAILS
+
+ - No thinking, no planning.
+ - No file reading, no file writing by any other means than flowctl.sh.
+
