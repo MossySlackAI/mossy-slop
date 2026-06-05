@@ -65,10 +65,6 @@ Technical interviewer, spec refiner. No implementation. No files outside `.flow/
 ```bash
 # Call required utilities
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
-COMMIT_POLICY=$(../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
-NEW_BRANCH_PER_SPEC=$(../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
-AUTO_PUSH=$(../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
-CO_AUTHORED_BY=$(../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 
 # Use flowctl.sh for all .flow/ operations
 ```
@@ -269,7 +265,7 @@ Ask only **non-obvious** questions. Skip questions that:
 
 ## Spec Format
 
-Specs use **flowctl canonical skeleton format** (from `flowctl.py:4111-4133`) with Mossy-Config section added:
+Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.sh spec skeleton`) with Mossy-Config section added:
 
 ```markdown
 # <spec-id> <Title>
@@ -296,10 +292,10 @@ Specs use **flowctl canonical skeleton format** (from `flowctl.py:4111-4133`) wi
 - <reference> — <file:line>
 
 ## Mossy-Config
-- commit-policy: <manual|auto-per-change|auto-per-spec|batch>
-- new-branch-per-spec: <true|false>
-- auto-push: <true|false>
-- co-authored-by: <string>
+- commit-policy: <manual|auto-per-change|auto-per-spec|batch>: fill from idea text or `../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true`
+- new-branch-per-spec: <true|false>: fill from idea text or `../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true`
+- auto-push: <true|false>: fill from idea text or `../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true`
+- co-authored-by: <string>: fill from idea text or `../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true`
 
 ## Resolved via Codebase
 - <item> — <file:line>
@@ -342,22 +338,6 @@ if ! read_file path="$spec_path" 2>/dev/null; then
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true
 fi
-
-# When flowctl.sh spec set-plan fails during spec writing
-if ! echo "$spec_content" | flowctl.sh spec set-plan --file - "$spec_id" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
-        --tool "flowctl.sh" --target "$spec_id" \
-        --error "flowctl.sh spec set-plan failed: permission denied or path invalid" \
-        --context "Phase: writing, Attempting to update spec file $spec_id" || true
-fi
-
-# When input format is invalid
-if [[ ! "$input" =~ ^fn-[0-9]+ ]]; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "validation-error" \
-        --tool "N/A" --target "$input" \
-        --error "Invalid input format: expected fn-N or file path or idea text" \
-        --context "Phase: input parsing, Input: $input" || true
-fi
 ```
 
 **Note**: Always use `|| true` to prevent recording failures from breaking skill execution.
@@ -367,22 +347,3 @@ fi
 - Business questions (user personas, success metrics, MVP boundaries)
 - Task creation (that's `/mossy:plan`'s job)
 - Implementation details (that's `/mossy:work`'s job)
-- Multi-pass interview (business + technical)
-- Project docs investigation (glossary, decisions, strategy)
-- Decision record writing
-
-## Key Differences from flow-next interview
-
-| Feature | flow-next | mossy-interview |
-|---------|-----------|-----------------|
-| Business mode | Yes | No (technical only) |
-| Question count | 40+ | 10-30 (leaner) |
-| Doc-aware mode | Yes | No |
-| Decision records | Yes | No |
-| Glossary integration | Yes | No |
-| Strategy integration | Yes | No |
-| Both mode | Yes | No |
-| Pre-question taxonomy | Yes | Yes (simplified) |
-| Lead-with-recommendation | Yes | Yes |
-| Codebase investigation | Yes | Yes |
-| Contradiction surfacing | Yes | Yes |

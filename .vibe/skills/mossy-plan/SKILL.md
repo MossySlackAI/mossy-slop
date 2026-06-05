@@ -68,7 +68,7 @@ Accepts:
 
 ## Spec Format
 
-Specs use **flowctl canonical skeleton format** with Mossy-Config:
+Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.sh spec skeleton`) with Mossy-Config:
 
 ```markdown
 # <spec-id> <Title>
