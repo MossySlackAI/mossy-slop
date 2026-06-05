@@ -47,6 +47,8 @@ parse_config_file() {
         if [ "$NEW_BRANCH_PER_SPEC" = "true" ] && [ "$AUTO_PUSH" != "true" ]; then
             AUTO_PUSH="true"
         fi
+    else
+        &>2 echo "$config_file" does not exist.
     fi
 }
 
@@ -54,6 +56,9 @@ parse_config_file() {
 if [ ! -f "$MOSSY_CONFIG" ]; then
     ${SCRIPT_DIR}/ensure-flow-dir.sh 2>/dev/null 1>/dev/null || true
 fi
+
+# parse default config
+parse_config_file ${SCRIPT_DIR}/mossy-config.default
 
 # Parse global config
 parse_config_file "$MOSSY_CONFIG"
