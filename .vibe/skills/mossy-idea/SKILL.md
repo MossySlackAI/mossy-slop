@@ -2,7 +2,7 @@
 name: mossy-idea
 description: Write a minimal spec file draft into .flow/specs/ for later refinement with mossy-interview.
 user-invocable: false
-allowed-tools: bash
+allowed-tools: bash, ask_user_question
 ---
 
 # mossy-idea
@@ -43,21 +43,9 @@ Accepts:
    - Write back using `echo "$content" | ../mossy-scripts/flowctl.sh spec set-plan --file - <spec-id>`
    - Title: Capitalize first letter of each word in idea text (passed to spec create)
 
-5. **Phase 5: Output Result**
+4. **Phase 4: Output Result**
    - Print: `Spec written to .flow/specs/<spec-id>`
    - Print: `Next: /mossy:interview <spec-id-without-.md>`
-
-## Error Recording
-
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
-
-### Error Types Recorded
-
-| Error Type | Trigger | Example |
-|------------|---------|---------|
-| tool-error | Vibe tool calls fail | flowctl.sh spec create or spec set-plan fails |
-| validation-error | Input format invalid | Empty or whitespace-only idea text (before prompt) |
-| resource-error | Required resources missing | .flow/specs/ directory creation fails |
 
 ### Integration Code
 
