@@ -205,16 +205,7 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config section added after References. Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
-
-**Section Mapping** (mossy sections → flowctl sections):
-- Goal → Overview (already filled by mossy-idea)
-- Architecture & Data Models → Approach
-- API Contracts → Scope
-- Edge Cases & Constraints → Add to Approach or create new section
-- Decision Context → Add to relevant sections or References
-- Resolved via Codebase → Keep as separate section after References
-- Mossy-Config → Add after References
+After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config and Resolved via Codebase sections added after References. Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
 
 **For new specs**: Overwrite with complete refined spec in flowctl format + Mossy-Config.
 
@@ -245,7 +236,7 @@ Load questions from `skills/mossy-interview/questions-technical.md`.
 
 ### Categories (in dependency order):
 
-1. **Scope & Boundaries** - What's in/out of scope, component boundaries
+1. **Scope** - What's in/out of scope, component boundaries
 2. **Architecture** - Components, dependencies, integration points, parallel work potential
 3. **Data Models** - Structures, persistence needs, state management
 4. **API Contracts** - Interfaces, endpoints, data shapes
@@ -254,7 +245,7 @@ Load questions from `skills/mossy-interview/questions-technical.md`.
 7. **Security** - Auth, validation, data sensitivity
 8. **Testing Strategy** - Unit/integration/E2E focus areas
 9. **Migration** - Breaking changes, rollback, feature flags
-10. **Acceptance Criteria** - What does "done" look like?
+10. **Acceptance** - What does "done" look like?
 
 ### Question Selection
 
@@ -265,19 +256,19 @@ Ask only **non-obvious** questions. Skip questions that:
 
 ## Spec Format
 
-Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.sh spec skeleton`) with Mossy-Config section added:
+Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.sh spec skeleton`) with Mossy-Config and Resolved via Codebase sections added:
 
 ```markdown
 # <spec-id> <Title>
 
 ## Overview
-<1-2 sentences describing the objective>  (mapped from Goal)
+<1-2 sentences describing the objective>
 
 ## Scope
-<scope and API contracts>  (mapped from API Contracts)
+<scope, boundaries, and API contracts>
 
 ## Approach
-<architecture and data models>  (mapped from Architecture & Data Models)
+<architecture, data models, and edge cases>
 
 ## Quick commands
 <!-- Required: at least one smoke command for the repo -->
@@ -299,17 +290,9 @@ Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.
 
 ## Resolved via Codebase
 - <item> — <file:line>
-
-## Decision Context
-<Key decisions made during interview>
-
-## Edge Cases & Constraints
-- Error conditions
-- Boundary cases
-- External dependencies
 ```
 
-**Note**: Resolved via Codebase, Mossy-Config, Decision Context, and Edge Cases & Constraints are mossy-specific additions to the flowctl skeleton.
+**Note**: Resolved via Codebase and Mossy-Config are mossy-specific additions to the flowctl skeleton.
 
 ## Error Recording
 

@@ -74,13 +74,13 @@ Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.
 # <spec-id> <Title>
 
 ## Overview
-<1 sentence>  (mapped from Goal)
+<1 sentence>
 
 ## Scope
 <scope and boundaries>
 
 ## Approach
-<architecture and approach>
+<architecture, approach, and edge cases>
 
 ## Quick commands
 - `# <test-command>`
@@ -101,13 +101,6 @@ Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.
 
 ## Resolved via Codebase
 - <item> — <file:line>
-
-## Decision Context
-<Key decisions>
-
-## Edge Cases & Constraints
-- Error conditions
-- Boundary cases
 ```
 
 **Note**: Tasks are stored in flowctl task system, not in spec file.

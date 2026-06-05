@@ -19,7 +19,7 @@ Before asking ANY question, classify it:
 
 ---
 
-## Category 1: Scope & Boundaries
+## Category 1: Scope
 
 **Purpose**: Establish what's in and out of scope, component boundaries.
 
@@ -57,7 +57,7 @@ Before asking ANY question, classify it:
 
 **Purpose**: Determine high-level structure, dependencies, and design approach.
 
-**Dependency**: Requires Scope & Boundaries to be established first.
+**Dependency**: Requires Scope to be established first.
 
 ### Questions
 
@@ -175,7 +175,7 @@ Before asking ANY question, classify it:
 
 ---
 
-## Category 5: Edge Cases & Constraints
+## Category 5: Edge Cases
 
 **Purpose**: Identify failure modes, boundary conditions, and constraints.
 
@@ -351,7 +351,7 @@ Before asking ANY question, classify it:
 
 ---
 
-## Category 10: Acceptance Criteria
+## Category 10: Acceptance
 
 **Purpose**: Define what "done" looks like.
 

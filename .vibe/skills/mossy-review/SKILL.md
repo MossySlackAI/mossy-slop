@@ -105,7 +105,7 @@ Accepts:
 - Issues found: <count> (<critical>/<major>/<minor>)
 - Acceptance criteria: <passed>/<total>
 
-## Acceptance Criteria Check
+## Acceptance Check
 - [ ] Criterion 1: PASS/FAIL/UNCLEAR - <notes>
 - [ ] Criterion 2: PASS/FAIL/UNCLEAR - <notes>
 ...
