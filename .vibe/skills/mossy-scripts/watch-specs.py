@@ -51,7 +51,7 @@ def main():
     change_stamp = last_state[0]
     now_stamp = datetime.now().timestamp()
     time_to_60_seconds_since_last_change = change_stamp + 60 - now_stamp
-    print(change_stamp, now_stamp, time_to_60_seconds_since_last_change)
+    # print(change_stamp, now_stamp, time_to_60_seconds_since_last_change)
     if time_to_60_seconds_since_last_change > 0:
         # there was a very recent change, the caller might have missed it. Return immediately.
         change_detected = True
