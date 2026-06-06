@@ -9,13 +9,9 @@ allowed-tools: read_file,grep,bash,ask_user_question
 
 **CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work.**
 
-Technical interview skill for mossy code flow. Extracts implementation details via targeted questions, then creates or refines a spec.
-
-**Inspiration**: flow-next interview skill (technical mode only, no business mode overhead).
+Technical interview skill. Extracts implementation details via targeted questions, then creates or refines a spec.
 
 **Focus**: The code is the single source of truth. Inline comments provide documentation. Human retains full control and responsibility.
-
-**Token efficiency**: Ask only non-obvious questions. Investigate codebase before asking. Speed and token conservation valued higher than exhaustive questioning.
 
 ## Purpose
 
@@ -46,18 +42,6 @@ Examples:
 
 Technical interviewer, spec refiner. No implementation. No files outside `.flow/specs/`.
 
-## Guardrails
-
-- **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
-- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
-- **Never use markdown TODOs**
-- **Never use TodoWrite**
-- **All state in `.flow/`**
-- **Spec IDs immutable once created**
-- **R-IDs frozen at interview time**
-- **Do NOT create tasks** - that's plan's job
-- **Technical mode ONLY** - no business questions
-
 ## Flow
 
 ### Phase 0: Setup
@@ -77,15 +61,11 @@ Detect input type:
    - Read: `read_file path=".flow/specs/<id>.md"`
    - If not exists: create minimal spec
 
-2. **Flow task ID pattern**: `fn-\d+(-[a-z0-9-]+)?\.\d+`
-   - Extract spec ID, read parent spec
-   - Read task file if exists
-
-3. **File path**: contains `/` or ends with `.md`
+2. **File path**: contains `/` or ends with `.md`
    - Read file
    - If not exists: ask user to confirm creation
 
-4. **Idea text**: everything else
+3. **Idea text**: everything else
    - Create minimal spec with goal = text
 
 ### Phase 1a: Parse Config Overrides
@@ -122,8 +102,6 @@ Investigation order:
 
 **CRITICAL REQUIREMENT**: You MUST use the `ask_user_question` tool for every question that requires user judgment.
 
-- DO NOT output questions as text
-- DO NOT list questions in your response
 - ONLY ask questions via ask_user_question tool calls
 - Group 2-4 related questions per tool call when they share context
 - Expect 5-20 questions for typical specs
@@ -152,8 +130,8 @@ Use the `ask_user_question` tool with proper JSON structure:
 - **Tool name**: `ask_user_question` (lowercase, with underscores)
 - **Required parameter**: `questions` array (1-4 questions)
 - **Each question must have**: `question` (string) and `options` (array of 2-4 choice objects)
-- **Each option must have**: `label` (string), optionally `description` (string)
-- **Optional parameters**: `header` (1-11 chars max), `multi_select` (boolean), `hide_other` (boolean), `footer_note` (string)
+- **Each option must have**: `header` (1-11 chars max),`label` (string)
+- **Optional parameters**: `description` (string), `multi_select` (boolean), `hide_other` (boolean), `footer_note` (string)
 
 Example tool call:
 ```json
@@ -330,3 +308,9 @@ fi
 - Business questions (user personas, success metrics, MVP boundaries)
 - Task creation (that's `/mossy:plan`'s job)
 - Implementation details (that's `/mossy:work`'s job)
+
+## GUARDRAILS
+
+- **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
+- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
+- **Do NOT create tasks** - that's plan's job
