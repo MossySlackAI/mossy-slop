@@ -314,3 +314,4 @@ fi
 - **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
 - **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
 - **Do NOT create tasks** - that's plan's job
+- **Do NOT create plans in ~/.vibe/plans **

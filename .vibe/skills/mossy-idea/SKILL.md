@@ -53,6 +53,7 @@ Accepts:
 
 ## GUARDRAILS
 
- - No thinking, no planning.
- - No file reading, no file writing by any other means than flowctl.sh.
+- **CRITICAL: NO actual work, no thinking, no planning, no reading. ONLY output: spec file to `.flow/specs/<id>.md` via flowctl.sh**
+- **Do NOT create tasks** - that's plan's job
+- **Do NOT create plans in ~/.vibe/plans **
 
