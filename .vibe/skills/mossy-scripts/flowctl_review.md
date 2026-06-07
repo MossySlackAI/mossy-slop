@@ -8,6 +8,11 @@
 **Classes:** 5  
 **Commands:** ~245 command functions
 
+## Note from Human
+
+The review prompt was a bit mean, specifically requesting criteria to be used where 
+a glance at the script tells you it would not do so well in them. Important criteria, nevertheless! But they're not our problem here, we are never going to maintain that script. We take the good news, that the functionality is excellent.
+
 ---
 
 ## Executive Summary
