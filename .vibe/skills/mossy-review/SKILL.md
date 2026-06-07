@@ -335,22 +335,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/reviews/ directory creation fails, git not available |
 | configuration-error | Environment misconfiguration | Linter not installed but configured, missing review backend |
 
-#### Integration
-
-```bash
-# At skill start, call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When a tool fails during analysis
-if ! read_file path="$file_path" 2>/dev/null; then
-    record-issue.sh --skill "mossy-review" --error-type "tool-error" \
-        --tool "read_file" --target "$file_path" \
-        --error "read_file failed: file not found or permission denied" \
-        --context "Phase: analysis, Task: $task_id, Reading file for review" || true
-fi
-
-```
-
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
 ## GUARDRAILS
@@ -363,3 +347,4 @@ fi
 - Blocking issues (CRITICAL) reported immediately
 - Review workspace preserved for user inspection
 - Evidence always captured for findings
+- **DO NOT call flowctl.py** - use flowctl.sh

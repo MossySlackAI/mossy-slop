@@ -37,7 +37,6 @@ Accepts:
 ## Flow
 
 0. **Prepare**
-   - Call `ensure-flow-dir.sh` to create directories
    - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <Spec ID>` to get the branch policy. If that gives 'false', do nothing. If it gives 'true', make sure we are on a branch with name <Spec ID>.
 
 1. **Resolve target**
@@ -209,26 +208,12 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/work/ directory creation fails, flowctl not found |
 | configuration-error | Environment misconfiguration | Missing required environment variables, incompatible tool versions |
 
-### Integration
-
-```bash
-# At skill start, call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When a tool fails during task execution
-if ! read_file path="$target_file" 2>/dev/null; then
-    record-issue.sh --skill "mossy-work" --error-type "tool-error" \
-        --tool "read_file" --target "$target_file" \
-        --error "read_file failed: file not found or permission denied" \
-        --context "Phase: implementation, Task: $task_id, Reading source file for modification" || true
-fi
-```
-
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
 ## GUARDRAILS
 
 - **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are working in.
+- **DO NOT call flowctl.py** - use flowctl.sh
 - Never modify files outside workspace without explicit task instruction
 - Never commit to git without user confirmation **OR** commit-policy != manual
 - All modifications tracked in summary with diffs

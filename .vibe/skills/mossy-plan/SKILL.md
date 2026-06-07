@@ -89,25 +89,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/specs/ directory not found |
 | configuration-error | Environment misconfiguration | flowctl.sh not found |
 
-### Integration
-
-```bash
-# At skill start, call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When a tool fails during spec parsing
-if ! read_file path="$spec_path" 2>/dev/null; then
-    record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
-        --tool "read_file" --target "$spec_path" \
-        --error "read_file failed: file not found or permission denied" \
-        --context "Phase: parsing, Attempting to read spec file $spec_path" || true
-fi
-```
-
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
 ## GUARDRAILS
 
 - **CRITICAL: NO actual work. ONLY output: task files in `.flow/tasks/<id>.md`**
 - **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
+- **DO NOT call flowctl.py** - use flowctl.sh
 - **Do NOT create plans in ~/.vibe/plans **

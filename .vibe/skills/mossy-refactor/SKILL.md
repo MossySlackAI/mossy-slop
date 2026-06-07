@@ -340,37 +340,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/refactors/ directory creation fails, required build tools missing |
 | configuration-error | Environment misconfiguration | Missing language runtime, incompatible tool versions |
 
-### Integration
-
-```bash
-# At skill start, call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When a tool fails during refactoring
-if ! read_file path="$target_file" 2>/dev/null; then
-    record-issue.sh --skill "mossy-refactor" --error-type "tool-error" \
-        --tool "read_file" --target "$target_file" \
-        --error "read_file failed: file not found or permission denied" \
-        --context "Phase: analysis, Reading target file for refactoring" || true
-fi
-
-# When operation is unsupported for language
-if ! is_supported_operation "$operation" "$language"; then
-    record-issue.sh --skill "mossy-refactor" --error-type "validation-error" \
-        --tool "N/A" --target "$operation on $language" \
-        --error "Unsupported operation: $operation for language $language" \
-        --context "Phase: validation, Checking operation support" || true
-fi
-
-# When search_replace fails to apply changes
-if ! search_replace file_path="$file" content="$changes" 2>/dev/null; then
-    record-issue.sh --skill "mossy-refactor" --error-type "tool-error" \
-        --tool "search_replace" --target "$file" \
-        --error "search_replace failed: $?" \
-        --context "Phase: implementation, Applying refactoring changes" || true
-fi
-```
-
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
 ## GUARDRAILS
@@ -385,3 +354,4 @@ fi
 - Blocking issues reported immediately
 - Workspace preserved for user inspection
 - Roll back on any failure
+- **DO NOT call flowctl.py** - use flowctl.sh

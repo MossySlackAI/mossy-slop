@@ -278,37 +278,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/analysis/ directory creation fails, source directory not found |
 | configuration-error | Environment misconfiguration | Missing analysis tools, incompatible configurations |
 
-### Integration
-
-```bash
-# At skill start, call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When a tool fails during analysis
-if ! read_file path="$file_path" 2>/dev/null; then
-    record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
-        --tool "read_file" --target "$file_path" \
-        --error "read_file failed: file not found or permission denied" \
-        --context "Phase: analysis, Reading file for static analysis" || true
-fi
-
-# When file type is unsupported
-if ! is_supported_language "${file_path##*.}"; then
-    record-issue.sh --skill "mossy-analyze" --error-type "validation-error" \
-        --tool "N/A" --target "$file_path" \
-        --error "Unsupported language for analysis: ${file_path##*.}" \
-        --context "Phase: target resolution, Detecting language from extension" || true
-fi
-
-# When grep fails during pattern search
-if ! grep pattern="$pattern" path="$directory" 2>/dev/null; then
-    record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
-        --tool "grep" --target "$directory" \
-        --error "grep failed with exit code $?" \
-        --context "Phase: analysis, Searching for pattern in codebase" || true
-fi
-```
-
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
 ## GUARDRAILS
@@ -321,3 +290,4 @@ fi
 - CRITICAL issues reported immediately
 - Workspace preserved for user inspection
 - Evidence always captured for findings
+- **DO NOT call flowctl.py** - use flowctl.sh

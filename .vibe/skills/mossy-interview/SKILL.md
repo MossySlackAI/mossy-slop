@@ -36,16 +36,7 @@ Technical interviewer, spec refiner. No implementation. No files outside `.flow/
 
 ## Flow
 
-### Phase 0: Setup
-
-```bash
-# Call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# Use flowctl.sh for all .flow/ operations
-```
-
-### Phase 1: Parse Input
+### Phase 0: Parse Input
 
 Detect input type:
 
@@ -278,21 +269,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 | resource-error | Required resources missing | .flow/specs/ directory not writable |
 | configuration-error | Environment issue | flowctl.sh not found |
 
-### Integration Code
-
-```bash
-# At skill start, call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
-# When a tool fails during spec reading
-if ! read_file path="$spec_path" 2>/dev/null; then
-    record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
-        --tool "read_file" --target "$spec_path" \
-        --error "read_file failed: file not found or permission denied" \
-        --context "Phase: parsing, Attempting to read spec file $spec_path" || true
-fi
-```
-
 **Note**: Always use `|| true` to prevent recording failures from breaking skill execution.
 
 ## Not in Scope
@@ -305,5 +281,6 @@ fi
 
 - **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
 - **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
+- **DO NOT call flowctl.py** - use flowctl.sh
 - **Do NOT create tasks** - that's plan's job
 - **Do NOT create plans in ~/.vibe/plans **

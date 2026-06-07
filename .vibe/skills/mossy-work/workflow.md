@@ -5,9 +5,6 @@ Phase-by-phase execution for task implementation.
 ## Phase 0: Setup and Config Loading
 
 ```bash
-# Call required utilities
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
 # Load config
 FLOW_DIR=$(load-mossy-config.sh FLOW_DIR 2>/dev/null) || true
 MOSSY_CONFIG=$(load-mossy-config.sh MOSSY_CONFIG 2>/dev/null) || true
@@ -266,9 +263,6 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 **Error Recording:** All errors MUST be recorded to `.flow/issues/` using the shared utility:
 
 ```bash
-# At the beginning of workflow execution, call required scripts
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-
 # Record any error encountered
 record-issue.sh --skill "mossy-work" --error-type "$ERROR_TYPE" \
     --tool "$TOOL" --target "$TARGET" \
