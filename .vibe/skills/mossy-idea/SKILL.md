@@ -19,19 +19,19 @@ Accepts:
 ## Flow
 
 1. **Phase 1: Setup**
-   - Call `../mossy-scripts/ensure-flow-dir.sh` to create `.flow/specs/`
+   - Call `ensure-flow-dir.sh` to create `.flow/specs/`
    
 2. **Phase 2: Validate Input**
    - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question (header max: 11 chars)
    - Strip leading/trailing whitespace from idea text
 
 3. **Phase 3: Create Spec File**
-   - Use `../mossy-scripts/flowctl.sh spec create --title "<title>"` to create new spec with skeleton
+   - Use `flowctl.sh spec create --title "<title>"` to create new spec with skeleton
    - Capture spec_id from output (format: `Spec fn-N-<slug> created: <title>`)
    - Or scan `.flow/specs/` for newest spec matching pattern `fn-*-<slug>.md`
    - Read generated skeleton from `.flow/specs/<spec-id>.md`
    - Replace "## Overview\nTBD" with "## Overview\n<goal-content>" where goal-content is the idea text
-   - Write back using `echo "$content" | ../mossy-scripts/flowctl.sh spec set-plan --file - <spec-id>`
+   - Write back using `echo "$content" | flowctl.sh spec set-plan --file - <spec-id>`
    - Title: Capitalize first letter of each word in idea text (passed to spec create)
 
 4. **Phase 4: Output Result**
@@ -42,7 +42,7 @@ Accepts:
 
 ```bash
 # At skill start, setup directories
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.

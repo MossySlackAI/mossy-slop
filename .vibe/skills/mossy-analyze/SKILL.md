@@ -266,7 +266,7 @@ git show <commit> --name-only | xargs mossy-analyze
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -282,11 +282,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$file_path" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
         --tool "read_file" --target "$file_path" \
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: analysis, Reading file for static analysis" || true
@@ -294,7 +294,7 @@ fi
 
 # When file type is unsupported
 if ! is_supported_language "${file_path##*.}"; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-analyze" --error-type "validation-error" \
+    record-issue.sh --skill "mossy-analyze" --error-type "validation-error" \
         --tool "N/A" --target "$file_path" \
         --error "Unsupported language for analysis: ${file_path##*.}" \
         --context "Phase: target resolution, Detecting language from extension" || true
@@ -302,7 +302,7 @@ fi
 
 # When grep fails during pattern search
 if ! grep pattern="$pattern" path="$directory" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-analyze" --error-type "tool-error" \
         --tool "grep" --target "$directory" \
         --error "grep failed with exit code $?" \
         --context "Phase: analysis, Searching for pattern in codebase" || true

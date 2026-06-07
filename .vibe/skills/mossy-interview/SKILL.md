@@ -40,7 +40,7 @@ Technical interviewer, spec refiner. No implementation. No files outside `.flow/
 
 ```bash
 # Call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Use flowctl.sh for all .flow/ operations
 ```
@@ -175,7 +175,7 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config and Resolved via Codebase sections added after References. Use `echo "$content" | ../mossy-scripts/flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
+After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config and Resolved via Codebase sections added after References. Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
 
 **For new specs**: Overwrite with complete refined spec in flowctl format + Mossy-Config.
 
@@ -226,7 +226,7 @@ Ask only **non-obvious** questions. Skip questions that:
 
 ## Spec Format
 
-Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.sh spec skeleton`) with Mossy-Config and Resolved via Codebase sections added:
+Specs use **flowctl canonical skeleton format** (call `flowctl.sh spec skeleton`) with Mossy-Config and Resolved via Codebase sections added:
 
 ```markdown
 # <spec-id> <Title>
@@ -253,10 +253,10 @@ Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.
 - <reference> — <file:line>
 
 ## Mossy-Config
-- commit-policy: <manual|auto-per-change|auto-per-spec|batch>: fill from idea text or `../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true`
-- new-branch-per-spec: <true|false>: fill from idea text or `../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true`
-- auto-push: <true|false>: fill from idea text or `../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true`
-- co-authored-by: <string>: fill from idea text or `../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true`
+- commit-policy: <manual|auto-per-change|auto-per-spec|batch>: fill from idea text or `load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true`
+- new-branch-per-spec: <true|false>: fill from idea text or `load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true`
+- auto-push: <true|false>: fill from idea text or `load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true`
+- co-authored-by: <string>: fill from idea text or `load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true`
 
 ## Resolved via Codebase
 - <item> — <file:line>
@@ -266,7 +266,7 @@ Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -282,11 +282,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during spec reading
 if ! read_file path="$spec_path" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-interview" --error-type "tool-error" \
         --tool "read_file" --target "$spec_path" \
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true

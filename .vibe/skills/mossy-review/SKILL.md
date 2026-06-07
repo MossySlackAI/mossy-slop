@@ -205,13 +205,13 @@ For task/spec reviews, use flowctl.sh to load metadata:
 
 ```bash
 # Get task details
-../mossy-scripts/flowctl.sh show <task-id>
+flowctl.sh show <task-id>
 
 # Get spec details  
-../mossy-scripts/flowctl.sh show <spec-id>
+flowctl.sh show <spec-id>
 
 # List tasks for spec
-../mossy-scripts/flowctl.sh tasks --spec <spec-id>
+flowctl.sh tasks --spec <spec-id>
 ```
 
 ## Workspace Structure
@@ -323,7 +323,7 @@ git diff ${BASE_COMMIT} <file> > .flow/reviews/current/<file>.diff
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -339,11 +339,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during analysis
 if ! read_file path="$file_path" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-review" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-review" --error-type "tool-error" \
         --tool "read_file" --target "$file_path" \
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: analysis, Task: $task_id, Reading file for review" || true

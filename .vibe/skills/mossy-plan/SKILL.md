@@ -25,7 +25,7 @@ Accepts:
 ## Flow
 
 0. **Load config**
-   - Use `../mossy-scripts/flowctl.sh` for all `.flow/` file operations
+   - Use `flowctl.sh` for all `.flow/` file operations
 
 1. **Parse input**
    - If ID: read `.flow/specs/<id>.md`
@@ -40,12 +40,12 @@ Accepts:
    - ID format: `<spec-id>.M` (fn-1.1, fn-1.2...)
 
 4. **Write artifacts**
-   - Task files: Use `../mossy-scripts/flowctl.sh task create --spec <spec-id> --title <title>` to create task, then `../mossy-scripts/flowctl.sh task set-spec --file - <task-id>` to set task content
-   - **Dependency tracking**: Use `../mossy-scripts/flowctl.sh task set-deps --deps <dep-list> <task-id>` to set task dependencies
+   - Task files: Use `flowctl.sh task create --spec <spec-id> --title <title>` to create task, then `flowctl.sh task set-spec --file - <task-id>` to set task content
+   - **Dependency tracking**: Use `flowctl.sh task set-deps --deps <dep-list> <task-id>` to set task dependencies
 
 ## Spec Format
 
-Specs use **flowctl canonical skeleton format** (call `../mossy-scripts/flowctl.sh spec skeleton` to review it).
+Specs use **flowctl canonical skeleton format** (call `flowctl.sh spec skeleton` to review it).
 
 **Note**: Tasks are stored in flowctl task system, not in spec file.
 
@@ -77,7 +77,7 @@ After plan creation, user can:
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -93,11 +93,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during spec parsing
 if ! read_file path="$spec_path" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-plan" --error-type "tool-error" \
         --tool "read_file" --target "$spec_path" \
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: parsing, Attempting to read spec file $spec_path" || true

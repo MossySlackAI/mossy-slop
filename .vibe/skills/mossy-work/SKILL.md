@@ -37,8 +37,8 @@ Accepts:
 ## Flow
 
 0. **Prepare**
-   - Call `../mossy-scripts/ensure-flow-dir.sh` to create directories
-   - Call `../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC <Spec ID>` to get the branch policy. If that gives 'false', do nothing. If it gives 'true', make sure we are on a branch with name <Spec ID>.
+   - Call `ensure-flow-dir.sh` to create directories
+   - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <Spec ID>` to get the branch policy. If that gives 'false', do nothing. If it gives 'true', make sure we are on a branch with name <Spec ID>.
 
 1. **Resolve target**
    - If task ID: execute that task
@@ -48,7 +48,7 @@ Accepts:
    - If `--show <id>`: display task details and exit
 
 2. **Claim task**
-   - Use `../mossy-scripts/flowctl.sh start <task-id>`
+   - Use `flowctl.sh start <task-id>`
    - Verify claim succeeded
    - Load task metadata: description, acceptance criteria, dependencies
    - **Read spec's Mossy-Config section and override global config**
@@ -71,15 +71,15 @@ Accepts:
 
 6. **Mark complete**
    - Write summary with changes and evidence
-   - Use `../mossy-scripts/flowctl.sh done <task-id> --summary-file <path>` or fallback
+   - Use `flowctl.sh done <task-id> --summary-file <path>` or fallback
    - Update task status to done
-   - **Commit behavior**: Respect commit-policy from config, read with `../mossy-scripts/load-mossy-config.sh COMMIT_POLICY <Spec ID>`
+   - **Commit behavior**: Respect commit-policy from config, read with `load-mossy-config.sh COMMIT_POLICY <Spec ID>`
      - manual: Do not commit (user must explicitly request)
      - auto-per-change: Auto-commit changes
      - auto-per-spec: Auto-commit when spec is complete
      - batch: Defer commit
-   - Construct commit message with co-authored-by from config, read with `../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY <Spec ID>`
-   - Read auto-push policy with `../mossy-scripts/load-mossy-config.sh AUTO_PUSH <Spec ID>`. If it is 'true': push after commit
+   - Construct commit message with co-authored-by from config, read with `load-mossy-config.sh CO_AUTHORED_BY <Spec ID>`
+   - Read auto-push policy with `load-mossy-config.sh AUTO_PUSH <Spec ID>`. If it is 'true': push after commit
    - Clean up workspace (optional, user choice)
 
 ## Task Execution Phases
@@ -179,25 +179,25 @@ After task execution:
 
 ## Integration with flowctl.sh
 
-All `.flow/` state operations MUST use `../mossy-scripts/flowctl.sh`:
+All `.flow/` state operations MUST use `flowctl.sh`:
 
 ```bash
 # Claim task
-../mossy-scripts/flowctl.sh start <task-id>
+flowctl.sh start <task-id>
 
 # Mark complete
-../mossy-scripts/flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
+flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
 
 # List ready tasks
-../mossy-scripts/flowctl.sh ready --json
+flowctl.sh ready --json
 
 # Show task
-../mossy-scripts/flowctl.sh show <task-id>
+flowctl.sh show <task-id>
 ```
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -213,11 +213,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during task execution
 if ! read_file path="$target_file" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-work" --error-type "tool-error" \
         --tool "read_file" --target "$target_file" \
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: implementation, Task: $task_id, Reading source file for modification" || true

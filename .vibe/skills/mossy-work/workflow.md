@@ -6,15 +6,15 @@ Phase-by-phase execution for task implementation.
 
 ```bash
 # Call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Load config
-FLOW_DIR=$(../mossy-scripts/load-mossy-config.sh FLOW_DIR 2>/dev/null) || true
-MOSSY_CONFIG=$(../mossy-scripts/load-mossy-config.sh MOSSY_CONFIG 2>/dev/null) || true
-COMMIT_POLICY=$(../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
-NEW_BRANCH_PER_SPEC=$(../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
-AUTO_PUSH=$(../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
-CO_AUTHORED_BY=$(../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
+FLOW_DIR=$(load-mossy-config.sh FLOW_DIR 2>/dev/null) || true
+MOSSY_CONFIG=$(load-mossy-config.sh MOSSY_CONFIG 2>/dev/null) || true
+COMMIT_POLICY=$(load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
+NEW_BRANCH_PER_SPEC=$(load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
+AUTO_PUSH=$(load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
+CO_AUTHORED_BY=$(load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 ```
 
 ## Phase 1: Input Parsing
@@ -29,12 +29,12 @@ Parse order:
 ```
 
 **Actions:**
-- `--list`: Call `../mossy-scripts/flowctl.sh ready` or fallback, display table, exit
-- `--show <id>`: Call `../mossy-scripts/flowctl.sh show <id>`, display details, exit
-- `--next`: Call `../mossy-scripts/flowctl.sh ready`, take first, continue to Phase 2
+- `--list`: Call `flowctl.sh ready` or fallback, display table, exit
+- `--show <id>`: Call `flowctl.sh show <id>`, display details, exit
+- `--next`: Call `flowctl.sh ready`, take first, continue to Phase 2
 - `--continue <task-id>`: Load existing workspace, skip to Phase 4
 - `<task-id>`: Validate format, continue to Phase 2
-- `<spec-id>`: Find ready tasks for spec via `../mossy-scripts/flowctl.sh ready --spec <id>`, execute each in order
+- `<spec-id>`: Find ready tasks for spec via `flowctl.sh ready --spec <id>`, execute each in order
 
 ## Phase 2: Task Claim
 
@@ -43,10 +43,10 @@ For each task to execute:
 ```
 
 **Actions:**
-1. Check task exists: `../mossy-scripts/flowctl.sh show <task-id>`
+1. Check task exists: `flowctl.sh show <task-id>`
 2. Verify task is ready (status = todo, not blocked)
 3. Check dependencies: all `depends_on` tasks must be done
-4. Claim task: `../mossy-scripts/flowctl.sh start <task-id>`
+4. Claim task: `flowctl.sh start <task-id>`
 5. Load task metadata:
    - spec_id
    - description
@@ -220,7 +220,7 @@ Workspace: .flow/work/<task-id>/
    - Construct message with proper formatting
 4. Mark task done:
    ```bash
-   ../mossy-scripts/flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
+   flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
    ```
 5. Cleanup (optional, ask user):
    - Remove workspace: rm -rf .flow/work/<task-id>
@@ -239,7 +239,7 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 1. Document failures in summary.md
 2. Update task status to blocked or todo:
    ```bash
-   ../mossy-scripts/flowctl.sh reset <task-id>
+   flowctl.sh reset <task-id>
    # Or update with blocked_reason
    ```
 3. Report to user with specific failure details
@@ -267,10 +267,10 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 
 ```bash
 # At the beginning of workflow execution, call required scripts
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # Record any error encountered
-../mossy-scripts/record-issue.sh --skill "mossy-work" --error-type "$ERROR_TYPE" \
+record-issue.sh --skill "mossy-work" --error-type "$ERROR_TYPE" \
     --tool "$TOOL" --target "$TARGET" \
     --error "$ERROR_MSG" --context "$CONTEXT" || true
 ```
@@ -313,7 +313,7 @@ Where:
    - questions.log with unanswered questions
 3. User can:
    - Continue: re-run with --continue
-   - Abandon: `../mossy-scripts/flowctl.sh reset <task-id>`, delete workspace
+   - Abandon: `flowctl.sh reset <task-id>`, delete workspace
    - Manual fix: edit files directly, then mark done
 
 ## Tool Usage Guidelines

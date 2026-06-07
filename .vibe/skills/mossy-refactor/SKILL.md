@@ -265,10 +265,10 @@ Before applying any refactoring:
 For spec/task-based refactoring:
 ```bash
 # Get task acceptance criteria
-../mossy-scripts/flowctl.sh show <task-id>
+flowctl.sh show <task-id>
 
 # Mark refactoring task complete
-../mossy-scripts/flowctl.sh done <task-id> --summary-file .flow/refactors/<id>/summary.md
+flowctl.sh done <task-id> --summary-file .flow/refactors/<id>/summary.md
 ```
 
 ## Workspace Structure
@@ -328,7 +328,7 @@ For spec/task-based refactoring:
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 
@@ -344,11 +344,11 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ```bash
 # At skill start, call required utilities
-../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
+ensure-flow-dir.sh >/dev/null 2>&1 || true
 
 # When a tool fails during refactoring
 if ! read_file path="$target_file" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-refactor" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-refactor" --error-type "tool-error" \
         --tool "read_file" --target "$target_file" \
         --error "read_file failed: file not found or permission denied" \
         --context "Phase: analysis, Reading target file for refactoring" || true
@@ -356,7 +356,7 @@ fi
 
 # When operation is unsupported for language
 if ! is_supported_operation "$operation" "$language"; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-refactor" --error-type "validation-error" \
+    record-issue.sh --skill "mossy-refactor" --error-type "validation-error" \
         --tool "N/A" --target "$operation on $language" \
         --error "Unsupported operation: $operation for language $language" \
         --context "Phase: validation, Checking operation support" || true
@@ -364,7 +364,7 @@ fi
 
 # When search_replace fails to apply changes
 if ! search_replace file_path="$file" content="$changes" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-refactor" --error-type "tool-error" \
+    record-issue.sh --skill "mossy-refactor" --error-type "tool-error" \
         --tool "search_replace" --target "$file" \
         --error "search_replace failed: $?" \
         --context "Phase: implementation, Applying refactoring changes" || true
