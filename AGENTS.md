@@ -4,14 +4,14 @@
 
 This repository provides alternative skills to flow-next, designed for Mistral Vibe. They are intentionally minimal — **every word costs tokens; eliminate all that are not strictly necessary.**
 
+The project identifier is **mossy-slop**.
+
 The original plugin source can be found at git@github.com:gmickel/flow-next.git. To reference it, clone it here into .upstream.
 The ID of the last seen commit is 98372214c773ff00c0af9f73c575164c2724e093.
 
 ## Mission Statement
 
-This is supposed to become a leaner alternative, compatible with Mistral.
-
-The project identifier is **mossy-slop**.
+Be a leaner alternative to flow-next, compatible with Mistral.
 
 The focus should be the code; the code is the single source of truth, it should be able to speak for itself. Inline comments should provide the documentation.
 
@@ -32,8 +32,6 @@ Aid in planning and executing code changes across multiple languages.
 All skills use the `mossy-` prefix.
 
 > **Note:** The skills in `.vibe/skills/` and commands in `.vibe/commands/` are **executable** — they are invoked via slash commands and run as skills, not merely read as documentation or rough instructions.
-
-## Architecture
 
 ### Skill Structure
 
