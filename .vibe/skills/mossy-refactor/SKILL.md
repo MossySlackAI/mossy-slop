@@ -265,10 +265,10 @@ Before applying any refactoring:
 For spec/task-based refactoring:
 ```bash
 # Get task acceptance criteria
-flowctl.sh show <task-id>
+../mossy-scripts/flowctl.sh show <task-id>
 
 # Mark refactoring task complete
-flowctl.sh done <task-id> --summary-file .flow/refactors/<id>/summary.md
+../mossy-scripts/flowctl.sh done <task-id> --summary-file .flow/refactors/<id>/summary.md
 ```
 
 ## Workspace Structure

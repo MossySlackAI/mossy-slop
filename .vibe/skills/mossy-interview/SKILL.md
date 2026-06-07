@@ -183,7 +183,7 @@ Confidence tier:
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config and Resolved via Codebase sections added after References. Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
+After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Mossy-Config and Resolved via Codebase sections added after References. Use `echo "$content" | ../mossy-scripts/flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
 
 **For new specs**: Overwrite with complete refined spec in flowctl format + Mossy-Config.
 

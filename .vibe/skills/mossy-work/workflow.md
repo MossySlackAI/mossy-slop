@@ -29,12 +29,12 @@ Parse order:
 ```
 
 **Actions:**
-- `--list`: Call `flowctl.sh ready` or fallback, display table, exit
-- `--show <id>`: Call `flowctl.sh show <id>`, display details, exit
-- `--next`: Call `flowctl.sh ready`, take first, continue to Phase 2
+- `--list`: Call `../mossy-scripts/flowctl.sh ready` or fallback, display table, exit
+- `--show <id>`: Call `../mossy-scripts/flowctl.sh show <id>`, display details, exit
+- `--next`: Call `../mossy-scripts/flowctl.sh ready`, take first, continue to Phase 2
 - `--continue <task-id>`: Load existing workspace, skip to Phase 4
 - `<task-id>`: Validate format, continue to Phase 2
-- `<spec-id>`: Find ready tasks for spec via `flowctl.sh ready --spec <id>`, execute each in order
+- `<spec-id>`: Find ready tasks for spec via `../mossy-scripts/flowctl.sh ready --spec <id>`, execute each in order
 
 ## Phase 2: Task Claim
 
@@ -43,10 +43,10 @@ For each task to execute:
 ```
 
 **Actions:**
-1. Check task exists: `flowctl.sh show <task-id>`
+1. Check task exists: `../mossy-scripts/flowctl.sh show <task-id>`
 2. Verify task is ready (status = todo, not blocked)
 3. Check dependencies: all `depends_on` tasks must be done
-4. Claim task: `flowctl.sh start <task-id>`
+4. Claim task: `../mossy-scripts/flowctl.sh start <task-id>`
 5. Load task metadata:
    - spec_id
    - description
@@ -220,7 +220,7 @@ Workspace: .flow/work/<task-id>/
    - Construct message with proper formatting
 4. Mark task done:
    ```bash
-   flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
+   ../mossy-scripts/flowctl.sh done <task-id> --summary-file .flow/work/<task-id>/summary.md
    ```
 5. Cleanup (optional, ask user):
    - Remove workspace: rm -rf .flow/work/<task-id>
@@ -239,7 +239,7 @@ mv /tmp/temp.json .flow/tasks/<task-id>.json
 1. Document failures in summary.md
 2. Update task status to blocked or todo:
    ```bash
-   flowctl.sh reset <task-id>
+   ../mossy-scripts/flowctl.sh reset <task-id>
    # Or update with blocked_reason
    ```
 3. Report to user with specific failure details
@@ -313,7 +313,7 @@ Where:
    - questions.log with unanswered questions
 3. User can:
    - Continue: re-run with --continue
-   - Abandon: `flowctl.sh reset <task-id>`, delete workspace
+   - Abandon: `../mossy-scripts/flowctl.sh reset <task-id>`, delete workspace
    - Manual fix: edit files directly, then mark done
 
 ## Tool Usage Guidelines

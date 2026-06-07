@@ -40,8 +40,8 @@ Accepts:
    - ID format: `<spec-id>.M` (fn-1.1, fn-1.2...)
 
 4. **Write artifacts**
-   - Task files: Use `flowctl.sh task create --spec <spec-id> --title <title>` to create task, then `flowctl.sh task set-spec --file - <task-id>` to set task content
-   - **Dependency tracking**: Use `flowctl.sh task set-deps --deps <dep-list> <task-id>` to set task dependencies
+   - Task files: Use `../mossy-scripts/flowctl.sh task create --spec <spec-id> --title <title>` to create task, then `../mossy-scripts/flowctl.sh task set-spec --file - <task-id>` to set task content
+   - **Dependency tracking**: Use `../mossy-scripts/flowctl.sh task set-deps --deps <dep-list> <task-id>` to set task dependencies
 
 ## Spec Format
 
