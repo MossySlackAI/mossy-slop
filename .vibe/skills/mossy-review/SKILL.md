@@ -231,28 +231,29 @@ Review reports stored in:
 
 ## Git Integration
 
+### Base Commit for Comparisons
+
+```bash
+# this gives the commit hash of the last commit that is not on some other (maybe remote) brach, it is a good base commit. Review all changes after it.
+BASE_COMMIT=$(git log --pretty="%H%d" HEAD~2 | grep '(' | head -n 1 | sed -e 's/(.*//' | sed -e 's/ //g')
+```
+
 ### Detecting Changes
 ```bash
-# Unstaged changes
-git diff --name-only
-
-# Staged changes
-git diff --staged --name-only
-
 # All uncommitted changes
 git diff HEAD --name-only
 
-# Since last commit
-git diff HEAD~1 --name-only
+# Changes to review
+git diff ${BASE_COMMIT} --name-only
 ```
 
 ### Capturing Diffs
 ```bash
 # Full diff
-git diff > .flow/reviews/current/diff.patch
+git diff ${BASE_COMMIT} > .flow/reviews/current/diff.patch
 
 # Diff for specific file
-git diff <file> > .flow/reviews/current/<file>.diff
+git diff ${BASE_COMMIT} <file> > .flow/reviews/current/<file>.diff
 ```
 
 ## Commands for Users
