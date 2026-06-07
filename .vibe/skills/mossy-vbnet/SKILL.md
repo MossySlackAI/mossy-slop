@@ -140,7 +140,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Always use Option Strict On
 - Always use Option Explicit On

@@ -158,7 +158,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Always use @onready for node references that need to be ready
 - Always check is_inside_tree() before accessing scene tree

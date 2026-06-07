@@ -166,7 +166,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Follow PEP 8 style guide
 - Use type hints for public APIs

@@ -373,7 +373,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Never modify files without explicit operation
 - Never apply changes in dry-run mode

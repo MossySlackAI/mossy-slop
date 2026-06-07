@@ -147,7 +147,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Always implement IDisposable for resources
 - Use async/await for I/O operations

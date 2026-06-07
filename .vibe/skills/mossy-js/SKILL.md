@@ -161,7 +161,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Prefer ES Modules over CommonJS for new code
 - Always handle promise rejections

@@ -139,7 +139,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Never modify include order without reason
 - Always prefer standard library over custom implementations

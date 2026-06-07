@@ -311,7 +311,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Never modify source files
 - Never auto-fix issues (user decision only)

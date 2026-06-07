@@ -162,7 +162,7 @@ fi
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
 
-## Guardrails
+## GUARDRAILS
 
 - Prefer interfaces over type aliases for object shapes
 - Use strict mode
