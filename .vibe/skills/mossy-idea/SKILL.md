@@ -18,14 +18,11 @@ Accepts:
 
 ## Flow
 
-1. **Phase 1: Setup**
-   - Call `ensure-flow-dir.sh` to create `.flow/specs/`
-   
-2. **Phase 2: Validate Input**
+1. **Phase 2: Validate Input**
    - If $ARGUMENTS is empty or whitespace-only, prompt user for idea text using ask_user_question (header max: 11 chars)
    - Strip leading/trailing whitespace from idea text
 
-3. **Phase 3: Create Spec File**
+2. **Phase 3: Create Spec File**
    - Use `flowctl.sh spec create --title "<title>"` to create new spec with skeleton
    - Capture spec_id from output (format: `Spec fn-N-<slug> created: <title>`)
    - Or scan `.flow/specs/` for newest spec matching pattern `fn-*-<slug>.md`
@@ -34,22 +31,16 @@ Accepts:
    - Write back using `echo "$content" | flowctl.sh spec set-plan --file - <spec-id>`
    - Title: Capitalize first letter of each word in idea text (passed to spec create)
 
-4. **Phase 4: Output Result**
+3. **Phase 4: Output Result**
    - Print: `Spec written to .flow/specs/<spec-id>`
    - Print: `Next: /mossy:interview <spec-id-without-.md>`
 
-### Integration Code
-
-```bash
-# At skill start, setup directories
-ensure-flow-dir.sh >/dev/null 2>&1 || true
-```
-
-**Note:** Use `|| true` to prevent recording failures from breaking skill execution.
+**Note:** Use `|| true` to prevent script failures from breaking skill execution.
 
 ## GUARDRAILS
 
 - **CRITICAL: NO actual work, no thinking, no planning, no reading. ONLY output: spec file to `.flow/specs/<id>.md` via flowctl.sh**
+- **DO NOT call flowctl.py** - use flowctl.sh
 - **Do NOT create tasks** - that's plan's job
 - **Do NOT create plans in ~/.vibe/plans **
 
