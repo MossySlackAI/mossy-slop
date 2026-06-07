@@ -23,13 +23,15 @@
       ],
       "license": "MIT",
       "skills": [
-        "./skills/mossy-flowctl",
-        "./skills/mossy-plan",
-        "./skills/mossy-interview",
-        "./skills/mossy-work",
-        "./skills/mossy-review",
-        "./skills/mossy-refactor",
-        "./skills/mossy-analyze"
+        "./.vibe/skills/mossy-analyze",
+        "./.vibe/skills/mossy-finish",
+        "./.vibe/skills/mossy-idea",
+        "./.vibe/skills/mossy-interview",
+        "./.vibe/skills/mossy-plan",
+        "./.vibe/skills/mossy-refactor",
+        "./.vibe/skills/mossy-review",
+        "./.vibe/skills/mossy-scan",
+        "./.vibe/skills/mossy-work"
       ]
     }
   ]

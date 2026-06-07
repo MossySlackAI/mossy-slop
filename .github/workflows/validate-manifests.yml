@@ -7,16 +7,16 @@ on:
       - '.github/plugin/marketplace.json'
       - '.claude-plugin/marketplace.json'
       - '.vibe/agents.toml'
-      - 'skills/**/SKILL.md'
-      - 'commands/**/*.md'
+      - '.vibe/skills/**/SKILL.md'
+      - '.vibe/commands/**/*.md'
   pull_request:
     branches: [main]
     paths:
       - '.github/plugin/marketplace.json'
       - '.claude-plugin/marketplace.json'
       - '.vibe/agents.toml'
-      - 'skills/**/SKILL.md'
-      - 'commands/**/*.md'
+      - '.vibe/skills/**/SKILL.md'
+      - '.vibe/commands/**/*.md'
   workflow_dispatch:
 
 jobs:
@@ -78,7 +78,7 @@ jobs:
           REQUIRED_FIELDS=("name" "description" "user-invocable" "allowed-tools")
           
           echo "Checking all SKILL.md files..."
-          for skill_file in skills/mossy-*/SKILL.md; do
+          for skill_file in .vibe/skills/mossy-*/SKILL.md; do
             if [ ! -f "$skill_file" ]; then
               echo "  ✗ $skill_file not found"
               exit 1
@@ -119,7 +119,7 @@ jobs:
           REQUIRED_FIELDS=("name" "description")
           
           echo "Checking all command files..."
-          for cmd_file in commands/mossy-*.md; do
+          for cmd_file in .vibe/commands/mossy-*.md; do
             if [ ! -f "$cmd_file" ]; then
               echo "  ✗ $cmd_file not found"
               exit 1

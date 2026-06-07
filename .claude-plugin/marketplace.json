@@ -9,15 +9,15 @@
   "homepage": "https://github.com/MossySlackAI/mossy-slop",
   "repository": "https://github.com/MossySlackAI/mossy-slop",
   "metadata": {
-    "description": "Mossy Slop - 14 skills for code planning, execution, review, refactoring, and analysis across C++, C#, VB.NET, JavaScript, TypeScript, GDScript, and Python.",
+    "description": "Mossy Slop - Core skills for planning, execution, review, refactoring, and analysis across multiple languages",
     "version": "1.0.0",
     "license": "MIT"
   },
   "plugins": [
     {
-      "name": "mossy-core",
-      "source": "./skills",
-      "description": "Core mossy skills: flowctl, plan, interview, work, review, refactor, analyze",
+      "name": "mossy-slop",
+      "source": "./.vibe/skills",
+      "description": "Mossy Slop - Core skills for planning, execution, review, refactoring, and analysis",
       "version": "1.0.0",
       "category": "development",
       "keywords": [
@@ -26,23 +26,19 @@
         "task-management",
         "code-review",
         "refactoring",
-        "static-analysis"
-      ]
-    },
-    {
-      "name": "mossy-languages",
-      "source": "./skills",
-      "description": "Language-specific mossy skills: C++, C#, VB.NET, JavaScript, TypeScript, GDScript, Python",
-      "version": "1.0.0",
-      "category": "language-support",
-      "keywords": [
-        "c++",
-        "csharp",
-        "vb.net",
-        "javascript",
-        "typescript",
-        "gdscript",
-        "python"
+        "static-analysis",
+        "mistral-vibe"
+      ],
+      "skills": [
+        "mossy-analyze",
+        "mossy-finish",
+        "mossy-idea",
+        "mossy-interview",
+        "mossy-plan",
+        "mossy-refactor",
+        "mossy-review",
+        "mossy-scan",
+        "mossy-work"
       ]
     }
   ]

@@ -2,6 +2,7 @@
 """Validate that all skills listed in Copilot marketplace.json exist and have SKILL.md files."""
 
 import json
+import os
 import sys
 
 
@@ -25,7 +26,35 @@ def main():
         print("No skills found in marketplace.json")
         sys.exit(0)
 
-    print('\n'.join(skills))
+    # Validate each skill path
+    all_valid = True
+    for skill in skills:
+        # Normalize path: remove leading ./ but preserve .vibe
+        if skill.startswith('./'):
+            path = skill[2:]  # Remove './' prefix
+        else:
+            path = skill
+        
+        # The skill path points to a directory containing SKILL.md
+        skill_dir = path
+        skill_file = os.path.join(path, 'SKILL.md')
+
+        # Check directory exists
+        if not os.path.isdir(skill_dir):
+            print(f"Error: Directory does not exist: {skill_dir}")
+            all_valid = False
+            continue
+
+        # Check SKILL.md exists
+        if not os.path.isfile(skill_file):
+            print(f"Error: SKILL.md does not exist: {skill_file}")
+            all_valid = False
+            continue
+
+    if all_valid:
+        print('\n'.join(skills))
+    else:
+        sys.exit(1)
 
 
 if __name__ == '__main__':
