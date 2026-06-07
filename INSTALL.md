@@ -188,21 +188,7 @@ mossy-slop/
 │   │   └── SKILL.md
 │   ├── mossy-analyze/
 │   │   └── SKILL.md
-│   ├── mossy-interview/
-│   │   └── SKILL.md
-│   ├── mossy-cpp/
-│   │   └── SKILL.md
-│   ├── mossy-csharp/
-│   │   └── SKILL.md
-│   ├── mossy-vbnet/
-│   │   └── SKILL.md
-│   ├── mossy-js/
-│   │   └── SKILL.md
-│   ├── mossy-ts/
-│   │   └── SKILL.md
-│   ├── mossy-gdscript/
-│   │   └── SKILL.md
-│   └── mossy-py/
+│   └── mossy-interview/
 │       └── SKILL.md
 └── commands/                   # Slash command definitions
     ├── mossy-plan.md
@@ -210,8 +196,7 @@ mossy-slop/
     ├── mossy-review.md
     ├── mossy-refactor.md
     ├── mossy-analyze.md
-    ├── mossy-interview.md
-    └── mossy-*.md
+    └── mossy-interview.md
 ```
 
 ### Copy to Your Tool
