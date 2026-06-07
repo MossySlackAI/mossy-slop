@@ -24,33 +24,38 @@ See [INSTALL.md](INSTALL.md).
 
 ```mermaid
 
-flowchart TD
-    subgraph Spec
+flowchart LR
+    subgraph SPEC[Spec]
         START((Start)) -->
         IDEA(/mossy:idea) -->
         INTERVIEW(/mossy:interview)
     end
 
-    subgraph Changes
-        WORK(/mossy:work) -->
-        REVIEW(/mossy:review)
+    subgraph FINISH[ /mossy:finish]
+        subgraph CHANGES
+            WORK(/mossy:work) -->
+            REVIEW(/mossy:review)
+        end
+
+        PLAN(/mossy:plan) -->
+        WORK
+
+        REVIEW -->
+        COMMIT(commit, push, PR)
     end
 
-    Spec -->
-    PLAN(/mossy:plan) -->
-    Changes -->
-    FINISH(commit, push, PR)
+    START --> INTERVIEW --> PLAN
 
-    START --> INTERVIEW
-
-    class Changes,Spec sub
-    classDef sub fill:none,stroke:#007
+    class CHANGES,SPEC,FINISH sub
+    classDef sub fill:none
  
 ```
 
 ### 0. Idea
 
-If you want to start from the very beginning, use `/mossy:idea` to just record your idea in a spec file. You can skip straight to step 1. But know that there is a higher risk that your AI will just barge ahead and do the work instead of following the workflow.
+If you want to start from the very beginning, use `/mossy:idea` to just record your idea in a spec file. The best way is to just call it without parameters and give it the instructions when prompted.
+
+You can also give the idea text directly on the command line, and you can skip straight to step 1. But know that there is a higher risk that your AI will just barge ahead and do the work instead of following the workflow.
 
 ### 1. Interview
 
@@ -96,6 +101,8 @@ This will:
 - Check that all acceptance criteria are met
 - Verify code quality
 - Ensure consistency with existing patterns
+
+#### Steps 2 to 4 can be executed in one go using /mossy:finish
 
 #### 5. Commit
 
