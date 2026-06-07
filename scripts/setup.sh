@@ -60,7 +60,7 @@ else
 fi
 
 # Count skills (follow symlinks)
-SKILL_COUNT=$(find -L "$REPO_ROOT/.vibe/skills/" -name "mossy-*" -mindepth 1 -maxdepth 1 -type d | wc -l)
+SKILL_COUNT=$(find -L "$REPO_ROOT/.vibe/skills/" -mindepth 1 -maxdepth 1 -name "mossy-*" -type d | wc -l)
 
 echo ""
 echo "Setup complete!"
