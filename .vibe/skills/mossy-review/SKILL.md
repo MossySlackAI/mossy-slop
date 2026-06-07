@@ -7,17 +7,9 @@ allowed-tools: read_file,write_file,grep,bash,ask_user_question,task
 
 # mossy-review
 
-This is a leaner alternative to flow-next, compatible with Mistral Vibe.
-
 The focus is the code; code is the single source of truth, it should be able to speak for itself. Inline comments provide the documentation.
 
 The human retains full control and responsibility. They can verify the quality of individual steps during or after processing.
-
-It is the user's choice whether individual steps are committed to git, and whether auto-generated plan metadata gets committed or not.
-
-When questions arise during processing, they are logged to human-readable output immediately but processing continues; open questions are asked in bulk at the end.
-
-Speed and token conservation are valued higher than exhaustive question discovery.
 
 ## Review
 
@@ -165,6 +157,7 @@ Accepts:
 - Insecure deserialization
 - Missing authentication/authorization
 - Input sanitization
+- Race conditions
 
 ### Performance Checks
 - N+1 query patterns
@@ -212,22 +205,14 @@ For task/spec reviews, use flowctl.sh to load metadata:
 
 ```bash
 # Get task details
-flowctl.sh show <task-id>
+../mossy-scripts/flowctl.sh show <task-id>
 
 # Get spec details  
-flowctl.sh show <spec-id>
+../mossy-scripts/flowctl.sh show <spec-id>
 
 # List tasks for spec
-flowctl.sh tasks --spec <spec-id>
+../mossy-scripts/flowctl.sh tasks --spec <spec-id>
 ```
-
-## Fallback Behavior
-
-If flowctl.sh not available:
-- Read task metadata from `.flow/tasks/<id>.json`
-- Read spec from `.flow/specs/<id>.md` or `.json`
-- Parse acceptance criteria from markdown
-- Use git directly for diff operations
 
 ## Workspace Structure
 
@@ -354,10 +339,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ```bash
 # At skill start, call required utilities
 ../mossy-scripts/ensure-flow-dir.sh >/dev/null 2>&1 || true
-COMMIT_POLICY=$(../mossy-scripts/load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true
-NEW_BRANCH_PER_SPEC=$(../mossy-scripts/load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true
-AUTO_PUSH=$(../mossy-scripts/load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true
-CO_AUTHORED_BY=$(../mossy-scripts/load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true
 
 # When a tool fails during analysis
 if ! read_file path="$file_path" 2>/dev/null; then
@@ -367,21 +348,6 @@ if ! read_file path="$file_path" 2>/dev/null; then
         --context "Phase: analysis, Task: $task_id, Reading file for review" || true
 fi
 
-# When file type is unsupported
-if [[ ! "$file_ext" =~ \.(py|cpp|cs|js|ts|gd|vb)$ ]]; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-review" --error-type "validation-error" \
-        --tool "N/A" --target "$file_path" \
-        --error "Unsupported file type for review: $file_ext" \
-        --context "Phase: target resolution, Validating file type" || true
-fi
-
-# When linter check fails
-if ! run_linter "$file_path" 2>/dev/null; then
-    ../mossy-scripts/record-issue.sh --skill "mossy-review" --error-type "tool-error" \
-        --tool "bash" --target "$file_path" \
-        --error "Linter check failed with exit code $?" \
-        --context "Phase: verification, Running style checks" || true
-fi
 ```
 
 **Note:** Use `|| true` to prevent recording failures from breaking skill execution.
