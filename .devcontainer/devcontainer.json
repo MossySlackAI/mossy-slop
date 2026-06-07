@@ -21,6 +21,16 @@
 	// "customizations": {},
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	"remoteUser": "root"
+
+	"remoteUser": "root",
 	// This should avoid git complaining about unsafe repository, and allow editing.
+
+	// add mermaid plugin
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"MermaidChart.vscode-mermaid-chart"
+			]
+		}
+	}
 }

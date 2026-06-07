@@ -27,30 +27,13 @@ Manual edits by real people are explicitly welcome!
 git clone https://github.com/manuel/mossy-slop.git
 cd mossy-slop
 
-# Run the development setup script
-./scripts/dev-setup.sh
+# Open in VS code
+code .
 ```
 
-This creates symlinks in `.vibe/` so you can use the skills immediately with Mistral Vibe.
+There is a Dev Container setup, you can use it. It contains only the bare minimum; python, Mistral Vibe, PyYAML (optional dependency of flowctl.py). The container allows you to switch to 'auto approve' without too much worry.
 
-### Alternative: Manual Setup
-
-```bash
-# Create .vibe directory
-mkdir -p .vibe
-
-# Create symlinks
-ln -s "$(pwd)/commands" .vibe/commands
-ln -s "$(pwd)/skills" .vibe/skills
-```
-
-### Verify Setup
-
-```bash
-# Check that files are accessible
-ls -la .vibe/commands/ | head
-ls -la .vibe/skills/ | head
-```
+Of course, you can use any other editor, or just make changes via `vibe` from the command line.
 
 ## Contribution Workflow
 
@@ -58,82 +41,15 @@ All contributions follow this workflow using the mossy skills:
 
 ```
 1. Identify the change/feature/fix needed
-2. Plan it using /mossy:plan
-3. Implement it using /mossy:work
-4. Review it using /mossy:review
-5. Commit and push
-6. Record any issues to .flow/issues/
+2. Refine the feature with /mossy:interview
+3. Plan it using /mossy:plan
+4. Implement it using /mossy:work
+5. Review it using /mossy:review
+6. Commit and push
+7. Record any issues to .flow/issues/
 ```
 
-### Step-by-Step
-
-#### 1. Planning
-
-For any non-trivial change, create a plan:
-
-```
-/mossy:plan "Add new mossy-rust skill for Rust language support"
-```
-
-This will:
-- Create a spec file in `.flow/specs/`
-- Break the work into tasks in `.flow/tasks/`
-- Define acceptance criteria
-
-#### 2. Implementation
-
-Execute the tasks using the work skill:
-
-```
-/mossy:work fn-N.1  # Where fn-N.1 is the first task ID from planning
-```
-
-The work skill will:
-- Read the task requirements
-- Implement the changes
-- Record progress
-
-For multiple tasks, execute them in order:
-
-```
-/mossy:work fn-N.1
-/mossy:work fn-N.2
-/mossy:work fn-N.3
-```
-
-#### 3. Review
-
-Before committing, review all changes:
-
-```
-/mossy:review fn-N
-```
-
-This will:
-- Check that all acceptance criteria are met
-- Verify code quality
-- Ensure consistency with existing patterns
-
-#### 4. Commit
-
-Commit your changes with a clear message:
-
-```bash
-git add .
-git commit -m "feat: Add mossy-rust skill for Rust language support"
-```
-
-#### 5. Error Recording
-
-If you encounter any issues during development (tool errors, validation failures, etc.), record them:
-
-```bash
-# The error recording system is built into each skill
-# Errors are automatically recorded to .flow/issues/
-# Each issue gets its own file with full context
-```
-
-See `.vibe/skills/mossy-scripts/ISSUE_RECORDING.md` for details on the error recording system.
+For details, see [README.md](README.md#workflow).
 
 ## Adding a New Skill
 
