@@ -25,14 +25,7 @@ A reasonable effort should be made in the planning phase to discover open questi
 
 ## Purpose
 
-Aid in planning and executing code changes across:
-- C++
-- C#
-- VB.NET
-- JavaScript
-- TypeScript
-- GDScript
-- Python
+Aid in planning and executing code changes across multiple languages.
 
 ## Skill Prefix
 
@@ -88,18 +81,6 @@ argument-hint: "[args]"
 | `mossy-analyze` | `/mossy-analyze` | Static analysis across languages |
 | `mossy-scan` | `/mossy-scan` | Deep scan of the repository. Creates or updates AGENTS.md files |
 
-## Language-Specific Skills
-
-| Skill | Command | Languages |
-|-------|---------|-----------|
-| `mossy-cpp` | `/mossy-cpp` | C++ |
-| `mossy-csharp` | `/mossy-csharp` | C# |
-| `mossy-vbnet` | `/mossy-vbnet` | VB.NET |
-| `mossy-js` | `/mossy-js` | JavaScript |
-| `mossy-ts` | `/mossy-ts` | TypeScript |
-| `mossy-gdscript` | `/mossy-gdscript` | GDScript |
-| `mossy-py` | `/mossy-py` | Python |
-
 ## Directory Structure
 
 ```
@@ -125,21 +106,7 @@ argument-hint: "[args]"
 │   │   │   └── SKILL.md
 │   │   ├── mossy-analyze/
 │   │   │   └── SKILL.md
-│   │   ├── mossy-scan/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-cpp/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-csharp/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-vbnet/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-js/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-ts/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-gdscript/
-│   │   │   └── SKILL.md
-│   │   └── mossy-py/
+│   │   └── mossy-scan/
 │   │       └── SKILL.md
 │   └── commands/         # Slash command definitions
 │       ├── mossy-plan.md
@@ -148,14 +115,7 @@ argument-hint: "[args]"
 │       ├── mossy-review.md
 │       ├── mossy-refactor.md
 │       ├── mossy-analyze.md
-│       ├── mossy-scan.md
-│       ├── mossy-cpp.md
-│       ├── mossy-csharp.md
-│       ├── mossy-vbnet.md
-│       ├── mossy-js.md
-│       ├── mossy-ts.md
-│       ├── mossy-gdscript.md
-│       └── mossy-py.md
+│       └── mossy-scan.md
 └── scripts/             # Utility scripts
 ```
 
@@ -167,26 +127,17 @@ argument-hint: "[args]"
 - Direct, imperative language
 - Minimal context in prompts
 
-### 2. Language Awareness
-Each language-specific skill knows:
-- File extensions
-- Build systems
-- Common patterns
-- Pitfalls
-- Tooling conventions
-
-### 3. Mistral Compatibility
+### 2. Mistral Compatibility
 - Use Mistral Vibe tool names (`ask_user_question`, `read_file`, `grep`, etc.)
 - No Claude-specific assumptions
 - No external dependencies
 
-### 4. Composable
+### 3. Composable
 Skills can chain:
 ```
 /mossy-plan fn-1-add-feature
 /mossy-work fn-1-add-feature.1
 /mossy-review
-/mossy-cpp --check-style
 ```
 
 ## Tool Usage
@@ -364,9 +315,8 @@ fi
 
 ### Existing Implementations
 
-All 14 skills currently implement error recording:
+All 7 core skills currently implement error recording:
 - Core: mossy-plan, mossy-interview, mossy-work, mossy-review, mossy-refactor, mossy-analyze, mossy-flowctl
-- Language: mossy-cpp, mossy-csharp, mossy-vbnet, mossy-js, mossy-ts, mossy-gdscript, mossy-py
 
 ### For New Skills
 
