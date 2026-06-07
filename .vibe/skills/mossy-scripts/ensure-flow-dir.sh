@@ -21,6 +21,7 @@ if mkdir -v -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues" "$FLOW_DIR
             exit 1
         fi
     fi
+    test -r "$FLOW_DIR/meta.json" || "$SCRIPT_DIR/flowctl.sh" init
     exit 0
 else
     echo "Error: Failed to create .flow/ directory structure" >&2
