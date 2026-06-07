@@ -13,8 +13,7 @@ FLOW_DIR=".flow"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Create all required subdirectories
-if mkdir -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues" "$FLOW_DIR/work" "$FLOW_DIR/reviews" 2>/dev/null; then
-    echo "Success: .flow/ directory structure created"
+if mkdir -v -p "$FLOW_DIR/specs" "$FLOW_DIR/tasks" "$FLOW_DIR/issues" "$FLOW_DIR/work" "$FLOW_DIR/reviews" 2>/dev/null; then
     if ! test -r $FLOW_DIR/mossy-config; then
         if cp ${SCRIPT_DIR}/mossy-config.default $FLOW_DIR/mossy-config; then
             echo "Default configuration $FLOW_DIR/mossy-config created"
