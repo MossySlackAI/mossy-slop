@@ -76,7 +76,7 @@ If input is idea text, scan for config overrides in format `key=value`:
 - `auto-push=true|false`
 - `co-authored-by=<string>` (freeform, supports spaces if quoted)
 
-Override global config defaults with parsed values, then apply R3 logic.
+Override global config defaults with parsed values.
 For co-authored-by, extract value after `=` (handles quoted strings for spaces).
 
 ### Phase 2: Pre-Question Codebase Investigation
