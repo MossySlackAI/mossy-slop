@@ -15,4 +15,19 @@ pushd . 1>/dev/null
     done
 popd 1>/dev/null
 
-exec python3 "$SCRIPT_DIR/flowctl.py" "$@"
+python3 "$SCRIPT_DIR/flowctl.py" "$@"
+
+# amend skeleton spec
+if test "$1" == "spec" && test "$2" == "skeleton"; then
+cat << EOF
+
+## Mossy-Config
+- commit-policy: <manual|auto-per-change|auto-per-spec|batch>
+- new-branch-per-spec: <true|false>
+- auto-push: <true|false>
+- co-authored-by: <string>
+
+## Resolved via Codebase
+- <item> — <file:line>
+EOF
+fi
