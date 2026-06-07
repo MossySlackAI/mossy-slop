@@ -72,13 +72,15 @@ argument-hint: "[args]"
 
 | Skill | Command | Purpose |
 |-------|---------|---------|
-| `mossy-flowctl` | N/A (internal) | Wrapper for flowctl.py operations |
-| `mossy-plan` | `/mossy-plan` | Create execution plan from spec |
+| `mossy-idea` | `/mossy:idea` | Write a minimal spec file draft for later refinement |
 | `mossy-interview` | `/mossy-interview` | Technical interview to refine specs before planning |
+| `mossy-plan` | `/mossy-plan` | Create execution plan from spec |
 | `mossy-work` | `/mossy-work` | Execute plan tasks |
 | `mossy-review` | `/mossy-review` | Review changes before commit |
-| `mossy-refactor` | `/mossy-refactor` | Language-aware refactoring |
+| `mossy-finish` | `/mossy:finish` | Execute full workflow (plan, work, review) on a spec |
+| `mossy-flowctl` | N/A (internal) | Wrapper for flowctl.py operations |
 | `mossy-analyze` | `/mossy-analyze` | Static analysis across languages |
+| `mossy-refactor` | `/mossy-refactor` | Language-aware refactoring |
 | `mossy-scan` | `/mossy-scan` | Deep scan of the repository. Creates or updates AGENTS.md files |
 
 ## Directory Structure
@@ -90,31 +92,45 @@ argument-hint: "[args]"
 ├── .gitlab-ci.yml        # CI configuration
 ├── .vibe/                # Executable skills and commands
 │   ├── skills/           # All skills
-│   │   ├── mossy-flowctl/
-│   │   │   └── SKILL.md
-│   │   ├── mossy-plan/
+│   │   ├── mossy-idea/
 │   │   │   └── SKILL.md
 │   │   ├── mossy-interview/
 │   │   │   ├── SKILL.md
 │   │   │   └── questions-technical.md
+│   │   ├── mossy-plan/
+│   │   │   └── SKILL.md
 │   │   ├── mossy-work/
 │   │   │   ├── SKILL.md
 │   │   │   └── workflow.md
 │   │   ├── mossy-review/
 │   │   │   └── SKILL.md
-│   │   ├── mossy-refactor/
+│   │   ├── mossy-finish/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-flowctl/
 │   │   │   └── SKILL.md
 │   │   ├── mossy-analyze/
 │   │   │   └── SKILL.md
-│   │   └── mossy-scan/
-│   │       └── SKILL.md
+│   │   ├── mossy-refactor/
+│   │   │   └── SKILL.md
+│   │   ├── mossy-scan/
+│   │   │   └── SKILL.md
+│   │   └── mossy-scripts/
+│   │       ├── flowctl.sh
+│   │       ├── flowctl.py
+│   │       ├── flowctl_review.md
+│   │       ├── ISSUE_RECORDING.md
+│   │       ├── ISSUE_TEMPLATE.md
+│   │       ├── record-issue.sh
+│   │       └── load-mossy-config.sh
 │   └── commands/         # Slash command definitions
-│       ├── mossy-plan.md
+│       ├── mossy-idea.md
 │       ├── mossy-interview.md
+│       ├── mossy-plan.md
 │       ├── mossy-work.md
 │       ├── mossy-review.md
-│       ├── mossy-refactor.md
+│       ├── mossy-finish.md
 │       ├── mossy-analyze.md
+│       ├── mossy-refactor.md
 │       └── mossy-scan.md
 └── scripts/             # Utility scripts
 ```
@@ -315,8 +331,8 @@ fi
 
 ### Existing Implementations
 
-All 7 core skills currently implement error recording:
-- Core: mossy-plan, mossy-interview, mossy-work, mossy-review, mossy-refactor, mossy-analyze, mossy-flowctl
+All core skills implement error recording:
+- Core: mossy-idea, mossy-interview, mossy-plan, mossy-work, mossy-review, mossy-finish, mossy-flowctl, mossy-analyze, mossy-refactor, mossy-scan
 
 ### For New Skills
 
