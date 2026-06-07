@@ -188,7 +188,8 @@ Interview complete for <spec-id>.
 
 Spec written to .flow/specs/<id>.md
 
-Next: /mossy:plan <spec-id> to create execution plan
+Next: `/mossy:plan <spec-id>` to create execution plan
+Or: `/mossy:finish <spec-id>` to plan, execute and review in one go
 ```
 
 ## Question Bank: Technical

@@ -70,6 +70,7 @@ depends_on: fn-<N>.(M-1)
 ## Commands
 
 After plan creation, user can:
+- `/mossy:finish <spec-id>` - Execute all tasks and review in one go
 - `/mossy:work <spec-id>` - Execute all tasks
 - `/mossy:work <task-id>` - Execute single task
 - `/mossy:plan --list` - List all specs
@@ -77,7 +78,7 @@ After plan creation, user can:
 
 ## Error Recording
 
-This skill records errors to `.flow/issues/` following the [Issue Recording Guide](mossy-scripts/ISSUE_RECORDING.md).
+This skill records errors to `.flow/issues/` following the [Issue Recording Guide](../mossy-scripts/ISSUE_RECORDING.md).
 
 ### Error Types Recorded
 

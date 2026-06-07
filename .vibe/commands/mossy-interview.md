@@ -36,4 +36,4 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Next Steps
 
-After interview completes, use `/mossy:plan <spec-id>` to create execution plan.
+After interview completes, use `/mossy:plan <spec-id>` to create execution plan, or `/mossy:finish <spec-id>` to plan, execute and review in one go.
