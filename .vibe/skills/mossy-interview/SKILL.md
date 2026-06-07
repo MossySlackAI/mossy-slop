@@ -13,14 +13,6 @@ Technical interview skill. Extracts implementation details via targeted question
 
 **Focus**: The code is the single source of truth. Inline comments provide documentation. Human retains full control and responsibility.
 
-## Purpose
-
-**ONLY produces a spec file.** Extract complete technical implementation details before planning:
-- Clarify requirements that need human judgment
-- Investigate codebase for answerable questions (don't ask about what grep can find)
-- Surface contradictions between user statements and existing code
-- Produce a refined spec ready for `/mossy:plan`
-
 ## Input
 
 Full request: $ARGUMENTS

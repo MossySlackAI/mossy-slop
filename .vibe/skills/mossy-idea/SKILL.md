@@ -9,10 +9,6 @@ allowed-tools: bash, ask_user_question
 
 Write a minimal spec file draft into `.flow/specs/` for later refinement with `mossy-interview`. This skill is intentionally minimal — it only creates the initial Title and Goal sections, leaving all other details to the interview process.
 
-## Purpose
-
-Create a starting point for new features, changes, or ideas. Produces a minimal spec file that `mossy-interview` can then refine into a complete specification.
-
 ## Input
 
 $ARGUMENTS
