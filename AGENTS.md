@@ -39,8 +39,7 @@ Each skill lives in `.vibe/skills/mossy-<name>/` with:
 
 ```
 .vibe/skills/mossy-<name>/
-├── SKILL.md          # Frontmatter + high-level description
-└── workflow.md       # Optional: phase-by-phase execution (if complex)
+└── SKILL.md          # Frontmatter + high-level description
 ```
 
 ### Skill Frontmatter
@@ -98,8 +97,7 @@ argument-hint: "[args]"
 │   │   ├── mossy-plan/
 │   │   │   └── SKILL.md
 │   │   ├── mossy-work/
-│   │   │   ├── SKILL.md
-│   │   │   └── workflow.md
+│   │   │   └── SKILL.md
 │   │   ├── mossy-review/
 │   │   │   └── SKILL.md
 │   │   ├── mossy-finish/

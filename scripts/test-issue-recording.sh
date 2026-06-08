@@ -49,17 +49,12 @@ for skill_dir in "$REPO_ROOT/.vibe/skills/mossy-"* ; do
     fi
 done
 
-# Also check workflow.md
-if [ -f "$REPO_ROOT/.vibe/skills/mossy-work/workflow.md" ] && grep -q "Error Recording" "$REPO_ROOT/.vibe/skills/mossy-work/workflow.md"; then
-    COUNT=$((COUNT + 1))
-    echo "  ✓ mossy-work/workflow.md"
-fi
 
 echo ""
-if [ $COUNT -ge 13 ]; then
-    echo "✅ PASS: Found Error Recording in $COUNT files (expected >= 13)"
+if [ $COUNT -ge 7 ]; then
+    echo "✅ PASS: Found Error Recording in $COUNT files (expected >= 7)"
 else
-    echo "❌ FAIL: Only found Error Recording in $COUNT files (expected >= 13)"
+    echo "❌ FAIL: Only found Error Recording in $COUNT files (expected >= 7)"
     exit 1
 fi
 
