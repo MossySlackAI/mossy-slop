@@ -82,4 +82,8 @@ public:
 
 <TBD>
 
+## Notes from Humans
+
+<Add, leave empty. Never edit. Messages from the meatbrains to clankers go here.>
+
 ## <Other sections as appropriate for the content>
