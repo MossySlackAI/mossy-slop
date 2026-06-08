@@ -32,10 +32,10 @@ if test "$1" == "spec" && test "$2" == "skeleton"; then
 cat << EOF
 
 ## Mossy-Config
-- commit-policy: <manual|auto-per-change|auto-per-spec|batch>: fill from idea text or `load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true`
-- new-branch-per-spec: <true|false>: fill from idea text or `load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true`
-- auto-push: <true|false>: fill from idea text or `load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true`
-- co-authored-by: <string>: fill from idea text or `load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true`
+- commit-policy: $(./load-mossy-config.sh COMMIT_POLICY 2>/dev/null || true)
+- new-branch-per-spec: $(./load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null || true)
+- auto-push: $(./load-mossy-config.sh AUTO_PUSH 2>/dev/null || true)
+- co-authored-by: $(./load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null || true)
 
 ## Resolved via Codebase
 - <item> — <file:line>
