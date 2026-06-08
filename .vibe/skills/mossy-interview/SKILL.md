@@ -219,43 +219,7 @@ Ask only **non-obvious** questions. Skip questions that:
 
 ## Spec Format
 
-Specs use **flowctl canonical skeleton format** (call `flowctl.sh spec skeleton`) with Mossy-Config and Resolved via Codebase sections added:
-
-```markdown
-# <spec-id> <Title>
-
-## Overview
-<1-2 sentences describing the objective>
-
-## Scope
-<scope, boundaries, and API contracts>
-
-## Approach
-<architecture, data models, and edge cases>
-
-## Quick commands
-<!-- Required: at least one smoke command for the repo -->
-- `# <test-command>`
-
-## Acceptance
-- [ ] <verifiable criterion>
-- [ ] <verifiable criterion>
-...
-
-## References
-- <reference> — <file:line>
-
-## Mossy-Config
-- commit-policy: <manual|auto-per-change|auto-per-spec|batch>: fill from idea text or `load-mossy-config.sh COMMIT_POLICY 2>/dev/null) || true`
-- new-branch-per-spec: <true|false>: fill from idea text or `load-mossy-config.sh NEW_BRANCH_PER_SPEC 2>/dev/null) || true`
-- auto-push: <true|false>: fill from idea text or `load-mossy-config.sh AUTO_PUSH 2>/dev/null) || true`
-- co-authored-by: <string>: fill from idea text or `load-mossy-config.sh CO_AUTHORED_BY 2>/dev/null) || true`
-
-## Resolved via Codebase
-- <item> — <file:line>
-```
-
-**Note**: Resolved via Codebase and Mossy-Config are mossy-specific additions to the flowctl skeleton.
+Specs use **flowctl canonical skeleton format** (call `flowctl.sh spec skeleton`)
 
 ## Error Recording
 
