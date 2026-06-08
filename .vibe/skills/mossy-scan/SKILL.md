@@ -20,8 +20,7 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
   * Read the AGENT.md from the current directory, should it exist
   * Do an analysis of the content of the current directory, informed by what the reads taught you, but minding that they may be inaccurate
   * Read all the AGENT.md files again
-  * Output of the subagent should be the proposed (updated) contents of the AGENTS.md file in the current directory.
-    * Follow the template AGENTS_TEMPLATE.md, extend as required.
+  * Output of the subagent should be the proposed (updated) contents of the AGENTS.md file in the current directory. It should follow the structure given by AGENTS_TEMPLATE.md.
     * For subdirectories: Output should be brief, not more than 1000 words, and not repeat any information present in the higher level files.
     * For the top level directory: Output should be brief, but comprehensive. Aim for 2000 words or less.
 
