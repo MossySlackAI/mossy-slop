@@ -121,6 +121,6 @@ also change the general commit policy so that after every work item, we commit a
 
 This readme file is entirely human written. It serves both as a guide to the AI writing the rest of the system, and information to human users.
 
-The script flowctl.py is taken verbatim from flow-next for maximum compatibility, credit seems to go mostly to Claude Code, with instructions from Gordon Mickel.
+The script flowctl.py is taken verbatim from flow-next for maximum compatibility, credit seems to go mostly to some AI, with instructions from Gordon Mickel and collaborators.
 
 The rest of the system is mostly written by Mistral itself, with heavy tweaks by humans.
