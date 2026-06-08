@@ -37,7 +37,7 @@ Accepts:
 ## Flow
 
 0. **Prepare**
-   - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <Spec ID>` to get the branch policy. If that gives 'false', do nothing. If it gives 'true', make sure we are on a branch with name <Spec ID>.
+   - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <spec-id>` to get the branch policy. If that gives 'false', do nothing. If it gives 'true', make sure we are on a branch with name <spec-id>.
 
 1. **Resolve target**
    - If task ID: execute that task
@@ -72,13 +72,13 @@ Accepts:
    - Write summary with changes and evidence
    - Use `flowctl.sh done <task-id> --summary-file <path>` or fallback
    - Update task status to done
-   - **Commit behavior**: Respect commit-policy from config, read with `load-mossy-config.sh COMMIT_POLICY <Spec ID>`
+   - **Commit behavior**: Respect commit-policy from config, read with `load-mossy-config.sh COMMIT_POLICY <spec-id>`
      - manual: Do not commit (user must explicitly request)
      - auto-per-change: Auto-commit changes
      - auto-per-spec: Auto-commit when spec is complete
      - batch: Defer commit
-   - Construct commit message with co-authored-by from config, read with `load-mossy-config.sh CO_AUTHORED_BY <Spec ID>`
-   - Read auto-push policy with `load-mossy-config.sh AUTO_PUSH <Spec ID>`. If it is 'true': push after commit
+   - Construct commit message with co-authored-by from config, read with `load-mossy-config.sh CO_AUTHORED_BY <spec-id>`
+   - Read auto-push policy with `load-mossy-config.sh AUTO_PUSH <spec-id>`. If it is 'true': push after commit
    - Clean up workspace (optional, user choice)
 
 ## Task Execution Phases

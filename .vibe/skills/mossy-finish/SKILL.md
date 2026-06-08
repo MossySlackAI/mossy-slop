@@ -42,7 +42,7 @@ Accepts:
    - Store values in variables for later use
 
 3. **Branch Management**
-   - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <Spec ID>` to get the branch policyare on a branch with name <Spec ID>.
+   - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <spec-id>` to get the branch policyare on a branch with name <spec-id>.
    - If new-branch-per-spec=true:
      - Get current branch using `git branch --show-current`
      - If current branch is not <spec-id>, execute: `git checkout <spec-id> 2>/dev/null || git checkout -b <spec-id>`
@@ -66,18 +66,18 @@ Accepts:
      - Verify review report is generated
 
 5. **Commit and Push**
-   - **Commit Policy Check**: Respect commit-policy from config, read with `load-mossy-config.sh COMMIT_POLICY <Spec ID>`
+   - **Commit Policy Check**: Respect commit-policy from config, read with `load-mossy-config.sh COMMIT_POLICY <spec-id>`
      - manual: Do not commit (user must explicitly request)
      - auto-per-change: Auto-commit changes
      - auto-per-spec: Auto-commit when spec is complete
      - batch: Defer commit
    - Construct commit message with co-authored-by from config, 
-   - Read auto-push policy with `load-mossy-config.sh AUTO_PUSH <Spec ID>`. If it is 'true': push after commit
+   - Read auto-push policy with `load-mossy-config.sh AUTO_PUSH <spec-id>`. If it is 'true': push after commit
    - **Auto-Commit Execution** (if enabled):
      - Get list of changed files with `git status --porcelain`
      - If no changes, skip commit (nothing to commit)
      - Construct commit message: "mossy-finish: complete workflow for <spec-id>"
-     - Add co-authored-by trailer from config: "Co-authored-by: <value>", get value from read with `load-mossy-config.sh CO_AUTHORED_BY <Spec ID>`
+     - Add co-authored-by trailer from config: "Co-authored-by: <value>", get value from read with `load-mossy-config.sh CO_AUTHORED_BY <spec-id>`
      - Execute: `git add .` and `git commit -m "<message>"`
      - Verify commit succeeded
    - **Auto-Push Execution** (if auto-push=true and commit succeeded):

@@ -64,7 +64,7 @@ check the idea, compare it with the reality of the project, and then ask a coupl
 
 #### 2. Planning
 
-`/mossy:plan <spec id>`
+`/mossy:plan <spec-id>`
 
 This splits the spec into managable work items.
 
