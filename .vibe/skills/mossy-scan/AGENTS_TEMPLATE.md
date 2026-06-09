@@ -33,23 +33,6 @@
  - Frameworks: vue.js, ASP.NET, Blazor, ...
  - Tools: gcc, CMake, ...
 
-## Module Descriptions
-
-<a bit more detailed >
-
-| Module | Purpose | Key Files | More Info |
-|--------|---------|-----------|-----------|
-| **subdirectory_1** | <TBD> | <TBD> | <TBD, longer description> |
-| **subdirectory_2** | <TBD> | <TBD> | <TBD, longer description> |
-
-## Build System
-
-<TBD>
-
-## Automated Tests
-
-<TBD>
-
 ## Coding Conventions
 
 <respect local configuration in .editorconfig and .clang-format>
@@ -85,6 +68,14 @@ public:
 ```
 
 ## Key Patterns
+
+<TBD>
+
+## Build System
+
+<TBD>
+
+## Automated Tests
 
 <TBD>
 
