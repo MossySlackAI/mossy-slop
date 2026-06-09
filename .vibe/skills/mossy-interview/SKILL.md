@@ -210,6 +210,19 @@ Load questions from `skills/mossy-interview/questions-technical.md`.
 9. **Migration** - Breaking changes, rollback, feature flags
 10. **Acceptance** - What does "done" look like?
 
+### Standard Acceptance Criteria
+
+Strongly consider adding these evergreens.
+
+- [ ] Automated tests are written.
+  - Consider working test driven, write tests first.
+  - For new features, the tests should verify the feature exists and works. The fresh tests need to fail, maybe even fail to build.
+  - For bugs, the tests should fail as long as the bug is present. These tests should fail at first.
+  - For refactoring, the tests should document the status quo and succeed right away.
+- [ ] All automated tests pass.
+- [ ] All relevant documentation is updated.
+- [ ] All affected AGENTS.md files are updated.
+
 ### Question Selection
 
 Ask only **non-obvious** questions. Skip questions that:
