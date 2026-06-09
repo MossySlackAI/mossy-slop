@@ -11,26 +11,27 @@ if test -z "$REPO_ROOT" || test -z "$REPO_ROOT_SOURCE"; then
     exit 1
 fi
 
-echo "Mossy Slop - Local Development Setup"
+echo "Mossy Slop - Setup"
 echo "========================================"
 echo "Repository root: $REPO_ROOT"
+echo "Source: $REPO_ROOT_SOURCE"
 echo ""
 
 # Create .vibe directory if it doesn't exist
 mkdir -p "$REPO_ROOT/.vibe"
 
-# Create symlinks for local development
-echo "Creating symlinks..."
+# Create links (hard links, because they work universally and don't create leads for Vibe to follow)
+echo "Creating hardlinks..."
 
-# Symlink commands directory
-mkdir -p "$REPO_ROOT/.vibe/commands"
-for f in "$REPO_ROOT_SOURCE/.vibe/commands/*"; do ln -sfn $f "$REPO_ROOT/.vibe/commands/"; done
-echo "  ✓ .vibe/commands -> commands"
-
-# Symlink skills directory
-mkdir -p "$REPO_ROOT/.vibe/skills"
-for f in "$REPO_ROOT_SOURCE/.vibe/skills/*"; do ln -sfn $f "$REPO_ROOT/.vibe/skills/"; done
-echo "  ✓ .vibe/skills -> skills"
+# Symlink directories
+for subdir in commands skills; do
+    mkdir -p "$REPO_ROOT/.vibe/$subdir"
+    for f in "$REPO_ROOT_SOURCE/.vibe/$subdir/"*; do 
+        rm -rf "$REPO_ROOT/.vibe/$subdir/`basename $f`"
+        cp -al $f "$REPO_ROOT/.vibe/$subdir/"
+    done
+    echo "  ✓ .vibe/$subdir -> $subdir"
+done
 
 # Install default mossy-config if not exists
 if [ ! -f "$REPO_ROOT/.flow/mossy-config" ] && [ -f "$REPO_ROOT_SOURCE/.vibe/skills/mossy-scripts/mossy-config.default" ]; then
@@ -45,17 +46,17 @@ fi
 echo ""
 echo "Verifying setup..."
 
-if [ -L "$REPO_ROOT/.vibe/commands/mossy-plan.md" ] && [ -f "$REPO_ROOT/.vibe/commands/mossy-plan.md" ]; then
-    echo "  ✓ commands symlink: OK"
+if [ -f "$REPO_ROOT/.vibe/commands/mossy-plan.md" ]; then
+    echo "  ✓ commands link: OK"
 else
-    echo "  ✗ commands symlink: FAILED"
+    echo "  ✗ commands link: FAILED"
     exit 1
 fi
 
-if [ -L "$REPO_ROOT/.vibe/skills/mossy-plan" ] && [ -d "$REPO_ROOT/.vibe/skills/mossy-plan" ]; then
-    echo "  ✓ skills symlink: OK"
+if [ -d "$REPO_ROOT/.vibe/skills/mossy-plan" ] && [ -f "$REPO_ROOT/.vibe/skills/mossy-plan/SKILL.md" ]; then
+    echo "  ✓ skills link: OK"
 else
-    echo "  ✗ skills symlink: FAILED"
+    echo "  ✗ skills link: FAILED"
     exit 1
 fi
 
@@ -70,10 +71,5 @@ echo ""
 echo "To use with Mistral Vibe from this directory:"
 echo "  1. Ensure Vibe is installed"
 echo "  2. Run Vibe from $REPO_ROOT"
-echo ""
-echo "Symlinks:"
-for f in "$REPO_ROOT"/.vibe/commands/mossy-* "$REPO_ROOT"/.vibe/skills/mossy-*; do
-    echo "  $f -> $(readlink "$f")" | sed -e "s,$REPO_ROOT,,"
-done
 echo ""
 echo "Skills available: $SKILL_COUNT"
