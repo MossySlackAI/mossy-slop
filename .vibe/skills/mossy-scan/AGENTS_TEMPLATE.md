@@ -6,12 +6,18 @@
 
 ## Details
 
-<more detailed description of the contents, about two to four paragraphs>
+<more detailed description of the contents, about two to four paragraphs as needed>
+
+## Notes from Humans
+### GUARDRAIL: The AI Agents do not touch this.
+
+<Add, leave empty. Never edit. Messages from humans to agents go here.>
 
 ## Directory Structure
 
+<limit depth, only elements on this level. Subdirectories have their own AGENTS.md.>
+
 ```
-<directory tree, only one level deep>
 .
 ├── subdirectory_1/     # <very short description>
 ├── subdirectory_2/     # <very short description>
@@ -33,8 +39,8 @@
 
 | Module | Purpose | Key Files | More Info |
 |--------|---------|-----------|-----------|
-| **subdirectory_1** | <TBD> | <TBD> | subdirectory_1/AGENTS.md |
-| **subdirectory_2** | <TBD> | <TBD> | subdirectory_2/AGENTS.md |
+| **subdirectory_1** | <TBD> | <TBD> | <TBD, longer description> |
+| **subdirectory_2** | <TBD> | <TBD> | <TBD, longer description> |
 
 ## Build System
 
@@ -48,7 +54,7 @@
 
 <respect local configuration in .editorconfig and .clang-format>
 <follow well established best practices>
-<demonstrate coding conventions per language, such as>
+<**IMPORTANT**: demonstrate coding conventions per language, such as>
 ```cpp
 class CamelCase
 {
@@ -81,9 +87,5 @@ public:
 ## Key Patterns
 
 <TBD>
-
-## Notes from Humans
-
-<Add, leave empty. Never edit. Messages from the meatbrains to clankers go here.>
 
 ## <Other sections as appropriate for the content>
