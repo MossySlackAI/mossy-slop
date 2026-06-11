@@ -15,22 +15,23 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
 
 ### In the subagent:
 
-  * Read the AGENT.md files from the top of the repository down to the directory in question, should they exist
-  * Read the AGENT.md files from all direct subdirectories, should they exist
-  * Read the AGENT.md from the current directory, should it exist
+  * Read the AGENTS.md and AGENTS_TOPDOWN.md files from the top of the repository down to the directory in question, should they exist
+  * Read the AGENTS.md files from all direct subdirectories, should they exist
+  * Read the AGENTS.md from the current directory, should it exist
   * Do an analysis of the content of the current directory, informed by what the reads taught you, but minding that they may be inaccurate
-  * Read all the AGENT.md files again
+  * Read all the AGENTS.md files again
   * Output of the subagent should be the proposed (updated) contents of the AGENTS.md file in the current directory. It should follow the structure given by AGENTS_TEMPLATE.md.
     * For subdirectories: Output should be brief, not more than 1000 words, and not repeat any information present in the higher level files.
     * For the top level directory: Output should be brief, but comprehensive. Aim for 2000 words or less.
 
 ### In the main agent:
 
-  * Update the local AGENTS.md with that output. Skip trivial wording changes.
-  * Perform the entire set of operations twice. Once top-down, starting with the top directory fist, processing subdirectories later. Once bottom-up, processing each subdirectory before its parent.
-
-  * For the top AGENTS.md file: Make sure it contains a note about the recusive
-  AGENTS.md files, and instruct agents to read all relevant AGENT.md files before planning or making changes. Relevant would be the one in the affected directory and all parent directories inside the repository. When changes are to the source are made, the individual AGENTS.md files should be updated as well.
+  * Perform the entire set of operations twice:
+    1. Top-down, starting with the top directory fist, processing subdirectories later. Write the result into AGENTS_TOPDOWN.md.
+    2. Bottom-up, processing each subdirectory before its parent.
+      * If AGENTS.md does not exist yet in the current directory: Write the subagent output into it.
+      * If AGENTS.md exists: Update it GENTLY. Only remove or change things if they are now wrong.
+      * In all cases, delete AGENTS_TOPDOWN.md.
 
 ### Guidelines
 
