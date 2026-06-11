@@ -55,3 +55,4 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
   * Do not make changes over git, no commits, to checkouts, no branches.
   * Skip hidden directories like .git, .flow, .vibe, .claude.
   * For git repositories, only scan files and directories that are in git.
+  * You MUST use the `ask_user_question` (header: 11 chars max) tool for every question that requires user judgment. 
