@@ -38,9 +38,10 @@
 
 ## Coding Conventions
 
-<respect local configuration in .editorconfig and .clang-format>
-<follow well established best practices>
-<**IMPORTANT**: demonstrate coding conventions per language, such as>
+ - respect local configuration in .editorconfig and .clang-format
+ - follow well established best practices
+- **IMPORTANT**: demonstrate coding conventions per language with code samples, such as
+
 ```cpp
 class CamelCase
 {
