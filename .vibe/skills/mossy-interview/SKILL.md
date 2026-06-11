@@ -221,7 +221,7 @@ Strongly consider adding these evergreens.
   - For refactoring, the tests should document the status quo and succeed right away.
 - [ ] All automated tests pass.
 - [ ] All relevant documentation is updated.
-- [ ] All affected AGENTS.md files are updated.
+- [ ] On bigger structural changes: All affected AGENTS.md files are updated.
 
 ### Question Selection
 
