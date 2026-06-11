@@ -9,6 +9,14 @@ allowed-tools: read_file,write_file,grep,bash,ask_user_question,task
 
 Deep scan of the repository to create or update AGENTS.md files.
 
+## Input
+
+Full request: $ARGUMENTS
+
+Accepts:
+- **Update Mode**: `stable`, `update` or `rescan`
+- **Empty**: Assume Update Mode `stable`
+
 ## Instructions
 
 For each directory in this repository, each subdirectory, each sub-subdirectory (all recursive levels), perform these steps using the a subagent (suggestion: 'exlplore'):
@@ -30,7 +38,10 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
     1. Top-down, starting with the top directory fist, processing subdirectories later. Write the result into AGENTS_TOPDOWN.md.
     2. Bottom-up, processing each subdirectory before its parent.
       * If AGENTS.md does not exist yet in the current directory: Write the subagent output into it.
-      * If AGENTS.md exists: Update it GENTLY. Only remove or change things if they are now wrong.
+      * If AGENTS.md exists, act according to the Update Mode passed as argument:
+        + `stable`: Update AGENTS.md GENTLY. Only remove or change things if they are now wrong.
+        + `update`: Take over changes from the subagent that seem better than what is in AGENTS.md.
+        + `rescan`: Replace AGENTS.md completely with subagent suggestion.
       * In all cases, delete AGENTS_TOPDOWN.md.
 
 ### Guidelines

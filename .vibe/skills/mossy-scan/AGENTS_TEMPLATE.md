@@ -7,7 +7,6 @@
 <add this note to the top AGENTS.md only>
 **Important Note**: This repository contains recursive AGENTS.md files in subdirectories. AI agents working on this project MUST read all relevant AGENTS.md files before planning or making changes. Relevant files include the AGENTS.md in the directory being modified and all parent directories. When changes to source code are made, the individual AGENTS.md files should be updated accordingly.
 
-
 ## Details
 
 <more detailed description of the contents, about two to four paragraphs as needed>
