@@ -1,26 +1,30 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RECORD_ISSUE="$SCRIPT_DIR/../mossy-scripts/record-issue.sh"
+
+record_issue() {
+    if [ -f "$RECORD_ISSUE" ]; then
+        "$RECORD_ISSUE" "$*"
+    else
+        # no-op
+        return 0;
+    fi
+}
+
+if [ ! -f "$RECORD_ISSUE" ]; then
+    echo "⚠️  record-issue.sh not found, error recording disabled"
+fi
+    
+
 # Main entry point - invoked by /mossy:skill command
 main() {
-    # Load error recording utility
-    if [ -f ".vibe/skills/mossy-scripts/record-issue.sh" ]; then
-        # Note: record-issue.sh cannot be sourced due to its guard clause
-        # It must be called directly. For now, define a no-op function
-        record_issue() { return 0; }
-    else
-        record_issue() { return 0; }
-    fi
-    
     # Validate prerequisites
     if [ ! -d ".vibe/skills/" ]; then
         echo "❌ .vibe/skills/ directory not found"
         record_issue "mossy-skill" "resource-error" "directory_check" ".vibe/skills/" \
             "Required skills directory not found" "Pattern: ${1:-mossy-*}" || true
         return 1
-    fi
-    
-    if [ ! -f ".vibe/skills/mossy-scripts/record-issue.sh" ]; then
-        echo "⚠️  record-issue.sh not found, error recording disabled"
     fi
     
     local pattern="${1:-mossy-*}"  # Default: optimize all mossy skills
