@@ -177,7 +177,6 @@ fi
 ensure_issues_dir
 
 # Check if we have too many issues
-local issue_count
 issue_count=$(find "$ISSUES_DIR" -name "*.md" -type f 2>/dev/null | grep -v README | wc -l)
 if [ "$issue_count" -ge "$MAX_ISSUES" ]; then
     echo "WARNING: Maximum issue count ($MAX_ISSUES) reached. Not recording issue." >&2

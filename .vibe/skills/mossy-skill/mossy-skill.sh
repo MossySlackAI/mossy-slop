@@ -5,7 +5,7 @@ RECORD_ISSUE="$SCRIPT_DIR/../mossy-scripts/record-issue.sh"
 
 record_issue() {
     if [ -f "$RECORD_ISSUE" ]; then
-        "$RECORD_ISSUE" "$*"
+        "$RECORD_ISSUE" $*
     else
         # no-op
         return 0;
@@ -22,12 +22,12 @@ main() {
     # Validate prerequisites
     if [ ! -d ".vibe/skills/" ]; then
         echo "❌ .vibe/skills/ directory not found"
-        record_issue "mossy-skill" "resource-error" "directory_check" ".vibe/skills/" \
-            "Required skills directory not found" "Pattern: ${1:-mossy-*}" || true
+        record_issue --skill "mossy-skill" --error-type "resource-error" --context "directory_check" \
+            --error "Required skills directory not found" "Pattern: ${1:-*}" || true
         return 1
     fi
     
-    local pattern="${1:-mossy-*}"  # Default: optimize all mossy skills
+    local pattern="${1:-*}"  # Default: optimize all skills
     
     # Step 1: Skill Selection
     echo "🔍 Finding skills matching pattern: $pattern"
@@ -56,16 +56,16 @@ main() {
     
     if [ ${#skill_dirs[@]} -eq 0 ]; then
         echo "❌ No skills found matching pattern: $pattern"
-        record_issue "mossy-skill" "logic-error" "pattern_matching" "$pattern" \
-            "No skills matched the specified pattern" "Pattern: $pattern" || true
+        record_issue --skill "mossy-skill" --error-type "logic-error" --context "pattern_matching" \
+            --error "No skills matched the specified pattern" "Pattern: $pattern" || true
         return 1
     fi
     
     # Validate pattern is reasonable
     if [[ "$pattern" == *".."* ]] || [[ "$pattern" == *"/"* ]]; then
         echo "❌ Invalid pattern: $pattern (contains path separators)"
-        record_issue "mossy-skill" "validation-error" "pattern_validation" "$pattern" \
-            "Pattern contains invalid characters" "Pattern: $pattern" || true
+        record_issue --skill "mossy-skill" --error-type "validation-error" --context "pattern_validation" \
+            --error "Pattern contains invalid characters" "Pattern: $pattern" || true
         return 1
     fi
     
@@ -90,8 +90,8 @@ optimize_skill_description() {
     # Validate skill file exists
     if [ ! -f "$skill_file" ]; then
         echo "❌ Skill file not found: $skill_file"
-        record_issue "mossy-skill" "resource-error" "file_existence" "$skill_file" \
-            "Skill file not found" "Pattern: $pattern" || true
+        record_issue --skill "mossy-skill" --error-type "resource-error" record_issue --skill "mossy-skill" --context "file_existence" \
+            --error "Skill file not found" "Pattern: $pattern" || true
         return 1
     fi
     
@@ -99,8 +99,8 @@ optimize_skill_description() {
     local current_description=$(extract_frontmatter_field "$skill_file" "description")
     if [ -z "$current_description" ]; then
         echo "❌ No description found in frontmatter: $skill_file"
-        record_issue "mossy-skill" "validation-error" "frontmatter_parsing" "$skill_file" \
-            "No description field in frontmatter" "Pattern: $pattern" || true
+        record_issue --skill "mossy-skill" --error-type "validation-error" record_issue --skill "mossy-skill" --context "frontmatter_parsing" \
+            --error "No description field in frontmatter" "Pattern: $pattern" || true
         return 1
     fi
     
@@ -148,8 +148,8 @@ optimize_skill_description() {
     # Test false activations
     if ! test_false_activations "$optimized_description" "$current_description" "$skill_name" >/dev/null 2>&1; then
         echo "  ❌ Optimization rejected: False activations detected"
-        record_issue "mossy-skill" "logic-error" "false_activation" "$skill_name" \
-            "Optimization introduced false activations" "Pattern: $pattern" || true
+        record_issue --skill "mossy-skill" --error-type "logic-error" --context "false_activation" \
+            --error "Optimization introduced false activations" "Pattern: $pattern" || true
         return 1
     fi
     
