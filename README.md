@@ -22,7 +22,7 @@ MIT, see [LICENSE](LICENSE).
 
 See [INSTALL.md](INSTALL.md).
 
-## Workflow
+## Main Workflow
 
 ```mermaid
 flowchart LR
@@ -121,6 +121,13 @@ git commit -m "feat: Add mossy-rust skill for Rust language support"
 Just prompting `commit` usually does the job for you. In .flow/mossy-config, you can
 also change the general commit policy so that after every work item, we commit automatically.
 
+## Additional Skills
+
+### /mossy:scan
+
+This skill does a deep scan of the repository and adds AGENTS.md files everwhere. This way, specific knowledge is constrained to the relevant subdirectories and the agents are not fed information that is useless for their current task.
+
+Check [the command](.vibe/commands/mossy-scan.md#Usage) for usage instructions.
 
 ## Authorship
 
