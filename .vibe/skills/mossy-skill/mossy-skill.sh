@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# mossy-skill.sh - Optimize skill frontmatter descriptions
+# 
+# Current implementation: Conservative algorithm that preserves capitalization
+# and avoids parsing errors.
+# 
+# Future improvement: See fn-28 (.flow/specs/fn-28-improve-mossy-skill-with-subagent-generated-rewordings.md)
+# which proposes using subagent-generated high-temperature rewordings for better results.
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RECORD_ISSUE="$SCRIPT_DIR/../mossy-scripts/record-issue.sh"
 
@@ -365,94 +373,93 @@ generate_sample_prompts_for_skill() {
 
 # Apply optimization criteria to improve a description
 # Returns optimized description
+# 
+# Note: For better results, consider using subagent-generated rewordings (see fn-28).
+# This implementation is a conservative fallback that preserves capitalization
+# and avoids the bugs in the original verb-removal approach.
 optimize_description() {
     local original_description="$1"
     local skill_content="$2"
     shift 2
     local prompts=("$@")
     
-    # Step 1: Analyze current description
-    local word_count=$(echo "$original_description" | wc -w)
-    local char_count=$(echo "$original_description" | wc -m)
+    # First, ensure original description preserves capitalization
+    # Extract first character and capitalize it properly
+    local first_char=$(echo "$original_description" | cut -c1)
+    local rest_desc=$(echo "$original_description" | cut -c2-)
     
-    # Step 2: Extract key components
-    local first_word=$(echo "$original_description" | awk '{print $1}')
-    local first_word_lower=$(echo "$first_word" | tr '[:upper:]' '[:lower:]')
-    local action_verbs=("optimize" "analyze" "create" "modify" "test" "validate" "review" "improve" "generate" "execute" "plan" "work" "finish" "scan" "refactor")
-    local found_verb=""
-    local verb_is_whole_word=false
+    # If first character is lowercase letter, capitalize it
+    if [[ "$first_char" =~ [a-z] ]]; then
+        first_char=$(echo "$first_char" | tr '[:lower:]' '[:upper:]')
+        original_description="${first_char}${rest_desc}"
+    fi
+    
+    # Check if description already mentions Vibe or activation
     local desc_lower=$(echo "$original_description" | tr '[:upper:]' '[:lower:]')
+    local has_vibe=1
+    echo "$desc_lower" | grep -qi "vibe\|activation\|auto-trigger" && has_vibe=0
     
-    # First, check if the first word is an action verb
+    # Generate candidate descriptions
+    local candidates=()
+    
+    # Candidate 1: Original description (baseline)
+    candidates+=("$original_description")
+    
+    # Candidate 2: Add activation context (only if not already present)
+    if [ "$has_vibe" -eq 1 ]; then
+        candidates+=("${original_description} for better Vibe auto-activation")
+    fi
+    
+    # Candidate 3: Make more imperative/action-oriented
+    # Only prepend verb if the description doesn't already start with one
+    local first_word=$(echo "$original_description" | awk '{print $1}')
+    local action_verbs=("Optimize" "Analyze" "Create" "Modify" "Test" "Validate" "Review" "Improve" "Generate" "Execute" "Plan" "Work" "Finish" "Scan" "Refactor")
+    local found_verb=""
+    
     for verb in "${action_verbs[@]}"; do
-        if [ "$first_word_lower" = "$verb" ]; then
+        if [[ "$first_word" == "$verb" ]] || [[ "$first_word" == "${verb,,}" ]]; then
             found_verb="$verb"
-            verb_is_whole_word=true
             break
         fi
     done
     
-    # If not, try to find a verb that appears as a whole word in the description
+    # If first word is NOT already an action verb, try to prepend an appropriate one
+    # But only if it makes semantic sense - avoid redundant phrasing
     if [ -z "$found_verb" ]; then
-        for verb in "${action_verbs[@]}"; do
-            # Use word boundary matching: verb should be a whole word
-            if echo " $desc_lower " | grep -qw "$verb"; then
-                found_verb="$verb"
-                verb_is_whole_word=true
-                break
-            fi
-        done
+        # Check for common patterns - but be conservative
+        # "Static analysis" - first word is "Static" (adjective), contains "scan" or "analysis"
+        # In this case, the description is already fine, don't prepend
+        if echo "$desc_lower" | grep -qi "analysis\|analyze"; then
+            # Already describes analysis, no need to prepend "Analyze"
+            :
+        elif echo "$desc_lower" | grep -qi "review\|check"; then
+            candidates+=("Review ${original_description}")
+        elif echo "$desc_lower" | grep -qi "create\|generate\|build\|draft"; then
+            candidates+=("Create ${original_description}")
+        fi
     fi
     
-    # If no whole word match, fall back to substring matching
-    if [ -z "$found_verb" ]; then
-        for verb in "${action_verbs[@]}"; do
-            if [[ "$desc_lower" == *"$verb"* ]]; then
-                found_verb="$verb"
-                verb_is_whole_word=false
-                break
-            fi
-        done
+    # Candidate 4: Remove trailing periods for consistency
+    local no_period=$(echo "$original_description" | sed 's/\.$//')
+    if [ "$no_period" != "$original_description" ]; then
+        candidates+=("$no_period")
     fi
     
-    # Step 3: Generate candidate descriptions
-    local candidates=()
-    
-    # Candidate 1: More action-oriented (only if verb is a whole word)
-    if [ -n "$found_verb" ] && [ "$verb_is_whole_word" = true ]; then
-        # Remove the verb (case-insensitive) as a whole word from the description
-        # Use sed with word boundaries \b (need to escape properly)
-        local obj=$(echo "$original_description" | sed "s/\b${found_verb}\b//gi")
-        # Clean up the result - remove leading/trailing whitespace and punctuation, collapse multiple spaces
-        obj=$(echo "$obj" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//' | sed 's/^:*//' | sed 's/  */ /g' | sed 's/ $//')
-        candidates+=("${found_verb} ${obj} for better Vibe activation")
-    fi
-    
-    # Candidate 2: More specific
-    local clean_desc=$(echo "$original_description" | sed 's/\.//g')
-    candidates+=("${clean_desc} to improve skill auto-triggering")
-    
-    # Candidate 3: More concise (if too long)
-    if [ $word_count -gt 15 ]; then
-        local concise=$(echo "$original_description" | awk '{print $1, $2, $3, $4}')
-        candidates+=("${concise}")
-    fi
-    
-    # Candidate 4: Add context about Vibe activation
-    candidates+=("${original_description} so it activates when prompts match its capabilities")
-    
-    # Step 4: Test each candidate and select the best
+    # Step: Test each candidate and select the best
     local best_candidate="$original_description"
     local best_rate=0
     
     for candidate in "${candidates[@]}"; do
+        # Ensure candidate is properly capitalized
+        local cap_candidate=$(echo "$candidate" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
+        
         # Test this candidate against the prompts
         local test_prompts=("${prompts[@]:0:10}")  # Test with first 10 prompts
-        local current_rate=$(vibe_test_prompts "$candidate" "${test_prompts[@]}")
+        local current_rate=$(vibe_test_prompts "$cap_candidate" "${test_prompts[@]}")
         
         if [ "$current_rate" -gt "$best_rate" ] 2>/dev/null; then
             best_rate=$current_rate
-            best_candidate="$candidate"
+            best_candidate="$cap_candidate"
         fi
     done
     
