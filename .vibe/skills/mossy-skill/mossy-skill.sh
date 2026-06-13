@@ -3,7 +3,13 @@
 # Main entry point - invoked by /mossy:skill command
 main() {
     # Load error recording utility
-    source .vibe/skills/mossy-scripts/record-issue.sh 2>/dev/null || true
+    if [ -f ".vibe/skills/mossy-scripts/record-issue.sh" ]; then
+        # Note: record-issue.sh cannot be sourced due to its guard clause
+        # It must be called directly. For now, define a no-op function
+        record_issue() { return 0; }
+    else
+        record_issue() { return 0; }
+    fi
     
     # Validate prerequisites
     if [ ! -d ".vibe/skills/" ]; then
@@ -24,17 +30,22 @@ main() {
     local skill_dirs=()
     
     if [ "$pattern" = "" ] || [ "$pattern" = "*" ] || [ "$pattern" = "all" ]; then
-        # Find all skill directories
+        # Find all skill directories with SKILL.md files
         while IFS= read -r -d '' dir; do
-            skill_dirs+=("$dir")
-        done < <(find .vibe/skills/ -type d -name "*" -print0 | sort -z)
+            if [ -f "$dir/SKILL.md" ]; then
+                skill_dirs+=("$dir")
+            fi
+        done < <(find .vibe/skills/ -type d -print0 | sort -z)
     else
         # Find skills matching the pattern
         while IFS= read -r -d '' dir; do
             local dirname=$(basename "$dir")
             # Support glob patterns
             if [[ "$dirname" == $pattern ]]; then
-                skill_dirs+=("$dir")
+                # Only include if it has a SKILL.md file
+                if [ -f "$dir/SKILL.md" ]; then
+                    skill_dirs+=("$dir")
+                fi
             fi
         done < <(find .vibe/skills/ -type d -print0 | sort -z)
     fi
@@ -144,8 +155,10 @@ optimize_skill_description() {
     cp "$skill_file" "$backup_file"
     
     # Modify the description in the frontmatter
-    local new_content=$(echo "$skill_content" | sed "s/^description: .*/description: \"${optimized_description}\"/")
-    echo "$new_content" > "$skill_file"
+    # Use | as delimiter to avoid issues with / in the description
+    # Only replace the first occurrence (to avoid modifying body content)
+    # Use sed -i to modify in place and preserve file endings
+    sed -i "0,/^description: /s|^description: .*|description: \"${optimized_description}\"|" "$skill_file"
     
     echo "  🎉 Successfully optimized $skill_name"
     echo "  Backup saved to: $backup_file"
@@ -266,6 +279,7 @@ vibe_test_prompts() {
     done
     
     local rate=$((activated * 100 / total))
+    echo "$rate"
     return $((total - activated))  # Return count of failed activations
 }
 
@@ -359,22 +373,54 @@ optimize_description() {
     
     # Step 2: Extract key components
     local first_word=$(echo "$original_description" | awk '{print $1}')
+    local first_word_lower=$(echo "$first_word" | tr '[:upper:]' '[:lower:]')
     local action_verbs=("optimize" "analyze" "create" "modify" "test" "validate" "review" "improve" "generate" "execute" "plan" "work" "finish" "scan" "refactor")
     local found_verb=""
+    local verb_is_whole_word=false
+    local desc_lower=$(echo "$original_description" | tr '[:upper:]' '[:lower:]')
     
+    # First, check if the first word is an action verb
     for verb in "${action_verbs[@]}"; do
-        if [[ "$original_description" == *"$verb"* ]]; then
+        if [ "$first_word_lower" = "$verb" ]; then
             found_verb="$verb"
+            verb_is_whole_word=true
             break
         fi
     done
     
+    # If not, try to find a verb that appears as a whole word in the description
+    if [ -z "$found_verb" ]; then
+        for verb in "${action_verbs[@]}"; do
+            # Use word boundary matching: verb should be a whole word
+            if echo " $desc_lower " | grep -qw "$verb"; then
+                found_verb="$verb"
+                verb_is_whole_word=true
+                break
+            fi
+        done
+    fi
+    
+    # If no whole word match, fall back to substring matching
+    if [ -z "$found_verb" ]; then
+        for verb in "${action_verbs[@]}"; do
+            if [[ "$desc_lower" == *"$verb"* ]]; then
+                found_verb="$verb"
+                verb_is_whole_word=false
+                break
+            fi
+        done
+    fi
+    
     # Step 3: Generate candidate descriptions
     local candidates=()
     
-    # Candidate 1: More action-oriented
-    if [ -n "$found_verb" ]; then
-        local obj=$(echo "$original_description" | sed "s/${found_verb} //" | sed "s/${found_verb}//")
+    # Candidate 1: More action-oriented (only if verb is a whole word)
+    if [ -n "$found_verb" ] && [ "$verb_is_whole_word" = true ]; then
+        # Remove the verb (case-insensitive) as a whole word from the description
+        # Use sed with word boundaries \b (need to escape properly)
+        local obj=$(echo "$original_description" | sed "s/\b${found_verb}\b//gi")
+        # Clean up the result - remove leading/trailing whitespace and punctuation, collapse multiple spaces
+        obj=$(echo "$obj" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//' | sed 's/^:*//' | sed 's/  */ /g' | sed 's/ $//')
         candidates+=("${found_verb} ${obj} for better Vibe activation")
     fi
     
@@ -398,9 +444,9 @@ optimize_description() {
     for candidate in "${candidates[@]}"; do
         # Test this candidate against the prompts
         local test_prompts=("${prompts[@]:0:10}")  # Test with first 10 prompts
-        local temp_result=$(vibe_test_prompts "$candidate" "${test_prompts[@]}")
+        local current_rate=$(vibe_test_prompts "$candidate" "${test_prompts[@]}")
         
-        if [ $current_rate -gt $best_rate ]; then
+        if [ "$current_rate" -gt "$best_rate" ] 2>/dev/null; then
             best_rate=$current_rate
             best_candidate="$candidate"
         fi
@@ -427,17 +473,22 @@ test_false_activations() {
     )
     
     # Test original description against false prompts (baseline false activations)
-    local original_false=$(vibe_test_prompts "$original_description" "${false_prompts[@]}")
+    local original_false_rate=$(vibe_test_prompts "$original_description" "${false_prompts[@]}")
     
     # Test new description against false prompts
-    local new_false=$(vibe_test_prompts "$new_description" "${false_prompts[@]}")
+    local new_false_rate=$(vibe_test_prompts "$new_description" "${false_prompts[@]}")
     
     # If new false activation rate is higher than original, it's unsafe
-    if [ $new_false_rate -gt $original_false_rate ]; then
+    if [ "$new_false_rate" -gt "$original_false_rate" ] 2>/dev/null; then
         echo "FAIL: False activations increased from ${original_false_rate}% to ${new_false_rate}%"
         return 1
     fi
     
     return 0
 }
+
+# Call main if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
 
