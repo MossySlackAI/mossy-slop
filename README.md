@@ -12,8 +12,6 @@ The human should retain full control and responsibility. They should be able to 
 
 It should be the user's choice whether individual steps are committed to git, and whether auto-generated plan metadata gets commited or not.
 
-When questions arise during processing, they should be logged to the human readable output right away, but processing should continue with other parts of the job for as long as reasonably possible; the open questions should then be asked in bulk.
-
 A reasonable effort should be made in the planing phase to discover open questions, but speed and token conservation are valued higher.
 
 ## License
