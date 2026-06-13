@@ -1,6 +1,6 @@
 ---
 name: mossy-idea
-description: Write a minimal spec file draft into .flow/specs/ for later refinement with mossy-interview.
+description: "Create minimal spec file drafts into .flow/specs/ for later refinement with mossy-interview"
 user-invocable: false
 allowed-tools: bash, ask_user_question
 ---

@@ -1,6 +1,6 @@
 ---
 name: mossy-finish
-description: Automatically execute mossy-plan, mossy-work, and mossy-review on a spec to complete the full workflow.
+description: "Execute full workflow: run mossy-plan, mossy-work, and mossy-review on a spec"
 user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---

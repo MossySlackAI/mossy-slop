@@ -1,6 +1,6 @@
 ---
 name: mossy-analyze
-description: Static analysis across languages. Scans code for quality, security, and style issues without modifying files.
+description: "Static analysis across languages, scan code for quality, security, and style issues"
 user-invocable: false
 allowed-tools: read_file,grep,bash,ask_user_question,task
 ---

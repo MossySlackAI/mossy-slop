@@ -1,6 +1,6 @@
 ---
 name: mossy-work
-description: Execute plan tasks. Claims tasks from ready queue, performs implementation, and marks complete with evidence.
+description: "Execute plan tasks: claim from ready queue, perform implementation, mark complete with evidence"
 user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
 ---

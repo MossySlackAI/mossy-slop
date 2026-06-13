@@ -1,6 +1,6 @@
 ---
 name: mossy-scan
-description: Deep scan of the repository. Creates or updates AGENTS.md files.
+description: "Deep scan of repository to create or update AGENTS.md files with project insights"
 user-invocable: false
 allowed-tools: read_file,write_file,grep,bash,ask_user_question,task
 ---

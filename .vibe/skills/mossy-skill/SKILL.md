@@ -1,6 +1,6 @@
 ---
 name: mossy-skill
-description: Optimize skill frontmatter descriptions for better Vibe activation. Analyzes existing skill descriptions and improves them so skills activate when prompts match their capabilities.
+description: "Optimize skill frontmatter descriptions for better Vibe auto-activation"
 user-invocable: false
 allowed-tools: read_file, write_file, grep, bash, ask_user_question, task
 ---
