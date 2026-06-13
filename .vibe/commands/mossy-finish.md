@@ -20,7 +20,8 @@ This command invokes the mossy-finish skill which automatically executes the com
 2. mossy-work - Executes all tasks in the plan
 3. mossy-review - Reviews changes before commit
 
-The workflow respects the mossy-config settings in the spec file for:
+The workflow respects the mossy-config settings in the configuration
+ or spec file for:
 - commit-policy (manual, auto-per-change, auto-per-spec, batch)
 - new-branch-per-spec (true/false)
 - auto-push (true/false)

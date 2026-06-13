@@ -33,13 +33,6 @@ Accepts:
 
 2. **Read Configuration**
    - Use `read_file` to read spec file from `.flow/specs/<spec-id>.md`
-   - Parse Mossy-Config section (after `## Mossy-Config` marker)
-   - Extract configuration values:
-     - commit-policy: `manual` | `auto-per-change` | `auto-per-spec` | `batch` (default: manual)
-     - new-branch-per-spec: `true` | `false` (default: false)
-     - auto-push: `true` | `false` (default: false)
-     - co-authored-by: freeform string (default: "Mistral Vibe with Mossy Slop <vibe@mistral.ai>")
-   - Store values in variables for later use
 
 3. **Branch Management**
    - Call `load-mossy-config.sh NEW_BRANCH_PER_SPEC <spec-id>` to get the branch policyare on a branch with name <spec-id>.

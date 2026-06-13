@@ -50,7 +50,6 @@ Accepts:
    - Use `flowctl.sh start <task-id>`
    - Verify claim succeeded
    - Load task metadata: description, acceptance criteria, dependencies
-   - **Read spec's Mossy-Config section and override global config**
 
 3. **Prepare workspace**
    - Create working directory: `.flow/work/<task-id>/`
