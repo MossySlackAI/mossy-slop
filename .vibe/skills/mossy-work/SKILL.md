@@ -220,3 +220,4 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 - Blocking questions asked immediately
 - Task workspace preserved until user confirms completion
 - Evidence directory always created, even if empty
+- You MUST use the `ask_user_question` tool for every question that requires user judgment.

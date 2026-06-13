@@ -43,4 +43,5 @@ Accepts:
 - **DO NOT call flowctl.py** - use flowctl.sh
 - **Do NOT create tasks** - that's plan's job
 - **Do NOT create plans in ~/.vibe/plans **
+- You MUST use the `ask_user_question` tool for every question that requires user judgment.
 

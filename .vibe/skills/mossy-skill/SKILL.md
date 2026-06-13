@@ -158,3 +158,4 @@ See [mossy-skill.sh](./mossy-skill.sh) for implementation
 - **DO NOT change skill activation mechanism** - only improve descriptions
 - **ALL modifications tracked with error recording**
 - **User retains full control** - can review and revert any changes
+- You MUST use the `ask_user_question` tool for every question that requires user judgment.
