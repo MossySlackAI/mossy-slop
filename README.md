@@ -16,6 +16,10 @@ When questions arise during processing, they should be logged to the human reada
 
 A reasonable effort should be made in the planing phase to discover open questions, but speed and token conservation are valued higher.
 
+## License
+
+MIT, see [LICENSE](LICENSE).
+
 ## Installation
 
 See [INSTALL.md](INSTALL.md).
@@ -23,7 +27,6 @@ See [INSTALL.md](INSTALL.md).
 ## Workflow
 
 ```mermaid
-
 flowchart LR
     subgraph SPEC[Spec]
         START((Start)) -->
@@ -32,9 +35,12 @@ flowchart LR
     end
 
     subgraph FINISH[ /mossy:finish]
-        subgraph CHANGES
-            WORK(/mossy:work) -->
-            REVIEW(/mossy:review)
+        style FINISH padding:40px
+        subgraph PADDING1[" "]
+            subgraph CHANGES
+                WORK(/mossy:work) -->
+                REVIEW(/mossy:review)
+            end
         end
 
         PLAN(/mossy:plan) -->
@@ -48,7 +54,8 @@ flowchart LR
 
     class CHANGES,SPEC,FINISH sub
     classDef sub fill:none
- 
+    class PADDING1 padding
+    classDef padding opacity:0
 ```
 
 ### 0. Idea
