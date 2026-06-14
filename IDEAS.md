@@ -8,6 +8,9 @@ For humans. AI can take a peek, but these are not yet actionable items until exp
 
 Skill selection system prompt:
 
+https://github.com/mistralai/mistral-vibe/blob/main/vibe/core/system_prompt.py
+_get_available_skills_section
+
    lines = [
         "# Available Skills",
         "",
