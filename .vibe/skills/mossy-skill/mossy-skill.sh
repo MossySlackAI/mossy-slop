@@ -371,12 +371,25 @@ generate_sample_prompts_for_skill() {
     generate_prompts_from_skill "$skill_dir"
 }
 
+# TODO: fn-28 Architecture Split
+# ============================
+# This function (optimize_description) will be moved to SKILL.md orchestration
+# as part of fn-28. For now, keeping the conservative implementation.
+# 
+# Future: SKILL.md will use task tool to invoke subagent for description generation.
+# This bash script will call SKILL.md logic for candidate generation.
+# 
+# See: .flow/specs/fn-28-improve-mossy-skill-with-subagent-generated-rewordings.md
+#
 # Apply optimization criteria to improve a description
 # Returns optimized description
 # 
 # Note: For better results, consider using subagent-generated rewordings (see fn-28).
 # This implementation is a conservative fallback that preserves capitalization
 # and avoids the bugs in the original verb-removal approach.
+# 
+# Architecture: This function will be replaced by calls to SKILL.md subagent orchestration
+# once fn-28 tasks 2-8 are complete.
 optimize_description() {
     local original_description="$1"
     local skill_content="$2"

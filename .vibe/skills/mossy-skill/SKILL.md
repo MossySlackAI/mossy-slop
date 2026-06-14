@@ -13,6 +13,45 @@ Optimize skill frontmatter descriptions to improve Vibe auto-activation. This sk
 
 Vibe auto-triggers skills based on description matching (confirmed via upstream changelog:2573). This skill provides data-driven optimization of the description field to maximize relevant activations while avoiding false positives.
 
+## Architecture (fn-28 Split)
+
+**Component Separation:**
+
+### mossy-skill.sh (Bash Script)
+Responsible for:
+- File I/O operations (reading/writing SKILL.md files)
+- Pattern matching and skill discovery in `.vibe/skills/`
+- Backup/restore logic for rollback capability
+- Activation testing via `vibe_test_prompts()` and `vibe_simulate_activation()`
+- Orchestration of the optimization workflow
+
+### SKILL.md (LLM Skill Definition)
+Responsible for:
+- Subagent orchestration via `task` tool
+- Candidate generation coordination
+- Fallback logic when subagents are unavailable
+- Result selection and application
+- Description optimization logic (moving from .sh)
+
+**Communication Flow:**
+```
+User Command (/mossy:skill)
+    ↓
+SKILL.md (mossy-skill skill invoked)
+    ↓
+mossy-skill.sh (bash execution)
+    ↓
+For each skill to optimize:
+    1. Extract description from SKILL.md frontmatter
+    2. Generate prompts from skill content
+    3. Call SKILL.md subagent orchestration (via task tool)
+       → Subagent generates 5-10 candidate descriptions
+    4. SKILL.md logic: deduplicate, test, select best
+    5. mossy-skill.sh applies optimized description
+```
+
+**Status:** Architecture split in progress (fn-28 tasks 1-10). Currently, all logic is in mossy-skill.sh with TODO markers for future migration.
+
 ## Input
 
 $ARGUMENTS
