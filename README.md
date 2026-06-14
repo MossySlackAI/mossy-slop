@@ -22,6 +22,10 @@ MIT, see [LICENSE](LICENSE).
 
 See [INSTALL.md](INSTALL.md).
 
+## So what is it anyway?
+
+A collection of skills to aid in structured (`agentic`) work. You can invoke the skills directly with `/mossy:SKILLNAME ARGUMENTS` or use trigger phases. In each skill directory, you can find TRIGGERS.md which lists a couple of sample phrases that would trigger the skill.
+
 ## Main Workflow
 
 ```mermaid
@@ -94,7 +98,7 @@ For multiple tasks, execute them in order:
 /mossy:work fn-N.3
 ```
 
-Or all one after the other without pause with `/mossy:work fn-N`.
+Or all one after the other without pause with `/mossy:work fn-N`. A simple `Make it so!` also works.
 
 #### 4. Review
 
