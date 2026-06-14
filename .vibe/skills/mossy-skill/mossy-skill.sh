@@ -221,17 +221,26 @@ regenerate_all_triggers() {
 # Calculate Sensitivity and Specificity from test results
 # Sensitivity = TP / (TP + FN)
 # Specificity = TN / (TN + FP)
-# Usage: calculate_scores "description" "positive_prompts_array" "negative_prompts_array"
+# Usage: calculate_scores "description" "pos_count" "positive_prompts..." "neg_count" "negative_prompts..."
+#   OR the old way (for backward compatibility): calculate_scores "description" "positive_prompts_array" "negative_prompts_array"
+#   But the old way doesn't work due to bash array flattening.
 # Outputs: SENSITIVITY SPECIFICITY
 calculate_scores() {
     local description="$1"
-    shift
-    local positive_prompts=("$@")
-    local negative_prompts=()
+    local pos_count="$2"
+    shift 2
     
-    # Separate positive and negative prompts (positive prompts end with a special marker)
-    # Actually, let's change the approach - pass as separate arguments
-    # For now, we'll use the arrays passed
+    # Extract positive prompts (first $pos_count arguments)
+    local positive_prompts=()
+    local idx=0
+    while [ $idx -lt $pos_count ]; do
+        positive_prompts+=("$1")
+        shift
+        idx=$((idx + 1))
+    done
+    
+    # Extract negative prompts (remaining arguments)
+    local negative_prompts=("$@")
     
     # Test positive prompts (should trigger)
     local tp=0
@@ -364,7 +373,7 @@ main() {
                 echo "Positive triggers: ${#positive_triggers[@]}"
                 echo "Negative triggers: ${#negative_triggers[@]}"
                 
-                local scores=$(calculate_scores "$test_desc" "${positive_triggers[@]}" "${negative_triggers[@]}")
+                local scores=$(calculate_scores "$test_desc" "${#positive_triggers[@]}" "${positive_triggers[@]}" "${#negative_triggers[@]}" "${negative_triggers[@]}")
                 local sensitivity=$(echo "$scores" | awk '{print $1}')
                 local specificity=$(echo "$scores" | awk '{print $2}')
                 local total_score=$(calculate_total_score "$sensitivity" "$specificity")
@@ -528,7 +537,7 @@ optimize_skill_description() {
     
     # Step 3: Baseline measurement using scoring function
     echo "  📊 Measuring baseline with scoring function..."
-    local scores=$(calculate_scores "$current_description" "${positive_triggers[@]}" "${negative_triggers[@]}")
+    local scores=$(calculate_scores "$current_description" "${#positive_triggers[@]}" "${positive_triggers[@]}" "${#negative_triggers[@]}" "${negative_triggers[@]}")
     local sensitivity=$(echo "$scores" | awk '{print $1}')
     local specificity=$(echo "$scores" | awk '{print $2}')
     local baseline_score=$(calculate_total_score "$sensitivity" "$specificity")
@@ -537,7 +546,7 @@ optimize_skill_description() {
     # Step 4: Generate optimized description
     echo "  🔧 Optimizing description..."
     local skill_content=$(cat "$skill_file")
-    local optimized_description=$(optimize_description "$current_description" "$skill_content" "${prompts[@]}")
+    local optimized_description=$(optimize_description "$current_description" "$skill_content" "$skill_name" "$skill_dir" "${positive_triggers[@]}")
     
     if [ "$optimized_description" = "$current_description" ]; then
         echo "  ℹ️  No improvement possible for $skill_name"
@@ -550,7 +559,7 @@ optimize_skill_description() {
     echo "  🛡️  Validating optimization with scoring function..."
     
     # Test optimized description
-    local opt_scores=$(calculate_scores "$optimized_description" "${positive_triggers[@]}" "${negative_triggers[@]}")
+    local opt_scores=$(calculate_scores "$optimized_description" "${#positive_triggers[@]}" "${positive_triggers[@]}" "${#negative_triggers[@]}" "${negative_triggers[@]}")
     local opt_sensitivity=$(echo "$opt_scores" | awk '{print $1}')
     local opt_specificity=$(echo "$opt_scores" | awk '{print $2}')
     local opt_score=$(calculate_total_score "$opt_sensitivity" "$opt_specificity")
@@ -790,116 +799,233 @@ generate_sample_prompts_for_skill() {
 # This function (optimize_description) will be moved to SKILL.md orchestration
 # as part of fn-28. For now, keeping the conservative implementation.
 # 
+# fn-31 implementation: Use task tool for subagent-based candidate generation
+# See: .flow/specs/fn-31-implement-subagent-candidate-generation.md
+#
+# Generate 5-10 diverse candidate descriptions using subagent with explore profile
+# Returns JSON array of candidate strings via stdout, or empty if subagent unavailable
+generate_candidates_subagent() {
+    local skill_name="$1"
+    local current_description="$2"
+    local skill_content="$3"
+    
+    # Build subagent prompt (full SKILL.md content as context, per user preference)
+    local subagent_prompt="Generate 5-10 diverse, improved descriptions for a Vibe CLI skill.
+
+Skill: ${skill_name}
+Current Description: ${current_description}
+Skill Content Preview:
+${skill_content}
+
+Requirements:
+- Preserve the meaning and intent of the original
+- Use proper capitalization (first word capitalized)
+- Target length: 10-15 words
+- Include action-oriented language
+- Avoid redundancy
+- Each candidate must be distinct from others
+- Focus on natural language that matches user prompts
+
+Output format: JSON array of candidate strings"
+    
+    # Invoke subagent via task tool with explore profile
+    local result
+    if result=$(task "$subagent_prompt" 2>/dev/null); then
+        # Parse JSON response - try to extract array
+        # Handle both raw JSON and markdown-formatted JSON
+        echo "$result" | grep -o '\[[^]]*\]' | head -1
+        return 0
+    else
+        # Subagent unavailable
+        echo ""
+        return 1
+    fi
+}
+
+# Deduplicate candidates (exact duplicates only, per user preference)
+deduplicate_candidates() {
+    local -n candidates_ref="$1"
+    local unique_candidates=()
+    declare -A seen
+    
+    for candidate in "${candidates_ref[@]}"; do
+        if [[ -z "${seen[$candidate]+x}" ]]; then
+            seen["$candidate"]=1
+            unique_candidates+=("$candidate")
+        fi
+    done
+    
+    # Return via name reference (bash can't return arrays directly)
+    # Caller must handle the unique_candidates array
+    # For now, print and let caller parse - but this won't work for arrays
+    # Instead, modify the input array in place using name reference
+    # This requires bash 4.3+ nameref
+    if [[ ${#unique_candidates[@]} -gt 0 ]]; then
+        # Rebuild the original array
+        candidates_ref=("${unique_candidates[@]}")
+    fi
+}
+
 # Future: SKILL.md will use task tool to invoke subagent for description generation.
 # This bash script will call SKILL.md logic for candidate generation.
 # 
-# See: .flow/specs/fn-28-improve-mossy-skill-with-subagent-generated-rewordings.md
+# See: .flow/specs/fn-31-implement-subagent-candidate-generation.md (replaces fn-28)
 #
 # Apply optimization criteria to improve a description
 # Returns optimized description
 # 
-# Note: For better results, consider using subagent-generated rewordings (see fn-28).
-# This implementation is a conservative fallback that preserves capitalization
-# and avoids the bugs in the original verb-removal approach.
-# 
-# Architecture: This function will be replaced by calls to SKILL.md subagent orchestration
-# once fn-28 tasks 2-8 are complete.
+# fn-31 implementation: Uses task tool with explore profile for subagent-based generation
+# Falls back to conservative algorithm if subagent unavailable
+#
+# fn-31 implementation: Updated to use subagent-based candidate generation
 optimize_description() {
     local original_description="$1"
     local skill_content="$2"
-    shift 2
-    local prompts=("$@")
+    local skill_name="$3"
+    local skill_dir="$4"
+    shift 4
+    local positive_triggers=("$@")
     
     # First, ensure original description preserves capitalization
-    # Extract first character and capitalize it properly
     local first_char=$(echo "$original_description" | cut -c1)
     local rest_desc=$(echo "$original_description" | cut -c2-)
     
-    # If first character is lowercase letter, capitalize it
     if [[ "$first_char" =~ [a-z] ]]; then
         first_char=$(echo "$first_char" | tr '[:lower:]' '[:upper:]')
         original_description="${first_char}${rest_desc}"
     fi
     
-    # Check if description already mentions Vibe or activation
-    local desc_lower=$(echo "$original_description" | tr '[:upper:]' '[:lower:]')
-    local has_vibe=1
-    echo "$desc_lower" | grep -qi "vibe\|activation\|auto-trigger" && has_vibe=0
-    
     # Generate candidate descriptions
     local candidates=()
+    local subagent_available=true
     
-    # Candidate 1: Original description (baseline)
-    candidates+=("$original_description")
-    
-    # Candidate 2: Add activation context (only if not already present)
-    if [ "$has_vibe" -eq 1 ]; then
-        candidates+=("${original_description} for better Vibe auto-activation")
+    # Try subagent-based candidate generation first (fn-31)
+    echo "  🤖 Attempting subagent-based candidate generation..."
+    local subagent_result
+    if subagent_result=$(generate_candidates_subagent "$skill_name" "$original_description" "$skill_content" 2>/dev/null); then
+        if [ -n "$subagent_result" ]; then
+            # Parse JSON array manually
+            # Remove brackets and split by comma, handling quotes
+            local json_candidates=$(echo "$subagent_result" | sed 's/^\[//' | sed 's/\]$//')
+            
+            # Split by comma, but respect quoted strings
+            # Simple approach: split by comma and clean up
+            IFS=',' read -ra candidate_items <<< "$json_candidates"
+            for item in "${candidate_items[@]}"; do
+                # Clean up the item: remove quotes, trim whitespace
+                item=$(echo "$item" | sed 's/^["'\'']//' | sed 's/["'\'']$//' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+                if [ -n "$item" ]; then
+                    candidates+=("$item")
+                fi
+            done
+            echo "  ✅ Subagent generated ${#candidates[@]} candidates"
+        else
+            subagent_available=false
+            echo "  ⚠️  Subagent returned empty result"
+        fi
+    else
+        subagent_available=false
+        echo "  ⚠️  Subagent unavailable, falling back to conservative algorithm"
+        record_issue --skill "mossy-skill" --error-type "configuration-error" --context "subagent_fallback" \
+            --error "task tool or explore profile not available" "Skill: ${skill_name}" || true
     fi
     
-    # Candidate 3: Make more imperative/action-oriented
-    # Only prepend verb if the description doesn't already start with one
-    local first_word=$(echo "$original_description" | awk '{print $1}')
-    local action_verbs=("Optimize" "Analyze" "Create" "Modify" "Test" "Validate" "Review" "Improve" "Generate" "Execute" "Plan" "Work" "Finish" "Scan" "Refactor")
-    local found_verb=""
+    # If subagent failed or returned no candidates, use fallback
+    if [ "$subagent_available" = false ] || [ ${#candidates[@]} -eq 0 ]; then
+        echo "  🔄 Using conservative fallback algorithm"
+        candidates+=("$original_description")
+        
+        # Check if description already mentions Vibe or activation
+        local desc_lower=$(echo "$original_description" | tr '[:upper:]' '[:lower:]')
+        if ! echo "$desc_lower" | grep -qi "vibe\|activation\|auto-trigger"; then
+            candidates+=("${original_description} for better Vibe auto-activation")
+        fi
+        
+        # Remove trailing periods for consistency
+        local no_period=$(echo "$original_description" | sed 's/\.$//')
+        if [ "$no_period" != "$original_description" ]; then
+            candidates+=("$no_period")
+        fi
+    fi
     
-    for verb in "${action_verbs[@]}"; do
-        if [[ "$first_word" == "$verb" ]] || [[ "$first_word" == "${verb,,}" ]]; then
-            found_verb="$verb"
-            break
+    # Deduplicate candidates (exact duplicates only, per user preference)
+    local unique_candidates=()
+    declare -A seen
+    for candidate in "${candidates[@]}"; do
+        if [[ -z "${seen[$candidate]+x}" ]]; then
+            seen["$candidate"]=1
+            unique_candidates+=("$candidate")
         fi
     done
+    candidates=("${unique_candidates[@]}")
+    echo "  📊 Testing ${#candidates[@]} unique candidates"
     
-    # If first word is NOT already an action verb, try to prepend an appropriate one
-    # But only if it makes semantic sense - avoid redundant phrasing
-    if [ -z "$found_verb" ]; then
-        # Check for common patterns - but be conservative
-        # "Static analysis" - first word is "Static" (adjective), contains "scan" or "analysis"
-        # In this case, the description is already fine, don't prepend
-        if echo "$desc_lower" | grep -qi "analysis\|analyze"; then
-            # Already describes analysis, no need to prepend "Analyze"
-            :
-        elif echo "$desc_lower" | grep -qi "review\|check"; then
-            candidates+=("Review ${original_description}")
-        elif echo "$desc_lower" | grep -qi "create\|generate\|build\|draft"; then
-            candidates+=("Create ${original_description}")
-        fi
-    fi
-    
-    # Candidate 4: Remove trailing periods for consistency
-    local no_period=$(echo "$original_description" | sed 's/\.$//')
-    if [ "$no_period" != "$original_description" ]; then
-        candidates+=("$no_period")
-    fi
-    
-    # Step: Test each candidate and select the best using new scoring
+    # Test each candidate and select the best using scoring
     local best_candidate="$original_description"
     local best_score=-1
+    local best_sensitivity=0
+    local best_specificity=0
     
-    # We need to extract positive and negative triggers from the first argument
-    # For now, use the existing prompts array
-    # In a full implementation, we would pass positive/negative arrays separately
+    # Get negative triggers for proper scoring
+    local negative_triggers=()
+    read_triggers_into_globals "$skill_dir"
+    negative_triggers=("${G_NEGATIVE_TRIGGERS[@]}")
     
     for candidate in "${candidates[@]}"; do
         # Ensure candidate is properly capitalized
         local cap_candidate=$(echo "$candidate" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')
         
-        # Test this candidate against the prompts using scoring function
-        # We'll split prompts into positive (all of them) and negative (none for now)
-        # This is a simplified approach - in practice we'd have separate arrays
-        local test_prompts=("${prompts[@]:0:10}")
-        local current_rate=$(vibe_test_prompts "$cap_candidate" "${test_prompts[@]}")
+        # Use calculate_scores with proper positive and negative arrays
+        # But calculate_scores has a bug - it doesn't properly separate arrays
+        # Workaround: manually calculate sensitivity and specificity
         
-        # For now, use the rate as a proxy for score
-        # In a full implementation, we'd use calculate_scores
-        local candidate_score=$(awk "BEGIN {printf \"%.4f\", $current_rate / 100}")
+        # Test against positive triggers (should activate)
+        local tp=0
+        local fn=0
+        for prompt in "${positive_triggers[@]}"; do
+            if vibe_simulate_activation "$prompt" "$cap_candidate" >/dev/null 2>&1; then
+                tp=$((tp + 1))
+            else
+                fn=$((fn + 1))
+            fi
+        done
+        
+        # Test against negative triggers (should NOT activate)
+        local tn=0
+        local fp=0
+        for prompt in "${negative_triggers[@]}"; do
+            if vibe_simulate_activation "$prompt" "$cap_candidate" >/dev/null 2>&1; then
+                fp=$((fp + 1))
+            else
+                tn=$((tn + 1))
+            fi
+        done
+        
+        # Calculate Sensitivity = TP / (TP + FN)
+        local sensitivity=0
+        if [ $((tp + fn)) -gt 0 ]; then
+            sensitivity=$(awk "BEGIN {printf \"%.4f\", $tp / ($tp + $fn)}")
+        fi
+        
+        # Calculate Specificity = TN / (TN + FP)
+        local specificity=0
+        if [ $((tn + fp)) -gt 0 ]; then
+            specificity=$(awk "BEGIN {printf \"%.4f\", $tn / ($tn + $fp)}")
+        fi
+        
+        # Calculate score: sensitivity * max(0, specificity - 0.75)
+        local specificity_adjusted=$(awk "BEGIN {diff = $specificity - 0.75; if (diff < 0) diff = 0; printf \"%.4f\", diff}")
+        local candidate_score=$(awk "BEGIN {printf \"%.4f\", $sensitivity * $specificity_adjusted}")
         
         if [ $(awk "BEGIN {print ($candidate_score > $best_score)}") -eq 1 ] 2>/dev/null; then
             best_score=$candidate_score
             best_candidate="$cap_candidate"
+            best_sensitivity=$sensitivity
+            best_specificity=$specificity
         fi
     done
     
+    echo "  🎯 Best candidate score: $best_score (sensitivity: $best_sensitivity, specificity: $best_specificity)"
     echo "$best_candidate"
 }
 
