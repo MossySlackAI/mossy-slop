@@ -720,56 +720,6 @@ Do not provide any explanation, reasoning, or additional text. Just 'yes' or 'no
     fi
 }
 
-# Word-matching fallback implementation (original vibe_simulate_activation)
-# Renamed to avoid conflict with the new fallback wrapper
-vibe_simulate_activation_word_match() {
-    local prompt="$1"
-    local description="$2"
-    local confidence="low"
-    
-    # Normalize both to lowercase for case-insensitive matching
-    local prompt_lower=$(echo "$prompt" | tr '[:upper:]' '[:lower:]')
-    local description_lower=$(echo "$description" | tr '[:upper:]' '[:lower:]')
-    
-    # 1. Exact substring match (highest confidence)
-    if [[ "$prompt_lower" == *"$description_lower"* || "$description_lower" == *"$prompt_lower"* ]]; then
-        echo "activation: true, confidence: high, reason: exact_substring_match, source: word_match"
-        return 0
-    fi
-    
-    # 2. Word boundary matching - check if description appears as whole words in prompt
-    local desc_words=$(echo "$description_lower" | tr ' ' '\n' | grep -E '^.{3,}$')
-    local prompt_words=$(echo "$prompt_lower" | tr ' ' '\n' | grep -E '^.{3,}$')
-    
-    local word_matches=0
-    for word in $desc_words; do
-        if echo "$prompt_words" | grep -q "^${word}$"; then
-            word_matches=$((word_matches + 1))
-        fi
-    done
-    
-    # If 50%+ of description words appear in prompt, consider it a match
-    local desc_word_count=$(echo "$desc_words" | wc -l)
-    if [ $desc_word_count -gt 0 ] && [ $word_matches -ge $((desc_word_count / 2)) ]; then
-        echo "activation: true, confidence: medium, reason: keyword_match_${word_matches}_of_${desc_word_count}, source: word_match"
-        return 0
-    fi
-    
-    # 3. Key action verb matching
-    local action_verbs=("optimize" "analyze" "create" "modify" "test" "validate" "review" "improve" "generate" "execute" "plan" "work" "finish" "scan" "refactor")
-    
-    for verb in "${action_verbs[@]}"; do
-        if [[ "$description_lower" == *"$verb"* ]] && [[ "$prompt_lower" == *"$verb"* ]]; then
-            echo "activation: true, confidence: medium, reason: action_verb_match_${verb}, source: word_match"
-            return 0
-        fi
-    done
-    
-    # No match found
-    echo "activation: false, confidence: low, reason: no_match_found, source: word_match"
-    return 1
-}
-
 # Vibe activation simulation - tests if a prompt would activate a skill based on description
 # Returns 0 (success) if activation is predicted, 1 otherwise
 # Uses fallback chain: try LLM oracle first, then word matching
@@ -781,10 +731,9 @@ vibe_simulate_activation() {
     if vibe_simulate_activation_llm "$prompt" "$description"; then
         return 0
     fi
-    
-    # 2. Fall back to word matching if subagent fails/times out
-    vibe_simulate_activation_word_match "$prompt" "$description"
-    return $?
+
+    echo "STOP PROCESSING IMMEDIATELY"
+    exit 1    
 }
 
 # Test a set of prompts against a description and return activation rate

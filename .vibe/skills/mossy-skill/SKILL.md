@@ -289,21 +289,10 @@ vibe_simulate_activation_llm() {
 ### Fallback Chain Implementation
 
 ```bash
-# Word-matching fallback (renamed from original)
-vibe_simulate_activation_word_match() {
-    # Original word-matching logic
-    # Returns 0 or 1
-}
-
 # Main function with fallback chain
 vibe_simulate_activation() {
-    # 1. Try LLM oracle first
-    if vibe_simulate_activation_llm "$1" "$2"; then
-        return 0
-    fi
-    # 2. Fall back to word matching
-    vibe_simulate_activation_word_match "$1" "$2"
-    return $?
+    # 1. Try LLM oracle
+    return vibe_simulate_activation_llm "$1" "$2"
 }
 ```
 
