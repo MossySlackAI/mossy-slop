@@ -52,6 +52,50 @@ For each skill to optimize:
 
 **Status:** Architecture split in progress (fn-28 tasks 1-10). Currently, all logic is in mossy-skill.sh with TODO markers for future migration.
 
+## Subagent Orchestration
+
+### Context Assembly
+For each skill to optimize, the following context is assembled:
+- **skill_name**: Extracted from the skill directory name
+- **current_description**: Extracted from the skill's SKILL.md frontmatter
+- **skill_content_preview**: First 50 lines of the SKILL.md file
+
+### Subagent Task Structure
+The subagent receives a structured task with the following prompt:
+
+```
+Generate 5-10 diverse, improved descriptions for a Vibe CLI skill.
+
+Skill: {{skill_name}}
+Current Description: {{current_description}}
+Skill Content Preview:
+{{skill_content_preview}}
+
+Requirements:
+- Preserve the meaning and intent of the original
+- Use proper capitalization (first word capitalized)
+- Target length: 10-15 words
+- Include action-oriented language
+- Avoid redundancy
+- Each candidate must be distinct from others
+
+Output format: JSON array of candidate strings
+```
+
+### Invocation
+Uses the `task` tool with the `explore` profile:
+
+```json
+{
+  "task": "Generate 5-10 diverse, improved descriptions for a Vibe CLI skill.\n\nSkill: {{skill_name}}\nCurrent Description: {{current_description}}\nSkill Content Preview: {{skill_content_preview}}\n\nRequirements:\n- Preserve meaning and intent\n- Proper capitalization\n- Target: 10-15 words\n- Action-oriented\n- Avoid redundancy\n- Distinct candidates\n\nOutput: JSON array of strings",
+  "agent": "explore"
+}
+```
+
+### Temperature Setting
+Uses literal temperature parameter in subagent prompt:
+- "Use high creativity (temperature: 0.9) to generate diverse rewordings"
+
 ## Input
 
 $ARGUMENTS
