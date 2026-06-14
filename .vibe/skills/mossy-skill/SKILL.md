@@ -262,16 +262,53 @@ def fallback_candidates(desc):
     return [desc, desc + " for better Vibe activation", desc.rstrip('.'), desc.capitalize()]
 ```
 
-## Improved vibe_simulate_activation
+## Subagent-Based Activation Oracle (fn-44)
 
-### Enhanced Version
+### New Function: vibe_simulate_activation_llm()
+Uses subagent with LLM semantic understanding to predict skill activation.
+
 ```bash
-# Improved with verb weighting and position awareness
-vibe_simulate_activation() {
-    # ... (enhanced implementation with better matching)
-    return 0  # or 1
+vibe_simulate_activation_llm() {
+    local prompt="$1"
+    local description="$2"
+    local timeout=${VIBE_SIMULATE_ACTIVATION_TIMEOUT:-10}
+    
+    # Ask subagent to predict activation
+    local question="Determine if prompt matches description..."
+    local result=$(timeout $timeout bash -c "task '\''$question'\''" 2>/dev/null)
+    
+    # Parse yes/no response
+    # Return 0 (trigger) or 1 (no trigger)
 }
 ```
+
+### Fallback Chain Implementation
+
+```bash
+# Word-matching fallback (renamed from original)
+vibe_simulate_activation_word_match() {
+    # Original word-matching logic
+    # Returns 0 or 1
+}
+
+# Main function with fallback chain
+vibe_simulate_activation() {
+    # 1. Try LLM oracle first
+    if vibe_simulate_activation_llm "$1" "$2"; then
+        return 0
+    fi
+    # 2. Fall back to word matching
+    vibe_simulate_activation_word_match "$1" "$2"
+    return $?
+}
+```
+
+### Features
+- **Semantic understanding**: LLM oracle handles synonyms and natural language variations
+- **Configurable timeout**: VIBE_SIMULATE_ACTIVATION_TIMEOUT environment variable (default: 10s)
+- **Error handling**: Records all failures (timeout, subagent unavailable, invalid response)
+- **Backward compatible**: Existing call sites work unchanged
+- **Fallback chain**: Gracefully degrades to word matching if LLM oracle fails
 
 ## Automated Tests
 

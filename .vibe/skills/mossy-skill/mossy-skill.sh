@@ -645,9 +645,84 @@ expand_pattern() {
     printf '%s\n' "${results[@]}"
 }
 
-# Vibe activation simulation - tests if a prompt would activate a skill based on description
+# ============================================================================
+# SUBAGENT-BASED ACTIVATION ORACLE (fn-44)
+# ============================================================================
+
+# Subagent-based oracle for predicting skill activation using LLM semantic understanding
+# Uses task tool to invoke subagent with explore profile
 # Returns 0 (success) if activation is predicted, 1 otherwise
-vibe_simulate_activation() {
+# Timeout: configurable via VIBE_SIMULATE_ACTIVATION_TIMEOUT (default: 10 seconds)
+vibe_simulate_activation_llm() {
+    local prompt="$1"
+    local description="$2"
+    local timeout=${VIBE_SIMULATE_ACTIVATION_TIMEOUT:-10}
+    local result
+    local start_time
+    local elapsed
+    local exit_code
+
+    start_time=$(date +%s)
+    
+    # Build subagent question for activation prediction
+    # Use a clear, structured prompt for the LLM
+    local question="Determine if the following user prompt would trigger a skill with this description.
+
+User Prompt: ${prompt}
+Skill Description: ${description}
+
+Respond with ONLY one of these exact words:
+- 'yes' if the prompt would trigger the skill
+- 'no' if the prompt would NOT trigger the skill
+
+Do not provide any explanation, reasoning, or additional text. Just 'yes' or 'no'."
+    
+    # Execute subagent with timeout
+    # Use a subshell with timeout to prevent hanging
+    result=$(timeout $timeout bash -c "task '\''$question'\''" 2>/dev/null) || exit_code=$?
+    
+    elapsed=$(( $(date +%s) - start_time ))
+    
+    # Check if we timed out
+    if [ $exit_code -eq 124 ]; then
+        echo "activation: timeout, elapsed: ${elapsed}s, threshold: ${timeout}s" >&2
+        record_issue "mossy-skill" "tool-error" "task" "vibe_simulate_activation_llm" \
+            "Timeout after ${elapsed}s (threshold: ${timeout}s)" \
+            "Prompt: ${prompt:0:50}... Description: ${description:0:50}..." || true
+        return 1
+    fi
+    
+    # Check for empty result (subagent unavailable)
+    if [ -z "$result" ]; then
+        echo "activation: subagent_unavailable" >&2
+        record_issue "mossy-skill" "configuration-error" "task" "vibe_simulate_activation_llm" \
+            "Subagent returned empty result" \
+            "Prompt: ${prompt:0:50}... Description: ${description:0:50}..." || true
+        return 1
+    fi
+    
+    # Parse result: check for yes/no (case-insensitive, allow some whitespace)
+    local normalized_result=$(echo "$result" | tr '[:upper:]' '[:lower:]' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+    
+    if [ "$normalized_result" = "yes" ]; then
+        echo "activation: true, confidence: high, source: llm_oracle, elapsed: ${elapsed}s"
+        return 0
+    elif [ "$normalized_result" = "no" ]; then
+        echo "activation: false, confidence: high, source: llm_oracle, elapsed: ${elapsed}s"
+        return 1
+    else
+        # Invalid response from subagent
+        echo "activation: invalid_response, result: '${result}'" >&2
+        record_issue "mossy-skill" "logic-error" "task" "vibe_simulate_activation_llm" \
+            "Invalid response from subagent: ${result}" \
+            "Prompt: ${prompt:0:50}... Description: ${description:0:50}..." || true
+        return 1
+    fi
+}
+
+# Word-matching fallback implementation (original vibe_simulate_activation)
+# Renamed to avoid conflict with the new fallback wrapper
+vibe_simulate_activation_word_match() {
     local prompt="$1"
     local description="$2"
     local confidence="low"
@@ -658,7 +733,7 @@ vibe_simulate_activation() {
     
     # 1. Exact substring match (highest confidence)
     if [[ "$prompt_lower" == *"$description_lower"* || "$description_lower" == *"$prompt_lower"* ]]; then
-        echo "activation: true, confidence: high, reason: exact_substring_match"
+        echo "activation: true, confidence: high, reason: exact_substring_match, source: word_match"
         return 0
     fi
     
@@ -676,7 +751,7 @@ vibe_simulate_activation() {
     # If 50%+ of description words appear in prompt, consider it a match
     local desc_word_count=$(echo "$desc_words" | wc -l)
     if [ $desc_word_count -gt 0 ] && [ $word_matches -ge $((desc_word_count / 2)) ]; then
-        echo "activation: true, confidence: medium, reason: keyword_match_${word_matches}_of_${desc_word_count}"
+        echo "activation: true, confidence: medium, reason: keyword_match_${word_matches}_of_${desc_word_count}, source: word_match"
         return 0
     fi
     
@@ -685,14 +760,31 @@ vibe_simulate_activation() {
     
     for verb in "${action_verbs[@]}"; do
         if [[ "$description_lower" == *"$verb"* ]] && [[ "$prompt_lower" == *"$verb"* ]]; then
-            echo "activation: true, confidence: medium, reason: action_verb_match_${verb}"
+            echo "activation: true, confidence: medium, reason: action_verb_match_${verb}, source: word_match"
             return 0
         fi
     done
     
     # No match found
-    echo "activation: false, confidence: low, reason: no_match_found"
+    echo "activation: false, confidence: low, reason: no_match_found, source: word_match"
     return 1
+}
+
+# Vibe activation simulation - tests if a prompt would activate a skill based on description
+# Returns 0 (success) if activation is predicted, 1 otherwise
+# Uses fallback chain: try LLM oracle first, then word matching
+vibe_simulate_activation() {
+    local prompt="$1"
+    local description="$2"
+    
+    # 1. Try LLM oracle first (fn-44)
+    if vibe_simulate_activation_llm "$prompt" "$description"; then
+        return 0
+    fi
+    
+    # 2. Fall back to word matching if subagent fails/times out
+    vibe_simulate_activation_word_match "$prompt" "$description"
+    return $?
 }
 
 # Test a set of prompts against a description and return activation rate
