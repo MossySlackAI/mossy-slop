@@ -71,11 +71,15 @@ Skill Content Preview:
 
 Requirements:
 - Preserve the meaning and intent of the original
-- Use proper capitalization (first word capitalized)
+- MUST be grammatically correct English (fn-46)
+- First word MUST be capitalized (A-Z)
+- Use proper punctuation
+- NO redundant or repeated phrases (fn-46)
 - Target length: 10-15 words
 - Include action-oriented language
 - Avoid redundancy
 - Each candidate must be distinct from others
+- Reject any candidate that violates grammar requirements
 
 Output format: JSON array of candidate strings
 ```
@@ -85,7 +89,7 @@ Uses the `task` tool with the `explore` profile:
 
 ```json
 {
-  "task": "Generate 5-10 diverse, improved descriptions for a Vibe CLI skill.\n\nSkill: {{skill_name}}\nCurrent Description: {{current_description}}\nSkill Content Preview: {{skill_content_preview}}\n\nRequirements:\n- Preserve meaning and intent\n- Proper capitalization\n- Target: 10-15 words\n- Action-oriented\n- Avoid redundancy\n- Distinct candidates\n\nOutput: JSON array of strings",
+  "task": "Generate 5-10 diverse, improved descriptions for a Vibe CLI skill.\n\nSkill: {{skill_name}}\nCurrent Description: {{current_description}}\nSkill Content Preview: {{skill_content_preview}}\n\nRequirements:\n- Preserve meaning and intent\n- MUST be grammatically correct English (fn-46)\n- First word MUST be capitalized (A-Z)\n- Use proper punctuation\n- NO redundant or repeated phrases (fn-46)\n- Target: 10-15 words\n- Action-oriented\n- Avoid redundancy\n- Distinct candidates\n- Reject any candidate that violates grammar requirements\n\nOutput: JSON array of strings",
   "agent": "explore"
 }
 ```

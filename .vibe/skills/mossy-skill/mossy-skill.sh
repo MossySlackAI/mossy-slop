@@ -902,6 +902,7 @@ generate_candidates_subagent() {
     local skill_content="$3"
     
     # Build subagent prompt (full SKILL.md content as context, per user preference)
+    # fn-46: Explicitly require grammatical correctness
     local subagent_prompt="Generate 5-10 diverse, improved descriptions for a Vibe CLI skill.
 
 Skill: ${skill_name}
@@ -911,12 +912,16 @@ ${skill_content}
 
 Requirements:
 - Preserve the meaning and intent of the original
-- Use proper capitalization (first word capitalized)
+- MUST be grammatically correct English (fn-46)
+- First word MUST be capitalized (A-Z)
+- Use proper punctuation
+- NO redundant or repeated phrases (fn-46)
 - Target length: 10-15 words
 - Include action-oriented language
 - Avoid redundancy
 - Each candidate must be distinct from others
 - Focus on natural language that matches user prompts
+- Reject any candidate that violates grammar requirements
 
 Output format: JSON array of candidate strings"
     
@@ -956,6 +961,82 @@ deduplicate_candidates() {
         # Rebuild the original array
         candidates_ref=("${unique_candidates[@]}")
     fi
+}
+
+# Validate that a description is grammatically correct and human-readable
+# Usage: validate_description_grammar "description"
+# Returns: 0 if valid, 1 if invalid
+# Output: Error messages to stdout if invalid
+validate_description_grammar() {
+    local description="$1"
+    local errors=()
+    
+    # Check not empty
+    if [ -z "$description" ] || [ -z "$(echo "$description" | tr -d '[:space:]')" ]; then
+        errors+=("Description is empty")
+        printf '%s\n' "${errors[@]}"
+        return 1
+    fi
+    
+    # Check capitalization - first character must be uppercase letter
+    local first_char=$(echo "$description" | cut -c1)
+    if ! [[ "$first_char" =~ [A-Z] ]]; then
+        errors+=("First word not capitalized")
+    fi
+    
+    # Check for double spaces
+    if echo "$description" | grep -q '  '; then
+        errors+=("Contains double spaces")
+    fi
+    
+    # Check for unmatched quotes
+    local double_quotes=$(echo "$description" | grep -o '"' | wc -l)
+    local single_quotes=$(echo "$description" | grep -o "'" | wc -l)
+    if [ $((double_quotes % 2)) -ne 0 ]; then
+        errors+=("Unmatched double quotation marks")
+    fi
+    if [ $((single_quotes % 2)) -ne 0 ]; then
+        errors+=("Unmatched single quotation marks")
+    fi
+    
+    # Check for redundancy (repeated 4-word phrases)
+    # Convert to lowercase for case-insensitive comparison
+    local desc_lower=$(echo "$description" | tr '[:upper:]' '[:lower:]')
+    local words=($desc_lower)
+    local word_count=${#words[@]}
+    
+    for ((i=0; i<word_count-3; i++)); do
+        local phrase="${words[$i]} ${words[$i+1]} ${words[$i+2]} ${words[$i+3]}"
+        # Count occurrences of this phrase
+        local count=0
+        for ((j=0; j<word_count-3; j++)); do
+            local test_phrase="${words[$j]} ${words[$j+1]} ${words[$j+2]} ${words[$j+3]}"
+            if [ "$test_phrase" = "$phrase" ]; then
+                count=$((count + 1))
+            fi
+        done
+        if [ $count -gt 1 ]; then
+            errors+=("Redundant phrase detected: '$phrase'")
+        fi
+    done
+    
+    # Check punctuation for long descriptions
+    local desc_length=$(echo "$description" | wc -w)
+    if [ $desc_length -gt 10 ]; then
+        # Long descriptions should end with punctuation
+        local last_char=$(echo "$description" | tail -c 1)
+        if ! [[ "$last_char" =~ [".""!""?"] ]]; then
+            errors+=("Long description (${desc_length} words) should end with punctuation")
+        fi
+    fi
+    
+    # Report errors and return status
+    if [ ${#errors[@]} -gt 0 ]; then
+        printf '%s\n' "${errors[@]}"
+        return 1
+    fi
+    
+    return 0
 }
 
 # Future: SKILL.md will use task tool to invoke subagent for description generation.
@@ -1050,6 +1131,28 @@ optimize_description() {
         fi
     done
     candidates=("${unique_candidates[@]}")
+    
+    # Validate candidates for grammatical correctness (fn-46)
+    # Filter out grammatically incorrect candidates
+    local valid_candidates=()
+    local validation_errors=0
+    for candidate in "${candidates[@]}"; do
+        if validate_description_grammar "$candidate" >/dev/null 2>&1; then
+            valid_candidates+=("$candidate")
+        else
+            validation_errors=$((validation_errors + 1))
+            echo "  ❌ Candidate rejected (grammar): $candidate"
+        fi
+    done
+    
+    if [ ${#valid_candidates[@]} -eq 0 ]; then
+        echo "  ⚠️  No valid candidates after grammar validation, keeping original"
+        candidates=("$original_description")
+    else
+        echo "  ✅ ${#valid_candidates[@]} candidates passed grammar validation"
+        candidates=("${valid_candidates[@]}")
+    fi
+    
     echo "  📊 Testing ${#candidates[@]} unique candidates"
     
     # Test each candidate and select the best using scoring
