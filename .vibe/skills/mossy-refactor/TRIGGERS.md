@@ -1,25 +1,43 @@
 # TRIGGERS.md - mossy-refactor
 
 ## Should Trigger
-- refactor
-- use refactor
-- run refactor
-- execute refactor
-- help with refactor
-- Language-aware code
-- please Language-aware code
-- can you Language-aware code
-- Language-aware code refactoring: extract functions, rename symbols, restructure code across languages
-- Refactor
+- refactor this module
+- extract method from this class
+- rename variable across the project
+- restructure this codebase
+- cleanup this legacy code
+- pull up method to parent class
+- push down method to subclasses
+- extract interface from implementation
+- inline this helper function
+- move this class to another file
+- encapsulate this field with accessors
+- change the type of this parameter
+- reorder these function parameters
+- add parameter to method signature
+- remove this unused parameter
+- extract common code into helper function
+- rename symbol globally
+- restructure this class hierarchy
+- refactor duplicate logic into shared utility
 
 ## Should Not Trigger
-- analyze
-- use analyze
-- run analyze
-- execute analyze
-- help with analyze
-- Static analysis
-- please Static analysis
-- can you Static analysis
-- Static analysis across languages, scan code for quality, security, and style issues
-- Analyze
+- write new functionality for this endpoint
+- fix the bug in this code path
+- add a feature to handle new use case
+- review my code changes before merge
+- run test suite to verify behavior
+- deploy the application to production
+- analyze performance bottleneck in this function
+- document the API for this service
+- optimize database queries for better speed
+- write unit tests for this module
+- merge this pull request to main
+- create a new git branch for development
+- check CI pipeline status for build
+- update package dependencies to latest
+- format code with prettier or black
+- debug this runtime error
+- add type hints to this Python file
+- migrate database schema to new version
+- add logging to this function

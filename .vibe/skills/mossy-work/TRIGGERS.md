@@ -1,25 +1,44 @@
 # TRIGGERS.md - mossy-work
 
 ## Should Trigger
-- work
-- use work
-- run work
-- execute work
-- help with work
-- Execute plan
-- please Execute plan
-- can you Execute plan
-- Execute plan tasks: claim from ready queue, perform implementation, mark complete with evidence
-- Execute
+- execute task fn-1.1
+- run task fn-1.2
+- do the work for fn-1
+- implement task fn-1.1
+- claim task fn-1.1
+- complete task fn-1.1
+- work on fn-1.1
+- start task fn-1.1
+- process next ready task
+- execute next task
+- do the next task
+- run the next task
+- implement fn-1
+- execute all ready tasks for fn-1
+- work on spec fn-1 tasks
+- pick up task fn-1.2
+- take the next task from queue
+- claim and execute fn-1.1
+- start fn-1 implementation
 
 ## Should Not Trigger
-- analyze
-- use analyze
-- run analyze
-- execute analyze
-- help with analyze
-- Static analysis
-- please Static analysis
-- can you Static analysis
-- Static analysis across languages, scan code for quality, security, and style issues
-- Analyze
+- list tasks
+- show task fn-1.1
+- view spec fn-1
+- plan fn-1
+- create spec for new feature
+- review the changes
+- analyze the code
+- refactor this module
+- check fn-1 status
+- see ready tasks
+- display task details for fn-1.1
+- show me the plan
+- what's in the queue
+- list all specs
+- view workflow
+- check task status
+- show me fn-1.1
+- review my code
+- plan a new feature
+- scan the repository

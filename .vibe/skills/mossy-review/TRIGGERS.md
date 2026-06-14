@@ -1,25 +1,40 @@
 # TRIGGERS.md - mossy-review
 
 ## Should Trigger
-- review
-- use review
-- run review
-- execute review
-- help with review
-- Review changes
-- please Review changes
-- can you Review changes
-- Review changes before commit, analyze code modifications against acceptance criteria
-- Review
+- review my changes
+- review changes before commit
+- code review
+- check my work
+- verify implementation
+- review before commit
+- review uncommitted changes
+- analyze code modifications
+- check the diff
+- review staged changes
+- review this PR
+- check my code
+- verify changes
+- review the changes
+- check for issues
+- validate implementation
 
 ## Should Not Trigger
-- analyze
-- use analyze
-- run analyze
-- execute analyze
-- help with analyze
-- Static analysis
-- please Static analysis
-- can you Static analysis
-- Static analysis across languages, scan code for quality, security, and style issues
-- Analyze
+- commit my changes
+- push to remote
+- make the changes
+- write new code
+- implement this feature
+- fix the bug
+- create a branch
+- merge the PR
+- rebase my commits
+- add a new file
+- delete this file
+- refactor the code
+- optimize performance
+- write unit tests
+- run the build
+- deploy to production
+- update dependencies
+- format the code
+- clean up the code

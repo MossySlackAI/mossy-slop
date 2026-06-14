@@ -1,25 +1,40 @@
 # TRIGGERS.md - mossy-idea
 
 ## Should Trigger
-- idea
-- use idea
-- run idea
-- execute idea
-- help with idea
-- Create minimal
-- please Create minimal
-- can you Create minimal
-- Create minimal spec file drafts into .flow/specs/ for later refinement with mossy-interview
-- Input
+- create a spec for dark mode
+- draft a spec for user authentication
+- I have an idea for a new feature
+- write a spec for the payment system
+- new spec needed for search functionality
+- I want to create a spec
+- can you draft a spec
+- start a new spec for the dashboard
+- I have a feature idea to add
+- let's create a spec for caching
+- spec draft for export feature
+- need to write a spec for notifications
+- create spec file for API endpoint
+- draft new spec for data migration
+- write spec draft for the import feature
+- create a minimal spec for the plugin
 
 ## Should Not Trigger
-- analyze
-- use analyze
-- run analyze
-- execute analyze
-- help with analyze
-- Static analysis
-- please Static analysis
-- can you Static analysis
-- Static analysis across languages, scan code for quality, security, and style issues
-- Analyze
+- review the spec
+- implement the feature from spec-123
+- plan the task
+- run mossy-plan on my spec
+- /mossy-plan fn-1
+- /mossy-work task-5
+- refine the spec with mossy-interview
+- interview for spec clarification
+- update existing spec-45
+- modify the spec file
+- delete spec-78
+- test the code changes
+- debug the issue in production
+- analyze the codebase structure
+- refactor the authentication module
+- commit the spec changes
+- push the branch to origin
+- run mossy-review
+- finalize the spec details
