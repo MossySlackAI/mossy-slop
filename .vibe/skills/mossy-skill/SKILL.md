@@ -102,6 +102,56 @@ Accepts:
 - **Skill pattern**: `mossy-*` or `mossy-skill` or `*-analyze` (glob pattern to match skills)
 - **Empty**: Optimize all mossy skills by default
 - **Single skill name**: `mossy-skill` (optimize specific skill)
+- **`--regenerate-triggers`**: Regenerate TRIGGERS.md files using LLM
+- **`--generate-triggers <skill_dir>`**: Generate TRIGGERS.md for a specific skill using LLM
+
+## Entry Point
+
+When invoked via `/mossy:skill` command:
+
+```python
+# Parse arguments
+import re
+
+args = $ARGUMENTS if $ARGUMENTS else ""
+
+# Check for trigger generation flags
+generate_triggers_only = "--generate-triggers" in args
+regenerate_all_triggers = "--regenerate-triggers" in args
+
+if generate_triggers_only or regenerate_all_triggers:
+    # Handle TRIGGERS.md generation
+    if generate_triggers_only:
+        # Extract skill_dir from args
+        skill_dir = extract_skill_dir_from_args(args)
+        generate_triggers_file(skill_dir)
+    elif regenerate_all_triggers:
+        # Regenerate all TRIGGERS.md files
+        skill_dirs = find_skill_directories()
+        for skill_dir in skill_dirs:
+            generate_triggers_file(skill_dir)
+    return
+
+# Normal workflow: generate TRIGGERS.md + optimize descriptions
+pattern = args if args else "*"
+skill_dirs = find_skills_matching_pattern(pattern)
+
+# Step 1: Generate TRIGGERS.md for all skills
+for skill_dir in skill_dirs:
+    triggers_file = os.path.join(skill_dir, "TRIGGERS.md")
+    if not os.path.exists(triggers_file):
+        generate_triggers_file(skill_dir)
+    else:
+        # Validate existing TRIGGERS.md
+        if not validate_triggers_file(skill_dir):
+            generate_triggers_file(skill_dir)
+
+# Step 2: Call mossy-skill.sh for description optimization
+# Use bash tool to invoke the bash script with --skip-triggers flag
+# since SKILL.md already generated TRIGGERS.md
+bash_command = f"bash {SCRIPT_DIR}/mossy-skill.sh --skip-triggers {pattern}"
+bash(command=bash_command)
+```
 
 Examples:
 - `/mossy:skill mossy-*` - Optimize all mossy skills
@@ -334,6 +384,191 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ```bash
 See [mossy-skill.sh](./mossy-skill.sh) for implementation
 ```
+
+## TRIGGERS.md Generation
+
+Generate TRIGGERS.md files using LLM-based trigger phrase generation. This replaces the deterministic `generate_positive_triggers()` and `generate_negative_triggers()` functions in mossy-skill.sh.
+
+### Generation Process
+
+1. **Read Skill Content**: Use `read_file` tool to read the target skill's SKILL.md
+2. **Generate Triggers**: Use `task` tool to spawn a subagent that:
+   - Reads the full SKILL.md content
+   - Understands what the skill does
+   - Generates natural, diverse trigger phrases that users would actually type
+   - Generates both "Should Trigger" and "Should Not Trigger" sections
+   - Ensures at least 10 phrases per category
+3. **Write File**: Use `write_file` tool to write TRIGGERS.md directly
+
+### Subagent Prompt
+
+```
+You are an expert at generating trigger phrases for Vibe CLI skills.
+
+**Skill to analyze**: {skill_name}
+**Skill directory**: {skill_dir}
+
+**Task**: Generate trigger phrases for this skill's TRIGGERS.md file.
+
+**Requirements**:
+- Read the skill's SKILL.md file carefully
+- Understand the skill's purpose, functionality, and use cases
+- Generate natural trigger phrases that users would actually type
+- Avoid robotic/ formulaic variations (e.g., "use skill", "run skill")
+- Focus on what the skill actually DOES
+
+**Output Format**:
+Generate TWO sections with at least 10 phrases each:
+
+## Should Trigger
+- <natural phrase users would type when they want this skill>
+- <another natural phrase>
+...
+
+## Should Not Trigger
+- <phrase that should NOT trigger this skill>
+- <another negative phrase>
+...
+
+**Quality Criteria**:
+- Natural, user-like language
+- Diverse and specific
+- Context-aware (understands skill functionality)
+- Mix of lengths (short phrases and full sentences)
+- No deterministic variations of the skill name
+```
+
+### Implementation Function
+
+```python
+def generate_triggers_file(skill_dir):
+    """
+    Generate TRIGGERS.md for a skill using LLM-based generation.
+    
+    Args:
+        skill_dir: Path to the skill directory containing SKILL.md
+    
+    Returns:
+        Path to the generated TRIGGERS.md file
+    """
+    skill_name = os.path.basename(skill_dir)
+    skill_file = os.path.join(skill_dir, "SKILL.md")
+    triggers_file = os.path.join(skill_dir, "TRIGGERS.md")
+    
+    # Read skill content
+    skill_content = read_file(path=skill_file)
+    
+    # Build subagent task
+    task_prompt = f"""
+You are an expert at generating trigger phrases for Vibe CLI skills.
+
+**Skill to analyze**: {skill_name}
+**Skill directory**: {skill_dir}
+
+**Skill Content**:
+{skill_content[:4000]}  # First 4000 chars for context
+
+**Task**: Generate trigger phrases for this skill's TRIGGERS.md file.
+
+**Requirements**:
+- Understand the skill's purpose from its content
+- Generate at least 10 natural trigger phrases for "Should Trigger"
+- Generate at least 10 natural trigger phrases for "Should Not Trigger"
+- Phrases should be what users would actually type
+- Avoid formulaic variations ("use X", "run X", "execute X")
+- Focus on the skill's actual functionality
+
+**Output Format**:
+# TRIGGERS.md - {skill_name}
+
+## Should Trigger
+- <phrase 1>
+- <phrase 2>
+...
+
+## Should Not Trigger
+- <phrase 1>
+- <phrase 2>
+...
+    """
+    
+    # Invoke subagent to generate triggers
+    result = task(
+        task=task_prompt,
+        agent="explore"
+    )
+    
+    # Parse result (expecting markdown format)
+    triggers_content = result
+    
+    # Write TRIGGERS.md
+    write_file(
+        path=triggers_file,
+        content=triggers_content,
+        overwrite=True
+    )
+    
+    return triggers_file
+```
+
+### Validation Function
+
+```python
+def validate_triggers_file(skill_dir):
+    """
+    Validate that TRIGGERS.md has enough phrases.
+    
+    Args:
+        skill_dir: Path to the skill directory
+    
+    Returns:
+        True if valid, False if needs regeneration
+    """
+    MIN_PHRASES = 10
+    triggers_file = os.path.join(skill_dir, "TRIGGERS.md")
+    
+    if not os.path.exists(triggers_file):
+        return False
+    
+    content = read_file(path=triggers_file)
+    
+    # Count positive triggers
+    positive_section = content.split("## Should Trigger")[1].split("## Should Not Trigger")[0] if "## Should Trigger" in content else ""
+    positive_count = len([line for line in positive_section.split('\n') if line.strip().startswith('- ') and line.strip() != '-'])
+    
+    # Count negative triggers
+    negative_section = content.split("## Should Not Trigger")[1] if "## Should Not Trigger" in content else ""
+    negative_count = len([line for line in negative_section.split('\n') if line.strip().startswith('- ') and line.strip() != '-'])
+    
+    return positive_count >= MIN_PHRASES and negative_count >= MIN_PHRASES
+
+def find_skill_directories():
+    """Find all skill directories with SKILL.md files."""
+    # Use bash tool to find skills
+    result = bash(command="find .vibe/skills/ -type d -name 'mossy-*' | sort")
+    skill_dirs = result.strip().split('\n')
+    # Filter to only directories with SKILL.md
+    valid_dirs = [d for d in skill_dirs if os.path.exists(os.path.join(d, "SKILL.md"))]
+    return valid_dirs
+
+def extract_skill_dir_from_args(args):
+    """Extract skill directory from --generate-triggers argument."""
+    # Simple parsing: find the argument after --generate-triggers
+    parts = args.split()
+    if "--generate-triggers" in parts:
+        idx = parts.index("--generate-triggers")
+        if idx + 1 < len(parts):
+            return parts[idx + 1]
+    return None
+```
+
+### Integration with ensure_triggers
+
+When ensuring TRIGGERS.md exists and is valid:
+1. Check if TRIGGERS.md exists
+2. If not, or if it has insufficient phrases, call `generate_triggers_file()`
+3. Validate the generated file has at least 10 phrases per category
+4. If validation fails, regenerate or supplement
 
 ## Quick commands
 - `cd /workspaces/mossy-slop && find .vibe/skills/ -name "SKILL.md" | wc -l`

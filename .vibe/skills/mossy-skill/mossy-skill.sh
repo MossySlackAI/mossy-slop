@@ -136,198 +136,38 @@ validate_triggers() {
     return 0
 }
 
-# Generate positive trigger phrases from skill content
-# Usage: generate_positive_triggers "skill_dir" "count"
-generate_positive_triggers() {
-    local skill_dir="$1"
-    local count="$2"
-    local skill_name=$(basename "$skill_dir")
-    local skill_file="${skill_dir}/SKILL.md"
-    local triggers=()
-    
-    if [ ! -f "$skill_file" ]; then
-        return
-    fi
-    
-    local skill_content=$(cat "$skill_file")
-    local current_description=$(extract_frontmatter_field "$skill_file" "description")
-    
-    # Extract skill name variations
-    local clean_name=$(echo "$skill_name" | sed 's/^mossy-//')
-    triggers+=("${clean_name}")
-    triggers+=("use ${clean_name}")
-    triggers+=("run ${clean_name}")
-    triggers+=("execute ${clean_name}")
-    triggers+=("help with ${clean_name}")
-    
-    # Extract from description
-    if [ -n "$current_description" ]; then
-        local first_word=$(echo "$current_description" | awk '{print $1}')
-        local second_word=$(echo "$current_description" | awk '{print $2}')
-        
-        if [ -n "$first_word" ] && [ -n "$second_word" ]; then
-            triggers+=("${first_word} ${second_word}")
-            triggers+=("please ${first_word} ${second_word}")
-            triggers+=("can you ${first_word} ${second_word}")
-        fi
-        
-        triggers+=("$current_description")
-    fi
-    
-    # Extract section headers
-    local sections=$(echo "$skill_content" | grep '^## ' | sed 's/^## //' | head -5)
-    while IFS= read -r section; do
-        if [ -n "$section" ]; then
-            triggers+=("${section}")
-            triggers+=("how to ${section}")
-        fi
-    done <<< "$sections"
-    
-    # Add common patterns
-    triggers+=("${clean_name} help")
-    triggers+=("what does ${clean_name} do")
-    triggers+=("optimize ${clean_name}")
-    triggers+=("improve ${clean_name}")
-    
-    # Output unique triggers (max count)
-    local unique_triggers=()
-    for trigger in "${triggers[@]}"; do
-        if [ -n "$trigger" ]; then
-            local already_exists=false
-            for existing in "${unique_triggers[@]}"; do
-                if [ "$existing" = "$trigger" ]; then
-                    already_exists=true
-                    break
-                fi
-            done
-            if [ "$already_exists" = false ]; then
-                unique_triggers+=("$trigger")
-                if [ ${#unique_triggers[@]} -ge $count ]; then
-                    break
-                fi
-            fi
-        fi
-    done
-    
-    printf '%s\n' "${unique_triggers[@]}"
-}
-
-# Generate negative trigger phrases from other skills and common problematic phrases
-# Usage: generate_negative_triggers "skill_dir" "count"
-generate_negative_triggers() {
-    local current_skill_dir="$1"
-    local count="$2"
-    local current_skill_name=$(basename "$current_skill_dir")
-    local triggers=()
-    local all_skill_dirs=()
-    
-    # Find all skill directories
-    while IFS= read -r -d '' dir; do
-        if [ -f "$dir/SKILL.md" ] && [ "$dir" != "$current_skill_dir" ]; then
-            all_skill_dirs+=("$dir")
-        fi
-    done < <(find .vibe/skills/ -type d -print0 | sort -z)
-    
-    # Collect positive triggers from other skills' TRIGGERS.md files
-    for skill_dir in "${all_skill_dirs[@]}"; do
-        local other_triggers_file="${skill_dir}/TRIGGERS.md"
-        if [ -f "$other_triggers_file" ]; then
-            while IFS= read -r phrase; do
-                if [ -n "$phrase" ]; then
-                    triggers+=("$phrase")
-                fi
-            done < <(parse_triggers_section "$other_triggers_file" "Should Trigger")
-        fi
-    done
-    
-    # Add common problematic phrases that should not trigger most skills
-    local common_negatives=(
-        "create a spec draft"
-        "plan the workflow"
-        "review the changes"
-        "analyze code quality"
-        "execute the tasks"
-        "finish the spec"
-        "write documentation"
-        "fix the formatting of this file"
-        "refactor the code"
-        "scan for issues"
-        "run the tests"
-        "deploy the application"
-        "write unit tests"
-        "set up CI/CD"
-        "configure the environment"
-        "fix the bug"
-        "add a new feature"
-    )
-    
-    triggers+=("${common_negatives[@]}")
-    
-    # Output unique triggers (max count)
-    local unique_triggers=()
-    for trigger in "${triggers[@]}"; do
-        if [ -n "$trigger" ]; then
-            local already_exists=false
-            for existing in "${unique_triggers[@]}"; do
-                if [ "$existing" = "$trigger" ]; then
-                    already_exists=true
-                    break
-                fi
-            done
-            if [ "$already_exists" = false ]; then
-                unique_triggers+=("$trigger")
-                if [ ${#unique_triggers[@]} -ge $count ]; then
-                    break
-                fi
-            fi
-        fi
-    done
-    
-    printf '%s\n' "${unique_triggers[@]}"
-}
+# DEPRECATED: These functions have been replaced by LLM-based generation in SKILL.md
+# generate_positive_triggers() - Replaced by generate_triggers_file() in SKILL.md
+# generate_negative_triggers() - Replaced by generate_triggers_file() in SKILL.md
+#
+# These functions generated deterministic, formulaic trigger phrases that were
+# not natural or user-like. They have been superseded by LLM-based generation
+# that produces context-aware, diverse trigger phrases.
 
 # Ensure TRIGGERS.md exists and has enough phrases
 # Usage: ensure_triggers "skill_dir"
 # Creates or appends to TRIGGERS.md if needed
+#
+# NOTE: This function now expects TRIGGERS.md to be generated by SKILL.md using LLM.
+# If TRIGGERS.md doesn't exist or is invalid, it will be created with a fallback
+# message instructing to use LLM-based generation.
 ensure_triggers() {
     local skill_dir="$1"
     local triggers_file="${skill_dir}/TRIGGERS.md"
     local skill_name=$(basename "$skill_dir")
     
+    # Check if --skip-triggers flag is set (passed from SKILL.md)
+    if [ "$SKIP_TRIGGERS" = "true" ]; then
+        echo "ℹ️ Skipping TRIGGERS.md generation (LLM-based generation used by SKILL.md)"
+        return 0
+    fi
+    
     # Create TRIGGERS.md if it doesn't exist
     if [ ! -f "$triggers_file" ]; then
-        echo "📝 Creating TRIGGERS.md for $skill_name"
-        
-        # Create header
-        echo "# TRIGGERS.md - $skill_name" > "$triggers_file"
-        echo "" >> "$triggers_file"
-        
-        # Add Should Trigger section
-        echo "## Should Trigger" >> "$triggers_file"
-        local pos_count=0
-        while IFS= read -r phrase; do
-            if [ $pos_count -ge $MIN_PHRASES_PER_CATEGORY ]; then
-                break
-            fi
-            echo "- $phrase" >> "$triggers_file"
-            pos_count=$((pos_count + 1))
-        done < <(generate_positive_triggers "$skill_dir" $MIN_PHRASES_PER_CATEGORY)
-        
-        echo "" >> "$triggers_file"
-        
-        # Add Should Not Trigger section
-        echo "## Should Not Trigger" >> "$triggers_file"
-        local neg_count=0
-        while IFS= read -r phrase; do
-            if [ $neg_count -ge $MIN_PHRASES_PER_CATEGORY ]; then
-                break
-            fi
-            echo "- $phrase" >> "$triggers_file"
-            neg_count=$((neg_count + 1))
-        done < <(generate_negative_triggers "$skill_dir" $MIN_PHRASES_PER_CATEGORY)
-        
-        echo "✅ Created TRIGGERS.md with $pos_count positive and $neg_count negative triggers"
-        return 0
+        echo "⚠️ TRIGGERS.md not found for $skill_name - please use LLM-based generation"
+        echo "   Run: /mossy:skill --generate-triggers $skill_dir"
+        echo "" > "$triggers_file"
+        return 1
     fi
     
     # Check if TRIGGERS.md has enough phrases
@@ -341,117 +181,37 @@ ensure_triggers() {
     
     # Check positive triggers
     if [ $pos_count -lt $MIN_PHRASES_PER_CATEGORY ]; then
-        local needed=$((MIN_PHRASES_PER_CATEGORY - pos_count))
-        echo "📝 Appending $needed positive triggers to TRIGGERS.md for $skill_name"
-        
-        # Append to Should Trigger section
-        local line_num=0
-        local insert_line=0
-        
-        # Find the line number after "## Should Trigger"
-        while IFS= read -r line; do
-            line_num=$((line_num + 1))
-            if [[ "$line" =~ ^##[[:space:]]*Should[[:space:]]*Trigger ]]; then
-                insert_line=$((line_num + 1))
-            fi
-        done < "$triggers_file"
-        
-        # Generate and append missing positive triggers
-        local added=0
-        while IFS= read -r phrase; do
-            if [ $added -ge $needed ]; then
-                break
-            fi
-            # Check if phrase already exists
-            local exists=false
-            for existing in "${positive_triggers[@]}"; do
-                if [ "$existing" = "$phrase" ]; then
-                    exists=true
-                    break
-                fi
-            done
-            if [ "$exists" = false ]; then
-                sed -i "${insert_line}i\- $phrase" "$triggers_file"
-                insert_line=$((insert_line + 1))
-                added=$((added + 1))
-            fi
-        done < <(generate_positive_triggers "$skill_dir" $MIN_PHRASES_PER_CATEGORY)
-        
-        needs_update=true
+        echo "⚠️ TRIGGERS.md for $skill_name has insufficient positive triggers ($pos_count < $MIN_PHRASES_PER_CATEGORY)"
+        echo "   Please regenerate using LLM-based generation: /mossy:skill --generate-triggers $skill_dir"
+        return 1
     fi
     
     # Check negative triggers
     if [ $neg_count -lt $MIN_PHRASES_PER_CATEGORY ]; then
-        local needed=$((MIN_PHRASES_PER_CATEGORY - neg_count))
-        echo "📝 Appending $needed negative triggers to TRIGGERS.md for $skill_name"
-        
-        # Append to Should Not Trigger section
-        local line_num=0
-        local insert_line=0
-        
-        # Find the line number after "## Should Not Trigger"
-        while IFS= read -r line; do
-            line_num=$((line_num + 1))
-            if [[ "$line" =~ ^##[[:space:]]*Should[[:space:]]*Not[[:space:]]*Trigger ]]; then
-                insert_line=$((line_num + 1))
-            fi
-        done < "$triggers_file"
-        
-        # Generate and append missing negative triggers
-        local added=0
-        while IFS= read -r phrase; do
-            if [ $added -ge $needed ]; then
-                break
-            fi
-            # Check if phrase already exists
-            local exists=false
-            for existing in "${negative_triggers[@]}"; do
-                if [ "$existing" = "$phrase" ]; then
-                    exists=true
-                    break
-                fi
-            done
-            if [ "$exists" = false ]; then
-                sed -i "${insert_line}i\- $phrase" "$triggers_file"
-                insert_line=$((insert_line + 1))
-                added=$((added + 1))
-            fi
-        done < <(generate_negative_triggers "$skill_dir" $MIN_PHRASES_PER_CATEGORY)
-        
-        needs_update=true
+        echo "⚠️ TRIGGERS.md for $skill_name has insufficient negative triggers ($neg_count < $MIN_PHRASES_PER_CATEGORY)"
+        echo "   Please regenerate using LLM-based generation: /mossy:skill --generate-triggers $skill_dir"
+        return 1
     fi
     
-    if [ "$needs_update" = true ]; then
-        echo "✅ Updated TRIGGERS.md for $skill_name"
-    fi
+    echo "✅ TRIGGERS.md for $skill_name is valid"
     
     return 0
 }
 
 # Regenerate all TRIGGERS.md files
 # Usage: regenerate_all_triggers
+#
+# NOTE: This function now delegates to LLM-based generation via SKILL.md.
+# It will instruct the user to use the new LLM-based approach.
 regenerate_all_triggers() {
-    echo "🔄 Regenerating all TRIGGERS.md files..."
-    
-    local skill_dirs=()
-    while IFS= read -r -d '' dir; do
-        if [ -f "$dir/SKILL.md" ]; then
-            skill_dirs+=("$dir")
-        fi
-    done < <(find .vibe/skills/ -type d -print0 | sort -z)
-    
-    for skill_dir in "${skill_dirs[@]}"; do
-        local triggers_file="${skill_dir}/TRIGGERS.md"
-        local skill_name=$(basename "$skill_dir")
-        
-        if [ -f "$triggers_file" ]; then
-            rm "$triggers_file"
-        fi
-        
-        ensure_triggers "$skill_dir"
-    done
-    
-    echo "✅ All TRIGGERS.md files regenerated"
+    echo "🔄 Regenerating all TRIGGERS.md files using LLM-based generation..."
+    echo ""
+    echo "This operation now uses SKILL.md with LLM-based trigger generation."
+    echo "Please use: /mossy:skill --regenerate-triggers"
+    echo ""
+    echo "The old deterministic generation has been replaced with LLM-based generation"
+    echo "that produces natural, context-aware trigger phrases."
+    return 0
 }
 
 # ============================================================================
@@ -538,6 +298,8 @@ calculate_total_score() {
 main() {
     # Parse command line arguments
     local regenerate=false
+    local skip_triggers=false
+    local generate_triggers=""
     local pattern=""
     
     while [ $# -gt 0 ]; do
@@ -545,6 +307,14 @@ main() {
             --regenerate-triggers)
                 regenerate=true
                 shift
+                ;;
+            --skip-triggers)
+                skip_triggers=true
+                shift
+                ;;
+            --generate-triggers)
+                generate_triggers="$2"
+                shift 2
                 ;;
             --validate-triggers)
                 # Validate all TRIGGERS.md files
@@ -614,6 +384,16 @@ main() {
                 ;;
         esac
     done
+    
+    # Set global variable for ensure_triggers to check
+    export SKIP_TRIGGERS="$skip_triggers"
+    
+    # Handle generate-triggers flag (delegated to SKILL.md)
+    if [ -n "$generate_triggers" ]; then
+        echo "⚠️ --generate-triggers flag is now handled by SKILL.md with LLM-based generation"
+        echo "   Please use: /mossy:skill --generate-triggers $generate_triggers"
+        return 0
+    fi
     
     # Handle regenerate flag
     if [ "$regenerate" = true ]; then
