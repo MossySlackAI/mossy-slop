@@ -67,6 +67,8 @@ You can also give the idea text directly on the command line, and you can skip s
 Refine the idea entered before, or a new idea, with `/mossy:interview`. This will 
 check the idea, compare it with the reality of the project, and then ask a couple of questions to make sure the plans will be aligned with your intentions.
 
+Natural language orders also work. Prefer to put the skill triggering instruction at the back, that gives it more weight, and avoid action words in the draft text. "I want the system ported to Raylib. Interview me."
+
 #### 2. Planning
 
 `/mossy:plan <spec-id>`
