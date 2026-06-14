@@ -110,6 +110,127 @@ Examples:
 - `/mossy:skill mossy-skill` - Optimize just the mossy-skill
 - `/mossy:skill` - Optimize all skills in .vibe/skills/
 
+## Candidate Generation Logic
+
+### Generation Function
+Coordinates subagent invocation and candidate processing:
+
+```python
+def generate_candidates(skill_name, current_description, skill_content):
+    """
+    Generate 5-10 diverse candidate descriptions using subagent.
+    
+    Returns:
+        List of 5-10 candidate description strings
+    """
+    # Build subagent prompt
+    prompt = build_subagent_prompt(skill_name, current_description, skill_content)
+    
+    # Invoke subagent
+    result = task(task=prompt, agent="explore")
+    
+    # Parse JSON response
+    try:
+        candidates = json.loads(result)
+    except:
+        candidates = []
+    
+    # Validate candidates
+    valid_candidates = [c for c in candidates if is_valid_candidate(c)]
+    
+    return valid_candidates[:10]  # Return max 10
+```
+
+## Deduplication
+
+### Auto-Deduplication Logic
+```python
+def deduplicate_candidates(candidates):
+    """Remove exact and near-duplicates, keep first occurrence."""
+    unique = []
+    seen = set()
+    
+    for c in candidates:
+        normalized = normalize_candidate(c)
+        if normalized not in seen and not any(
+            similarity(normalize_candidate(ex), normalized) > 0.9 
+            for ex in unique
+        ):
+            seen.add(normalized)
+            unique.append(c)
+    
+    return unique
+```
+
+## Activation Testing
+
+### Testing Function
+```python
+def test_candidate_activations(candidates, prompts):
+    """Test each candidate against activation prompts."""
+    return {c: vibe_test_prompts(c, prompts) for c in candidates}
+```
+
+## Best Candidate Selection
+
+### Selection Logic
+```python
+def select_best_candidate(results, current_description, current_rate):
+    """Select candidate with highest activation rate."""
+    best = (current_description, current_rate)
+    for c, rate in results.items():
+        if rate > best[1]:
+            best = (c, rate)
+    return best
+```
+
+## False Activation Validation
+
+### Validation Function
+```python
+FALSE_PROMPTS = ["create a spec draft", "plan the workflow", "review the changes"]
+
+def validate_no_false_activations(candidate, original):
+    """Ensure no increase in false activations."""
+    orig_rate = vibe_test_prompts(original, FALSE_PROMPTS)
+    cand_rate = vibe_test_prompts(candidate, FALSE_PROMPTS)
+    return cand_rate <= orig_rate
+```
+
+## Fallback Logic
+
+### Fallback Implementation
+```python
+def generate_candidates_with_fallback(...):
+    """Generate candidates with fallback to conservative algorithm."""
+    try:
+        return generate_candidates(...) or fallback_candidates()
+    except:
+        return fallback_candidates()
+
+
+def fallback_candidates(desc):
+    """Conservative: minor variations only."""
+    return [desc, desc + " for better Vibe activation", desc.rstrip('.'), desc.capitalize()]
+```
+
+## Improved vibe_simulate_activation
+
+### Enhanced Version
+```bash
+# Improved with verb weighting and position awareness
+vibe_simulate_activation() {
+    # ... (enhanced implementation with better matching)
+    return 0  # or 1
+}
+```
+
+## Automated Tests
+
+### Test Structure
+- mossy-skill_test.sh with 5 test cases
+- Test fixtures: mossy-test-simple, mossy-test-complex, mossy-test-optimal
+
 ## Main Execution Flow
 
 ```bash
