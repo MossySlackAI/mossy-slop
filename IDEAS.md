@@ -23,9 +23,9 @@ If there are open specifications:
  - Ask about commit preferences
  - complete all open work items
  - for each open specification:
-    * if requested, create a new branch based on the current one
-    * invoke mossy-plan on the specification
-    * complete all open work items
+    - if requested, create a new branch based on the current one
+    - invoke mossy-plan on the specification
+    - complete all open work items
  - give report of completed work, end
 
 If there are open work items:
