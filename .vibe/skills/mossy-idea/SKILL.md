@@ -1,6 +1,6 @@
 ---
 name: mossy-idea
-description: "Create or write spec drafts in .flow/specs/ for mossy-interview refinement"
+description: "Create and write spec draft files in .flow/specs/ for mossy-interview"
 user-invocable: false
 allowed-tools: bash, ask_user_question
 ---

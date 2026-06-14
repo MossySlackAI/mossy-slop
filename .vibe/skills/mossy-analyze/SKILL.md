@@ -1,6 +1,6 @@
 ---
 name: mossy-analyze
-description: "Static analysis across languages, scan code for quality, security, and style issues"
+description: "Check multiple languages for code quality, security, and style violations"
 user-invocable: false
 allowed-tools: read_file,grep,bash,ask_user_question,task
 ---
