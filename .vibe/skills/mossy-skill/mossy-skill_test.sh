@@ -26,7 +26,7 @@ else
 fi
 
 # Test 3: Function existence
-echo "Test 3: Checking all 10 functions exist..."
+echo "Test 3: Checking all functions exist..."
 
 functions=(
     "main"
@@ -38,7 +38,15 @@ functions=(
     "generate_prompts_from_skill"
     "generate_sample_prompts_for_skill"
     "optimize_description"
-    "test_false_activations"
+    "parse_triggers_section"
+    "read_triggers_into_globals"
+    "validate_triggers"
+    "generate_positive_triggers"
+    "generate_negative_triggers"
+    "ensure_triggers"
+    "regenerate_all_triggers"
+    "calculate_scores"
+    "calculate_total_score"
 )
 
 missing_functions=0
@@ -52,7 +60,7 @@ for func in "${functions[@]}"; do
 done
 
 if [ $missing_functions -eq 0 ]; then
-    echo "  PASS: All 10 functions found"
+    echo "  PASS: All ${#functions[@]} functions found"
 else
     echo "  FAIL: $missing_functions functions missing"
     exit 1
@@ -68,13 +76,20 @@ else
     echo "  INFO: Sourcing failed (may be due to missing dependencies), but syntax is valid"
 fi
 
-# Test 5: Quick smoke test - function count
-echo "Test 5: Verifying function count..."
-function_count=$(grep -c "^main()\|^optimize_skill_description()\|^extract_frontmatter_field()\|^expand_pattern()\|^vibe_simulate_activation()\|^vibe_test_prompts()\|^generate_prompts_from_skill()\|^generate_sample_prompts_for_skill()\|^optimize_description()\|^test_false_activations()" .vibe/skills/mossy-skill/mossy-skill.sh)
-if [ "$function_count" -eq 10 ]; then
-    echo "  PASS: Exactly 10 functions found"
+# Test 5: Verify new TRIGGERS.md functionality
+echo "Test 5: Verifying TRIGGERS.md functionality..."
+if [ -f ".vibe/skills/mossy-skill/TRIGGERS.md" ]; then
+    echo "  PASS: TRIGGERS.md exists for mossy-skill"
 else
-    echo "  FAIL: Expected 10 functions, found $function_count"
+    echo "  FAIL: TRIGGERS.md not found for mossy-skill"
+    exit 1
+fi
+
+# Check if TRIGGERS.md has the required sections
+if grep -q "## Should Trigger" .vibe/skills/mossy-skill/TRIGGERS.md && grep -q "## Should Not Trigger" .vibe/skills/mossy-skill/TRIGGERS.md; then
+    echo "  PASS: TRIGGERS.md has required sections"
+else
+    echo "  FAIL: TRIGGERS.md missing required sections"
     exit 1
 fi
 
