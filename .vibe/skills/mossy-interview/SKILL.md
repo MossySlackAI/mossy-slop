@@ -1,6 +1,6 @@
 ---
 name: mossy-interview
-description: "Technical interview to refine specs and clarify requirements before planning"
+description: "Conduct technical interviews to refine specs and clarify requirements before planning"
 user-invocable: false
 allowed-tools: read_file,grep,bash,ask_user_question
 ---

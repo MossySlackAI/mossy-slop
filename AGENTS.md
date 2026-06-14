@@ -70,7 +70,7 @@ argument-hint: "[args]"
 | Skill | Command | Purpose |
 |-------|---------|---------|
 | `mossy-idea` | `/mossy:idea` | Write a minimal spec file draft for later refinement |
-| `mossy-interview` | `/mossy-interview` | Technical interview to refine specs before planning |
+| `mossy-interview` | `/mossy-interview` | Conduct technical interviews to refine specs and clarify requirements before planning |
 | `mossy-plan` | `/mossy-plan` | Create execution plan from spec |
 | `mossy-work` | `/mossy-work` | Execute plan tasks |
 | `mossy-review` | `/mossy-review` | Review changes before commit |
