@@ -349,3 +349,4 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 - Evidence always captured for findings
 - **DO NOT call flowctl.py** - use flowctl.sh
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.
+- When committing work done here, even later, sign off with coauthor given by `load-mossy-config.sh CO_AUTHORED_BY <spec-id>`

@@ -56,3 +56,4 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
   * Skip hidden directories like .git, .flow, .vibe, .claude.
   * For git repositories, only scan files and directories that are in git.
   * You MUST use the `ask_user_question` (header: 11 chars max) tool for every question that requires user judgment. 
+  * When committing work done here, even later, sign off with coauthor given by `load-mossy-config.sh CO_AUTHORED_BY <spec-id>`

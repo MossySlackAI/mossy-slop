@@ -126,3 +126,4 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 - Never commit to git without user confirmation OR commit-policy != manual
 - All modifications tracked in workflow execution
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.
+- When committing work done here, even later, sign off with coauthor given by `load-mossy-config.sh CO_AUTHORED_BY <spec-id>`
