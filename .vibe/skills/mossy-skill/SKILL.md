@@ -9,8 +9,6 @@ allowed-tools: read_file, write_file, grep, bash, ask_user_question, task
 
 Optimize skill frontmatter descriptions to improve Vibe auto-activation. This skill systematically analyzes existing skill frontmatter and modifies the description field to ensure skills are activated when user prompts demand functionality that the skill can provide.
 
-> **Note**: Current implementation uses conservative algorithm. For better results, see [fn-28](.flow/specs/fn-28-improve-mossy-skill-with-subagent-generated-rewordings.md) which proposes using subagent-generated high-temperature rewordings.
-
 Vibe auto-triggers skills based on description matching (confirmed via upstream changelog:2573). This skill provides data-driven optimization of the description field to maximize relevant activations while avoiding false positives.
 
 ## Architecture (fn-28 Split)
