@@ -2,7 +2,7 @@
 name: mossy-finish
 description: "Complete automated mossy workflow processing entire specifications through all stages"
 user-invocable: false
-allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
+allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,skill,task
 ---
 
 # mossy-finish
