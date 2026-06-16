@@ -23,12 +23,13 @@ An optional switch `-vv` or `--veryverbose` activates very verbose mode
 - Prepare TRIGGERS.md in the skill directory (see section TRIGGERS)
 - Read the skill frontmatter, note the old description
 - Determine the old description's `SCORE` (see section SCORE)
-- Loop these steps:
-    - Use an exploratory subagent to come up with an alternative description for the skill, using high temperature setting for the LLM to give good variation. The subagent may read the entire `SKILL.md`.
-    - Determine the alternative description's `SCORE`
-    - If the new score is higher, replace the skill description in `SKILL.md` with the new one
-    - If no better replacement was found for ten times, declare the work finished; print the `SCORE` we started with, and the final `SCORE`, and exit the loop
-    - Repeat the loop
+- Loop:
+  - Use an exploratory subagent to come up with an ten alternative description for the skill, using high temperature setting for the LLM to give good variation. The subagent may read the entire `SKILL.md`.
+  - For each alternative description:
+      - Determine the alternative description's `SCORE`
+      - If the new score is higher, replace the skill description in `SKILL.md` with the new one and remember the new `SCORE` as reference
+  - If no better replacement was found, declare the work finished; print the `SCORE` we started with, and the final `SCORE`, and exit the loop
+  - Repeat the loop
 
 ## TRIGGERS
 

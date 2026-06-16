@@ -18,6 +18,8 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 /mossy:skill "*-analyze"               # Optimize all analyze-related skills
 /mossy:skill --regenerate-triggers     # Regenerate TRIGGERS.md for all skills
 /mossy:skill --generate-triggers mossy-review  # Generate TRIGGERS.md for specific skill
+
+    Optional switches: -v for verbose mode, --v for very verbose mode
 ```
 
 ## What it does
