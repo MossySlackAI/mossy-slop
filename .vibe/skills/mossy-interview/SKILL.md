@@ -1,38 +1,31 @@
 ---
 name: mossy-interview
-description: "Conduct technical interviews to refine specs and clarify requirements before planning"
+description: Technical interview to refine specs before planning
 user-invocable: false
 allowed-tools: read_file,grep,bash,ask_user_question
 ---
 
 # mossy-interview
 
-**CRITICAL: ONLY writes spec files to `.flow/specs/`. No other work.**
+**CRITICAL: ONLY writes to `.flow/specs/`**
 
-Technical interview skill. Extracts implementation details via targeted questions, then creates or refines a spec.
-
-**Focus**: The code is the single source of truth. Inline comments provide documentation. Human retains full control and responsibility.
+Technical interview skill. Extracts implementation details via targeted questions, then refines spec.
 
 ## Input
 
 Full request: $ARGUMENTS
 
-Accepts:
-- **Flow spec ID**: `fn-N-slug` (e.g., `fn-1-add-oauth`) or legacy `fn-N`/`fn-N-xxx`
-- **Flow task ID**: `fn-N-slug.M` (e.g., `fn-1-add-oauth.2`) or legacy `fn-N.M`
-- **File path**: `docs/spec.md` or similar
-- **Idea text**: `Add OAuth2 support` (creates minimal spec first)
-- **Empty**: Prompt for target
-
-Examples:
-- `/mossy:interview fn-1-add-oauth`
-- `/mossy:interview fn-1-add-oauth.3`
-- `/mossy:interview docs/oauth-spec.md`
-- `/mossy:interview Add OAuth2 support`
+| Type | Example | Action |
+|------|---------|--------|
+| Flow spec ID | `fn-1-add-oauth` | Read or create |
+| Flow task ID | `fn-1-add-oauth.2` | Read parent spec |
+| File path | `docs/spec.md` | Read or confirm creation |
+| Idea text | `Add OAuth2 support` | Create minimal spec |
+| Empty | - | Prompt for target |
 
 ## Role
 
-Technical interviewer, spec refiner. No implementation. No files outside `.flow/specs/`.
+Technical interviewer. ONLY writes to `.flow/specs/`.
 
 ## Flow
 
@@ -76,9 +69,9 @@ For co-authored-by, extract value after `=` (handles quoted strings for spaces).
 **Audit trail**: Codebase-resolved items go to `## Resolved via Codebase` section with file:line evidence.
 
 Investigation order:
-1. Grep for existing implementations of similar features
-2. Check project conventions (naming, file structure, patterns)
-3. Identify existing dependencies and integrations
+1. Grep for similar features
+2. Check conventions (naming, structure, patterns)
+3. Identify dependencies
 4. Surface contradictions with user statements
 
 ### Phase 3: Technical Interview
@@ -91,136 +84,102 @@ Investigation order:
 
 **Question Format: Lead with Recommendation**
 
-Every `ask_user_question` call must include the agent's recommended option AND a confidence tier.
+Every `ask_user_question` call must include recommended option AND confidence tier.
 
 Pattern:
 ```
-<options summary>. Recommended: <X> — <one-sentence rationale>. Confidence: [high | judgment-call | your-call].
+<options summary>. Recommended: <X> — <rationale>. Confidence: [high|judgment-call|your-call].
 ```
 
-Confidence tiers (mandatory):
-- `[high]` — strong codebase signal or convention match. User can usually accept.
-- `[judgment-call]` — slight lean but reasonable people disagree. User's call carries weight.
-- `[your-call]` — agent has no signal. Defer to user.
+Confidence tiers:
+- `[high]` — strong codebase signal
+- `[judgment-call]` — reasonable disagreement possible
+- `[your-call]` — no signal, defer to user (mandatory when applicable)
 
-The `[your-call]` tier is **mandatory** when the agent has no basis for a recommendation.
-
-Options should be neutral labels (no "(recommended)" markers).
+Options: neutral labels only.
 
 **ask_user_question Tool Usage:**
 
-Use the `ask_user_question` tool with proper JSON structure:
-- **Tool name**: `ask_user_question` (lowercase, with underscores)
-- **Required parameter**: `questions` array (1-4 questions)
-- **Each question must have**: `question` (string) and `options` (array of 2-4 choice objects)
-- **Each option must have**: `header` (1-11 chars max),`label` (string)
-- **Optional parameters**: `description` (string), `multi_select` (boolean), `hide_other` (boolean), `footer_note` (string)
+JSON structure:
+- `questions`: array (1-4 questions)
+- Each question: `question` (string), `options` (array of 2-4 choice objects)
+- Each option: `label` (string), `header` (1-11 chars max)
+- Optional: `description`, `multi_select`, `hide_other`, `footer_note`
 
-Example tool call:
+Example:
 ```json
-{
-  "questions": [
-    {
-      "question": "What database should we use for this feature?",
-      "header": "Database",
-      "options": [
-        {"label": "PostgreSQL", "description": "Relational, ACID compliant"},
-        {"label": "MongoDB", "description": "Document store, flexible schema"},
-        {"label": "SQLite", "description": "File-based, lightweight"}
-      ]
-    }
-  ]
-}
+{"questions": [{"question": "What DB?", "header": "DB", "options": [{"label": "PostgreSQL"}, {"label": "MongoDB"}, {"label": "SQLite"}]}]}
 ```
 
 ### Phase 4: Question Tree Navigation
 
-Concrete rules:
-
-1. **Cap branch depth at 4** - don't go deeper than 4 levels of follow-up
-2. **Discover-as-you-go** - adapt next question based on prior answers
-3. **Surface abandoned branches** - explicitly state when pruning sub-trees
-4. **One `ask_user_question` call per turn** - never queue multiple tool calls back-to-back
+Rules:
+1. Cap branch depth at 4
+2. Adapt based on prior answers
+3. Surface pruned branches explicitly
+4. One `ask_user_question` call per turn
 
 Example:
 ```
-Q: "Does this feature need persistence?"
-A: "No, ephemeral state is fine."
-[agent prunes {DB choice, schema design, migration plan}]
-Q: "Skipped DB questions — you said ephemeral. Next: how should state survive page reloads?"
+Q: "Need persistence?"
+A: "No"
+[prune DB questions]
+Q: "Skipped DB. Next: state across reloads?"
 ```
 
 ### Phase 5: Code-versus-assertion Contradiction
 
-When grep/Read reveals code disagrees with user assertion:
+When code disagrees with user assertion:
 
 Surface as `ask_user_question`:
-- **header**: `Mismatch?` (max 11 chars)
-- **body**: `Code shows <X> at <file:line>; you said <Y>. Recommended: <treat-code-as-source-of-truth | update-spec-to-match-code | revisit-the-area>. Confidence: [<tier>].`
-- **options**: `match-code` (revise spec to align), `update-code` (treat assertion as goal), `clarify` (user explains)
+- **header**: `Mismatch?`
+- **body**: `Code: <X> at <file:line>; you: <Y>. Recommended: <option>. Confidence: [<tier>].`
+- **options**: `match-code`, `update-code`, `clarify`
 
-Confidence tier:
-- `[high]` when grep evidence is unambiguous
-- `[judgment-call]` when interpretation is at play
-- Never silently pick a side
+Confidence: `[high]` for unambiguous evidence, `[judgment-call]` for interpretation. Never pick silently.
 
 ### Phase 6: Write Refined Spec
 
-After interview completes, write refined spec back using the **flowctl skeleton format** (Overview, Scope, Approach, Quick commands, Acceptance, References) with Resolved via Codebase section added after References. Use `echo "$content" | flowctl.sh spec set-plan --file - <id>` to update `.flow/specs/<id>.md`.
+Write refined spec using flowctl skeleton format (Overview, Scope, Approach, Quick commands, Acceptance, References, Resolved via Codebase).
 
-**For new specs**: Overwrite with complete refined spec in flowctl format
+Use `echo "$content" | flowctl.sh spec set-plan --file - <id>`.
 
-**For existing specs**: Replace entire content with refined spec (flowctl spec set-plan replaces whole file).
-
-**Format Requirements**:
-- Acceptance criteria use checkbox format: `- [ ] criterion text` (not R-IDs)
-- Quick commands section must be populated
-
-**Never overwrite**:
-- User's explicit decisions (preserve in relevant sections)
+**Format**:
+- Acceptance: `- [ ] criterion text`
+- Quick commands: populated
+- Preserve user decisions
 
 ### Phase 7: Handoff to Plan
 
-Output summary:
+Output:
 ```
-Interview complete for <spec-id>.
-
-Spec written to .flow/specs/<id>.md
-
-After the interview, user can:
-- `/mossy:finish <spec-id>` - Plan, execute and review in one go
-- `/mossy:plan <spec-id>` to create execution plan only
+Interview complete for <spec-id>. Spec: .flow/specs/<id>.md
+Next: /mossy:finish <spec-id> or /mossy:plan <spec-id>
 ```
 
 ## Question Bank: Technical
 
 Load questions from `skills/mossy-interview/questions-technical.md`.
 
-### Categories (in dependency order):
+### Categories (dependency order):
 
-1. **Scope** - What's in/out of scope, component boundaries
-2. **Architecture** - Components, dependencies, integration points, parallel work potential
-3. **Data Models** - Structures, persistence needs, state management
-4. **API Contracts** - Interfaces, endpoints, data shapes
-5. **Edge Cases** - What can go wrong, failure modes
-6. **Performance** - Scale expectations, latency, memory
-7. **Security** - Auth, validation, data sensitivity
-8. **Testing Strategy** - Unit/integration/E2E focus areas
-9. **Migration** - Breaking changes, rollback, feature flags
-10. **Acceptance** - What does "done" look like?
+1. **Scope** - In/out of scope, boundaries
+2. **Architecture** - Components, dependencies, integration
+3. **Data Models** - Structures, persistence, state
+4. **API Contracts** - Interfaces, endpoints, shapes
+5. **Edge Cases** - Failures, boundaries
+6. **Performance** - Scale, latency, memory
+7. **Security** - Auth, validation, sensitivity
+8. **Testing** - Unit/integration/E2E
+9. **Migration** - Breaking changes, rollback, flags
+10. **Acceptance** - "Done" criteria
 
 ### Standard Acceptance Criteria
 
-Strongly consider adding these evergreens.
-
-- [ ] Automated tests are written.
-  - Consider working test driven, write tests first.
-  - For new features, the tests should verify the feature exists and works. The fresh tests need to fail, maybe even fail to build.
-  - For bugs, the tests should fail as long as the bug is present. These tests should fail at first.
-  - For refactoring, the tests should document the status quo and succeed right away.
-- [ ] All automated tests pass.
-- [ ] All relevant documentation is updated.
-- [ ] On bigger structural changes: All affected AGENTS.md files are updated.
+- [ ] Automated tests written (TDD for new features, fail-first for bugs, pass-first for refactoring)
+- [ ] All automated tests pass
+- [ ] Documentation updated
+- [ ] AGENTS.md files updated for structural changes
 
 ### Question Selection
 
@@ -251,14 +210,13 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ## Not in Scope
 
-- Business questions (user personas, success metrics, MVP boundaries)
-- Task creation (that's `/mossy:plan`'s job)
-- Implementation details (that's `/mossy:work`'s job)
+- Business questions
+- Task creation (`/mossy:plan`)
+- Implementation (`/mossy:work`)
 
 ## GUARDRAILS
 
-- **CRITICAL: NO actual work. ONLY output: spec file to `.flow/specs/<id>.md`**
-- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
-- **DO NOT call flowctl.py** - use flowctl.sh
-- **Do NOT create tasks** - that's plan's job
-- **Do NOT create plans in ~/.vibe/plans **
+- ONLY writes to `.flow/specs/<id>.md`
+- Read local AGENTS.md
+- Use flowctl.sh (never flowctl.py)
+- No task/plan creation

@@ -1,6 +1,6 @@
 ---
 name: mossy-interview
-description: Conduct technical interviews to refine specs and clarify requirements before planning
+description: Technical interview to refine specs before planning
 argument-hint: "<spec-id|path|idea>"
 axis: 1
 ---
