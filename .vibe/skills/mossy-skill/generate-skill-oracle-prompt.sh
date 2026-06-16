@@ -4,10 +4,10 @@
 # skill activation
 
 # usage:
-# generate-skill-oracle-prompt.sh [switches] <skill name> "<prompt>"
+# generate-skill-oracle-prompt.sh [switches] <skill name> "<description>" "<prompt>"
 # the output of the mistral subagent fed with this prompt will be <skill name> on success, any other output is failure to match. 
 # optional switches:
-# -s test <skill name> in isolation without populating the skill list with the regular other skills
+# `-s`: test <skill name> in isolation without populating the skill list with the regular other skills
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 python "$SCRIPT_DIR/generate-skill-oracle-prompt.py" "$@"

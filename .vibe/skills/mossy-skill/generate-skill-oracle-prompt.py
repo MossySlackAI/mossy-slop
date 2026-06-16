@@ -120,6 +120,7 @@ def main():
     parser.add_argument("-s", help = "Add only the passed skill to the oracle test. Usually, all known skills are added as well.", action='store_true')
     parser.add_argument("skill_name")
     parser.add_argument("skill_description")
+    parser.add_argument("trigger")
     args = parser.parse_args()
 
     # load skills
@@ -135,6 +136,8 @@ def main():
     prompt = build_prompt(skills)
 
     print(prompt)
+    print("\nNow process the user prompt:")
+    print(args.trigger)
 
 if __name__ == "__main__":
     main()
