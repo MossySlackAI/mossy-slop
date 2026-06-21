@@ -206,7 +206,7 @@ def main():
 
     # scan TRIGGERS.md
     triggers = read_triggers(os.path.join(skill_directory, "TRIGGERS.md"), positive)
-    print(triggers)
+    # print(triggers)
 
     # load skills
     single = args.s
