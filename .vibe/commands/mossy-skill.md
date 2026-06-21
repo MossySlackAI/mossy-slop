@@ -1,8 +1,8 @@
 ---
 name: mossy-skill
 description: Optimize skill frontmatter descriptions for better Vibe activation
-argument-hint: "[pattern|--regenerate-triggers|--generate-triggers]"
 axis: 1
+argument-hint: "[pattern|name] [-v|--regenerate-triggers|-generate-triggers]"
 ---
 
 # IMPORTANT: This command MUST invoke the skill `mossy-skill`
