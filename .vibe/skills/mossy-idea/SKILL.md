@@ -1,6 +1,6 @@
 ---
 name: mossy-idea
-description: "Create and write draft spec"
+description: "Create minimal spec from idea or note"
 user-invocable: false
 allowed-tools: bash, ask_user_question
 ---
