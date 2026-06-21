@@ -9,14 +9,14 @@ stages:
 - test
 - secret-detection
 
-# Mossy-skill tests
-mossy-skill-test:
+# Mossy-frontmatter tests
+mossy-frontmatter-test:
   stage: test
   image: alpine:latest
   before_script:
     - apk add --no-cache bash git
   script:
-    - bash .vibe/skills/mossy-skill/mossy-skill_test.sh
+    - bash .vibe/skills/mossy-frontmatter/mossy-frontmatter_test.sh
   only:
     - merge_requests
     - main
