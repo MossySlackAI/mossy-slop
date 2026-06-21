@@ -20,6 +20,11 @@
 - rename symbol globally
 - restructure this class hierarchy
 - refactor duplicate logic into shared utility
+- extract function from this code
+- move method to different class
+- rename class across codebase
+- consolidate duplicate code
+- simplify complex method
 
 ## Should Not Trigger
 - write new functionality for this endpoint
@@ -41,3 +46,14 @@
 - add type hints to this Python file
 - migrate database schema to new version
 - add logging to this function
+- write new endpoint handler
+- implement missing feature
+- create new class
+- modify source code
+- debug runtime errors
+- profile application
+- write integration tests
+- set up build system
+- configure monitoring tools
+- create deployment scripts
+- setup ci cd pipeline

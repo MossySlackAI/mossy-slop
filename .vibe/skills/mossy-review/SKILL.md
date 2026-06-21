@@ -1,6 +1,6 @@
 ---
 name: mossy-review
-description: "Review changes before commit, analyze code modifications against acceptance criteria"
+description: "Review code changes before commit and analyze modifications against acceptance criteria"
 user-invocable: false
 allowed-tools: read_file,write_file,grep,bash,ask_user_question,task
 ---

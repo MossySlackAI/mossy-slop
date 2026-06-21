@@ -20,6 +20,12 @@
 - take the next task from queue
 - claim and execute fn-1.1
 - start fn-1 implementation
+- execute task fn-2.3
+- run task fn-3.1 from queue
+- claim next available task
+- process fn-1 tasks in order
+- do the work for spec fn-5
+- execute ready task fn-4.2
 
 ## Should Not Trigger
 - list tasks
@@ -42,3 +48,13 @@
 - review my code
 - plan a new feature
 - scan the repository
+- create execution plan
+- show task list
+- view spec details
+- generate task breakdown
+- check project status
+- list all specifications
+- design system architecture
+- write user documentation
+- setup test framework
+- configure deployment pipeline

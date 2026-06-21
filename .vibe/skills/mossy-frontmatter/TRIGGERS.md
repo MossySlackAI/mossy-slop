@@ -16,6 +16,17 @@
 - refine skill descriptions for better vibe triggering
 - skill frontmatter needs optimization for auto-activation
 - make skills trigger more reliably in vibe
+- vibe skill descriptions need tuning for better activation
+- my skill isn't triggering when users ask for its functionality
+- improve skill frontmatter to match user queries better
+- skill activation is too broad need to narrow frontmatter
+- frontmatter description causes false activations need to fix
+- optimize skill name and description for vibe matching
+- adjust skill metadata so vibe activates it correctly
+- vibe keeps missing my skill for relevant requests
+- skill frontmatter too generic needs more specific terms
+- need to refine frontmatter for better vibe trigger accuracy
+- skill description doesn't capture what it actually does
 
 ## Should Not Trigger
 - install a new vibe skill
@@ -33,3 +44,18 @@
 - share skills with my team
 - find skills in the vibe registry
 - compare different skill implementations
+- write a new vibe skill from scratch
+- remove a skill I no longer need
+- set up vibe CLI configuration
+- check vibe version compatibility
+- test skill execution manually
+- write user documentation
+- create tutorial for my skill
+- debug skill loading errors
+- profile skill performance
+- package skills for distribution
+- validate skill syntax
+- check skill file permissions
+- write integration tests for skills
+- create skill examples
+- design skill architecture

@@ -15,6 +15,17 @@
 - Run entire mossy process on fn-14
 - Take fn-33 through the full pipeline
 - Complete mossy workflow for fn-67
+- Process fn-1 from spec to completion
+- Execute full mossy pipeline on fn-99
+- Run mossy-finish to complete fn-2
+- Full mossy automation for fn-18
+- Run mossy workflow end to end for fn-3
+- Execute all mossy phases on fn-5
+- Process fn-8 through planning working and reviewing
+- Automate spec fn-11 through entire workflow
+- Run mossy-finish on fn-15
+- Process spec fn-23 through all mossy stages
+- Complete implementation and review for fn-47
 
 ## Should Not Trigger
 - Run mossy-plan on fn-23
@@ -31,3 +42,19 @@
 - Help with mossy-work
 - List all specs
 - Show me fn-23 details
+- Just plan the spec without executing
+- Only execute mossy-work tasks
+- Review code changes manually
+- Create new feature specification
+- Explain mossy workflow
+- Check task progress
+- View task queue
+- Run individual mossy steps
+- Only execute planning stage
+- Skip to review phase
+- Create spec document
+- Help me understand mossy
+- write setup instructions
+- design feature architecture
+- configure deployment pipeline
+- setup test environment

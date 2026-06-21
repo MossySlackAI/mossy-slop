@@ -17,6 +17,18 @@
 - review the changes
 - check for issues
 - validate implementation
+- review my code changes
+- check my implementation
+- verify code modifications
+- review recent changes
+- analyze my code diff
+- check staged changes for issues
+- validate recent implementation
+- review code before pushing
+- verify uncommitted modifications
+- check diff for problems
+- review pull request changes
+- analyze implementation correctness
 
 ## Should Not Trigger
 - commit my changes
@@ -38,3 +50,14 @@
 - update dependencies
 - format the code
 - clean up the code
+- write new functionality
+- create feature branch
+- modify source files
+- squash commits
+- cherry-pick changes
+- resolve conflicts
+- write tests
+- setup monitoring dashboard
+- create test environment
+- configure alerting rules
+- update configuration

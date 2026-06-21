@@ -17,6 +17,17 @@
 - perform a deep repository analysis
 - regenerate AGENTS.md from scratch
 - scan this directory tree
+- analyze project and create AGENTS.md
+- update all directory AGENTS.md files
+- deep scan to update project documentation
+- perform fresh repository scan
+- deep scan for AGENTS.md updates
+- run full repository analysis
+- scan and document project structure
+- update AGENTS.md for this directory
+- refresh project insights documentation
+- analyze codebase structure for AGENTS.md
+- scan repository for AGENTS.md updates
 
 ## Should Not Trigger
 - fix a bug in the code
@@ -35,3 +46,17 @@
 - check the build status
 - format the code
 - analyze this log file
+- debug application issues
+- write feature implementation
+- test new functionality
+- commit code changes
+- push to remote repository
+- resolve merge conflicts
+- write code documentation
+- optimize application performance
+- set up development environment
+- configure build system
+- write setup instructions
+- create architecture diagram
+- design database schema
+- write deployment scripts

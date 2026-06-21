@@ -16,6 +16,16 @@
 - find XSS vulnerabilities
 - analyze this Python file
 - run code quality checks
+- scan for code smells
+- check for security issues
+- analyze codebase quality
+- find performance bottlenecks
+- check for code duplication
+- scan for hardcoded credentials
+- detect XSS vulnerabilities
+- audit code for vulnerabilities
+- check code complexity
+- analyze this JavaScript file
 
 ## Should Not Trigger
 - write a new function
@@ -33,3 +43,18 @@
 - create an execution plan
 - merge this branch
 - deploy to production
+- write new functionality
+- implement missing feature
+- create new module
+- modify source code
+- debug runtime errors
+- profile application
+- write integration tests
+- set up build system
+- design new architecture
+- write user stories
+- create wireframes
+- setup monitoring
+- configure authentication
+- write migration scripts
+- design system architecture

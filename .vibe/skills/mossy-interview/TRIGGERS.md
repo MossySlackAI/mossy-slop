@@ -16,6 +16,16 @@
 - This spec needs refinement
 - I have an idea that needs clarification
 - Let's work through the implementation details
+- Need to clarify technical requirements for this project
+- Help me define the scope of this feature
+- Interview me about the database schema design
+- Need to clarify edge cases for this implementation
+- What technical questions should we address?
+- Spec is too vague need to clarify
+- Need to refine feature requirements
+- Clarify technical approach for this change
+- Help me understand what needs to be built
+- Need to discuss implementation strategy
 
 ## Should Not Trigger
 - Implement this feature for me
@@ -33,3 +43,18 @@
 - Refactor the user model
 - Add a new REST endpoint
 - Test the authentication flow
+- Write the implementation
+- Debug application errors
+- Profile code performance
+- Write unit tests
+- Review code changes
+- Create new features
+- Fix bugs in production
+- Deploy application
+- Write technical documentation
+- setup development environment
+- create database schema
+- write test plans
+- design UI mockups
+- configure monitoring tools
+- review security policies

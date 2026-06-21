@@ -1,6 +1,6 @@
 ---
 name: mossy-frontmatter
-description: "Improve skill descriptions in frontmatter to enhance Vibe auto-trigger matching"
+description: "Optimize skill frontmatter descriptions to improve Vibe auto-trigger matching"
 user-invocable: false
 allowed-tools: read_file, write_file, grep, bash, ask_user_question, task
 ---
