@@ -1,40 +1,93 @@
-# TRIGGERS.md - mossy-idea
+# TRIGGERS.md for mossy-idea
 
 ## Should Trigger
-- create a spec for dark mode
-- draft a spec for user authentication
-- I have an idea for a new feature
-- write a spec for the payment system
-- new spec needed for search functionality
-- I want to create a spec
-- can you draft a spec
-- start a new spec for the dashboard
-- I have a feature idea to add
-- let's create a spec for caching
-- spec draft for export feature
-- need to write a spec for notifications
-- create spec file for API endpoint
-- draft new spec for data migration
-- write spec draft for the import feature
-- create a minimal spec for the plugin
+
+- Idea: Add user authentication system
+- Idea: Implement dark mode
+- Record for later implementation: Add search functionality
+- Record that: Create user profile page
+- Idea: Implement payment processing
+- Note for future: Add file upload capability
+- Record for later: Create dashboard with analytics
+- Idea: Add multi-language support
+- Note for future: Implement real-time notifications
+- Record that: Add export to CSV feature
+- Idea: Create API endpoint for user data
+- Record for later implementation: Add social media sharing buttons
+- Idea: Implement two-factor authentication
+- Note for future: Add role-based access control
+- Record that: Create a reporting system
+- Idea: Add email notification system
+- Note for future: Implement chat functionality
+- Record for later: Add calendar integration
+- Idea: Create mobile-responsive layout
+- Note for future: Add keyboard shortcuts
+- Idea: Fix login page crash on mobile
+- Record for later implementation: Resolve memory leak in data processor
+- Idea: Fix cross-browser layout issues
+- Note for future: Correct date formatting in reports
+- Record that: Fix API rate limiting bug
+- Idea: Resolve database connection leaks
+- Note for future: Fix pagination error on search
+- Record for later: Correct search index corruption
+- Idea: Fix authentication timeout issues
+- Note for future: Resolve file upload failures
+- Record that: Refactor user service module
+- Idea: Clean up legacy authentication code
+- Note for future: Restructure the API layer
+- Record for later implementation: Modularize frontend components
+- Idea: Decouple payment processing module
+- Note for future: Refactor database query builders
+- Record that: Consolidate duplicate validation logic
+- Idea: Improve error handling across services
+- Note for future: Restructure configuration management
+- Record for later: Clean up technical debt in auth module
+- Idea: Migrate to Kubernetes
+- Note for future: Set up CI/CD pipeline
+- Record that: Add database indexing for performance
+- Idea: Implement Redis caching layer
+- Note for future: Upgrade to framework v5
+- Record for later implementation: Set up monitoring and logging
+- Idea: Implement automated database backups
+- Note for future: Add load balancing
+- Record that: Optimize slow database queries
+- Idea: Improve page load times
 
 ## Should Not Trigger
-- review the spec
-- implement the feature from spec-123
-- plan the task
-- run mossy-plan on my spec
-- /mossy-plan fn-1
-- /mossy-work task-5
-- refine the spec with mossy-interview
-- interview for spec clarification
-- update existing spec-45
-- modify the spec file
-- delete spec-78
-- test the code changes
-- debug the issue in production
-- analyze the codebase structure
-- refactor the authentication module
-- commit the spec changes
-- push the branch to origin
-- run mossy-review
-- finalize the spec details
+
+- Debug this segmentation fault in my C++ code
+- Why is my Python script throwing TypeError?
+- Fix this stack trace: Error at line 42
+- My tests are failing, help me figure out why
+- What's wrong with this SQL query?
+- Debug this memory leak in my Rust program
+- Explain how this React component works
+- What does this regex pattern match?
+- Walk me through this algorithm
+- Explain the architecture of this codebase
+- What does this bash script do?
+- Clarify this TypeScript type definition
+- Write a Python function to sort a list
+- Generate a REST API endpoint in Node.js
+- Create a Django model for UserProfile
+- Write unit tests for this class
+- Implement binary search in Go
+- Write a shell script to backup my database
+- Review this pull request #123
+- Check my code for best practices
+- Audit this JavaScript for performance issues
+- Is this implementation thread-safe?
+- Review these changes before I commit
+- Does this code follow PEP 8?
+- Commit my changes with message "Fix bug"
+- Push to origin/main
+- Create a new branch feature/login
+- Squash these commits
+- Resolve merge conflicts in main
+- Revert commit abc123
+- How do I deploy this to Heroku?
+- Build this Docker image
+- Set up CI/CD pipeline for this project
+- Run npm install
+- Deploy to production
+- Configure AWS S3 bucket
