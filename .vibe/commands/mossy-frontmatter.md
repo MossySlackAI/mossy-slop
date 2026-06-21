@@ -1,23 +1,23 @@
 ---
-name: mossy-skill
+name: mossy-frontmatter
 description: Optimize skill frontmatter descriptions for better Vibe activation
 axis: 1
 argument-hint: "[pattern|name] [-v|--regenerate-triggers|-generate-triggers]"
 ---
 
-# IMPORTANT: This command MUST invoke the skill `mossy-skill`
+# IMPORTANT: This command MUST invoke the skill `mossy-frontmatter`
 
 Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Usage
 
 ```
-/mossy:skill mossy-*                    # Optimize all mossy skills
-/mossy:skill mossy-skill               # Optimize just mossy-skill
-/mossy:skill                           # Optimize all skills in .vibe/skills/
-/mossy:skill "*-analyze"               # Optimize all analyze-related skills
-/mossy:skill --regenerate-triggers     # Regenerate TRIGGERS.md for all skills
-/mossy:skill --generate-triggers mossy-review  # Generate TRIGGERS.md for specific skill
+/mossy:frontmatter mossy-*                    # Optimize all mossy skills
+/mossy:frontmatter mossy-frontmatter               # Optimize just mossy-frontmatter
+/mossy:frontmatter                           # Optimize all skills in .vibe/skills/
+/mossy:frontmatter "*-analyze"               # Optimize all analyze-related skills
+/mossy:frontmatter --regenerate-triggers     # Regenerate TRIGGERS.md for all skills
+/mossy:frontmatter --generate-triggers mossy-frontmatter  # Generate TRIGGERS.md for specific skill
 
     Optional switches: -v for verbose mode, --v for very verbose mode
 ```
@@ -54,29 +54,29 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 Optimize all mossy skills:
 ```bash
-/mossy:skill mossy-*
+/mossy:frontmatter mossy-*
 ```
 
 Optimize a specific skill:
 ```bash
-/mossy:skill mossy-review
+/mossy:frontmatter mossy-review
 ```
 
 Optimize all skills (default):
 ```bash
-/mossy:skill
+/mossy:frontmatter
 ```
 
 ### TRIGGERS.md Generation
 
 Regenerate TRIGGERS.md for all skills:
 ```bash
-/mossy:skill --regenerate-triggers
+/mossy:frontmatter --regenerate-triggers
 ```
 
 Generate TRIGGERS.md for a specific skill:
 ```bash
-/mossy:skill --generate-triggers mossy-skill
+/mossy:frontmatter --generate-triggers mossy-frontmatter
 ```
 
 ## Pattern Examples
@@ -84,7 +84,7 @@ Generate TRIGGERS.md for a specific skill:
 | Pattern | Matches |
 |---------|---------|
 | `mossy-*` | All mossy skills |
-| `mossy-skill` | Only the mossy-skill |
+| `mossy-frontmatter` | Only the mossy-frontmatter |
 | `*-analyze` | All skills ending with -analyze |
 | `mossy-?` | Single character mossy skills |
 

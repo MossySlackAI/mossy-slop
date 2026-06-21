@@ -1,4 +1,4 @@
-# TRIGGERS.md - mossy-skill
+# TRIGGERS.md - mossy-frontmatter
 
 ## Should Trigger
 - optimize skill frontmatter descriptions for vibe

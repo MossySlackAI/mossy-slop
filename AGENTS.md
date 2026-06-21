@@ -79,6 +79,7 @@ argument-hint: "[args]"
 | `mossy-analyze` | `/mossy-analyze` | Static analysis across languages |
 | `mossy-refactor` | `/mossy-refactor` | Language-aware refactoring |
 | `mossy-scan` | `/mossy-scan` | Deep scan of the repository. Creates or updates AGENTS.md files |
+| `mossy-frontmatter` | `/mossy:frontmatter` | Optimize skill frontmatter descriptions for better Vibe activation |
 
 ## Directory Structure
 
@@ -110,6 +111,8 @@ argument-hint: "[args]"
 │   │   │   └── SKILL.md
 │   │   ├── mossy-scan/
 │   │   │   └── SKILL.md
+│   │   ├── mossy-frontmatter/
+│   │   │   └── SKILL.md
 │   │   └── mossy-scripts/
 │   │       ├── flowctl.sh
 │   │       ├── flowctl.py
@@ -127,7 +130,8 @@ argument-hint: "[args]"
 │       ├── mossy-finish.md
 │       ├── mossy-analyze.md
 │       ├── mossy-refactor.md
-│       └── mossy-scan.md
+│       ├── mossy-scan.md
+│       └── mossy-frontmatter.md
 └── scripts/             # Utility scripts
 ```
 
