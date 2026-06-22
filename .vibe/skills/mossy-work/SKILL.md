@@ -211,7 +211,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 
 ## GUARDRAILS
 
-- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are working in.
+- **IMPORTANT**: Always read local `AGENTS.md` (`CLAUDE.md` if you are Claude) in the subdirectories you are working in.
 - **DO NOT call flowctl.py** - use flowctl.sh
 - Never modify files outside workspace without explicit task instruction
 - Never commit to git without user confirmation **OR** commit-policy != manual

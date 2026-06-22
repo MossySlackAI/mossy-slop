@@ -49,7 +49,7 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
   - Avoid explicit line references to source files, they can become outdated. Prefer just function and class names.
 
 ## GUARDRAILS
-
+  - If you are Claude: Replace `AGENTS.md` with `CLAUDE.md` for all operations.
   - Only AGENTS.md is to be written to.
   - Do not read or write outside of the current repository; neither by following symbolic links nor by ascending the directory tree.
   - Do not make changes over git, no commits, to checkouts, no branches.
