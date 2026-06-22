@@ -1,6 +1,6 @@
 {
   "name": "mossy-slop",
-  "description": "Lean, token-efficient skills for planning and executing code changes. Compatible with Mistral Vibe, designed as a leaner alternative to flow-next.",
+  "description": "Single-plugin marketplace for mossy-slop, the lean alternative to flow-next",
   "version": "1.0.0",
   "owner": {
     "name": "MossySlackAI",
@@ -9,37 +9,17 @@
   "homepage": "https://github.com/MossySlackAI/mossy-slop",
   "repository": "https://github.com/MossySlackAI/mossy-slop",
   "metadata": {
-    "description": "Mossy Slop - Core skills for planning, execution, review, refactoring, and analysis across multiple languages",
+    "description": "Mossy Slop - Lean Structured Development",
     "version": "1.0.0",
     "license": "MIT"
   },
   "plugins": [
     {
       "name": "mossy-slop",
-      "source": "./.vibe/skills",
-      "description": "Mossy Slop - Core skills for planning, execution, review, refactoring, and analysis",
+      "source": "./.vibe",
+      "description": "Lean, token-efficient skills for planning and executing code changes. Compatible with Mistral Vibe, designed as a leaner alternative to flow-next.",
       "version": "1.0.0",
-      "category": "development",
-      "keywords": [
-        "planning",
-        "workflow",
-        "task-management",
-        "code-review",
-        "refactoring",
-        "static-analysis",
-        "mistral-vibe"
-      ],
-      "skills": [
-        "mossy-analyze",
-        "mossy-finish",
-        "mossy-idea",
-        "mossy-interview",
-        "mossy-plan",
-        "mossy-refactor",
-        "mossy-review",
-        "mossy-scan",
-        "mossy-work"
-      ]
+      "category": "development"
     }
   ]
 }
