@@ -135,6 +135,10 @@ This skill does a deep scan of the repository and adds AGENTS.md files everwhere
 
 Check [the command](.vibe/commands/mossy-scan.md#Usage) for usage instructions.
 
+### Note for Mistral Vibe
+
+Technically, Mistral Vibe does not support the `/mossy:<command>` syntax. It mostly works anyway, but you may receive better results with trigger phraces.
+
 ## Authorship
 
 This readme file is entirely human written. It serves both as a guide to the AI writing the rest of the system, and information to human users.

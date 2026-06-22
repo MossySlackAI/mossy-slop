@@ -64,11 +64,43 @@ Restart Vibe and check that mossy commands are available:
 /mossy:review --help
 ```
 
-Vibe may sometimes complain that the hyphen syntax mossy-plan, mossy-work,... is the correct one. As far as I can tell, it is wrong about that.
-The colon syntax more reliably leads to the 'Loaded skill:..." message.
+Vibe may sometimes complain that the hyphen syntax mossy-plan, mossy-work,... is the correct one. That is true, the commands are not loaded by the vibe CLI. But it works anyway, the LLM just has to do some extra work.
 
 ---
 
+## Claude Code
+
+### Marketplace System
+
+Enter on the command line:
+
+`claude plugin install mossy-slop@github:MossySlackAI/mossy-slop`
+
+### Manual Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/MossySlackAI/mossy-slop.git
+cd mossy-slop
+
+# Copy skills to Claude's skills directory
+mkdir -p ~/.claude/skills
+cp -r .vibe/skills/mossy-* ~/.claude/skills/
+
+# Copy commands
+mkdir -p ~/.claude/commands
+cp -r .vibe/commands/mossy-* ~/.claude/commands/
+```
+
+### Verification
+
+```bash
+# List installed skills
+/skill list
+
+# Use a mossy skill
+/mossy:idea my-feature
+```
 
 # ATTENTION
 
@@ -137,32 +169,6 @@ Claude Code supports plugins through its marketplace system.
 
 # Install language skills
 /plugin install mossy-languages@claude-code-skills
-```
-
-### Manual Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/MossySlackAI/mossy-slop.git
-cd mossy-slop
-
-# Copy skills to Claude's skills directory
-mkdir -p ~/.claude/skills
-cp -r skills/mossy-* ~/.claude/skills/
-
-# Copy commands
-mkdir -p ~/.claude/commands
-cp -r commands/mossy-* ~/.claude/commands/
-```
-
-### Verification
-
-```bash
-# List installed skills
-/skill list
-
-# Use a mossy skill
-/mossy:plan my-feature
 ```
 
 ---
