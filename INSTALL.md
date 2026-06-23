@@ -72,9 +72,19 @@ Vibe may sometimes complain that the hyphen syntax mossy-plan, mossy-work,... is
 
 ### Marketplace System
 
-Enter on the command line:
+In the Claude CLI, enter
 
-`claude plugin install mossy-slop@github:MossySlackAI/mossy-slop`
+`/plugins`
+
+Go to the `Marketplaces` tab
+
+Select `Add Marketplace`
+
+Enter `MossySlackAI/mossy-slop`
+
+Go to `Browse Plugins`
+
+Hit `Enter` twice to install the plugin
 
 ### Manual Installation
 
@@ -100,6 +110,17 @@ cp -r .vibe/commands/mossy-* ~/.claude/commands/
 
 # Use a mossy skill
 /mossy:idea my-feature
+```
+
+### Marketplace System via Command Line
+
+NOTE: This currently does not work (on Windows at least) because claude CLI refuses to run git.
+
+Enter on the command line:
+
+```
+claude plugin marketplace add MossySlackAI/mossy-slop
+claude plugin install mossy-slop@MossySlackAI/mossy-slop
 ```
 
 # ATTENTION
