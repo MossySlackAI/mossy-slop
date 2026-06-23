@@ -1,5 +1,5 @@
 ---
-name: mossy-frontmatter
+name: mossy-slop:frontmatter
 description: Optimize skill frontmatter descriptions for better Vibe activation
 axis: 1
 argument-hint: "[pattern|name] [-v|--regenerate-triggers|-generate-triggers]"

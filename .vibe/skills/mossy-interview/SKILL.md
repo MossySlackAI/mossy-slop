@@ -1,5 +1,5 @@
 ---
-name: mossy-interview
+name: mossy-slop:interview
 description: "Conduct technical interviews to clarify requirements and refine specifications"
 user-invocable: false
 allowed-tools: read_file,grep,bash,ask_user_question

@@ -1,5 +1,5 @@
 ---
-name: mossy-analyze
+name: mossy-slop:analyze
 description: "Analyze code across languages for security vulnerabilities, quality issues, and style violations"
 user-invocable: false
 allowed-tools: read_file,grep,bash,ask_user_question,task

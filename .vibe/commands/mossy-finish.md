@@ -1,5 +1,5 @@
 ---
-name: mossy-finish
+name: mossy-slop:finish
 description: Execute full workflow (plan, work, review) on a spec
 argument-hint: "<spec-id>"
 ---

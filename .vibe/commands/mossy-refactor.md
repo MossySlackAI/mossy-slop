@@ -1,5 +1,5 @@
 ---
-name: mossy-refactor
+name: mossy-slop:refactor
 description: Language-aware code refactoring. Extract methods, rename symbols, restructure code across C++, C#, VB.NET, JavaScript, TypeScript, GDScript, and Python.
 axis: 1
 argument-hint: "<file> <operation> [args] [--i|--dry|--list|--show <path>|--rename <old> <new>]"

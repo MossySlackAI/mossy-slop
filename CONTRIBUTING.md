@@ -80,7 +80,7 @@ If you must do it manually (e.g., the skills aren't working yet):
 2. **Create SKILL.md** with proper frontmatter:
    ```markdown
    ---
-   name: mossy-rust
+   name: mossy-slop:rust
    description: Rust language-specific skill with file extensions, build systems, patterns, and pitfalls
    user-invocable: false
    allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task

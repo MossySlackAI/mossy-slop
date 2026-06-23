@@ -1,5 +1,5 @@
 ---
-name: mossy-review
+name: mossy-slop:review
 description: Review changes before commit. Analyzes code modifications against acceptance criteria and produces structured review reports.
 axis: 1
 argument-hint: "<task-id|spec-id> [--diff|--staged|--all|--file <path>|--list|--show <id>|--check|--quick|--security]"

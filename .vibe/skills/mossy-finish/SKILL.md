@@ -1,5 +1,5 @@
 ---
-name: mossy-finish
+name: mossy-slop:finish
 description: "Execute complete mossy workflow: plan, work, and review stages for specifications"
 user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,skill,task

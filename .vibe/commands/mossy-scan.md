@@ -1,5 +1,5 @@
 ---
-name: mossy-scan
+name: mossy-slop:scan
 description: Deep scan of the repository. Creates or updates AGENTS.md or CLAUDE.md files.
 argument-hint: "[directory]"
 ---

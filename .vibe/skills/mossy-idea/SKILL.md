@@ -1,5 +1,5 @@
 ---
-name: mossy-idea
+name: mossy-slop:idea
 description: "Create minimal spec from idea, note, or record for later implementation"
 user-invocable: false
 allowed-tools: bash, ask_user_question

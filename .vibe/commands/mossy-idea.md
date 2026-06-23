@@ -1,5 +1,5 @@
 ---
-name: mossy-idea
+name: mossy-slop:idea
 description: Write a minimal spec file draft into .flow/specs/ for later refinement with mossy-interview
 argument-hint: "<idea-text>"
 axis: 1

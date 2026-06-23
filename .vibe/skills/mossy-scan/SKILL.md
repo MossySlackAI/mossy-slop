@@ -1,5 +1,5 @@
 ---
-name: mossy-scan
+name: mossy-slop:scan
 description: "Deep scan repository to create or update AGENTS.md files with project insights"
 user-invocable: false
 allowed-tools: read_file,write_file,grep,bash,ask_user_question,task

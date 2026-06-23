@@ -47,7 +47,7 @@ Each skill lives in `.vibe/skills/mossy-<name>/` with:
 Required fields:
 ```yaml
 ---
-name: mossy-<name>
+name: mossy-slop:<name>
 description: <concise description>
 user-invocable: false
 allowed-tools: <comma-separated tool list>
@@ -59,7 +59,7 @@ allowed-tools: <comma-separated tool list>
 Via slash commands defined in `.vibe/commands/mossy-<name>.md`:
 ```yaml
 ---
-name: mossy-<name>
+name: mossy-slop:<name>
 description: <command description>
 argument-hint: "[args]"
 ---
@@ -214,7 +214,7 @@ We leave out:
 Frontmatter template:
 ```yaml
 ---
-name: mossy-<name>
+name: mossy-slop:<name>
 description: <1 line description>
 user-invocable: false
 allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,task
@@ -224,7 +224,7 @@ allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,t
 Command template:
 ```yaml
 ---
-name: mossy-<name>
+name: mossy-slop:<name>
 description: <1 line description>
 argument-hint: "[args]"
 ---
