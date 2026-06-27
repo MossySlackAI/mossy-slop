@@ -136,7 +136,7 @@ Surface as `ask_user_question`:
 - **body**: `Code: <X> at <file:line>; you: <Y>. Recommended: <option>. Confidence: [<tier>].`
 - **options**: `match-code`, `update-code`, `clarify`
 
-Confidence: `[high]` for unambiguous evidence, `[judgment-call]` for interpretation. Never pick silently.
+Confidence: `[high]` for unambiguous evidence, `[judgment-call]` for interpretation.
 
 ### Phase 6: Write Refined Spec
 
@@ -217,6 +217,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ## GUARDRAILS
 
 - ONLY writes to `.flow/specs/<id>.md`
-- Read local AGENTS.md
-- Use flowctl.sh (never flowctl.py)
+- Read local `AGENTS.md`
+- Use `flowctl.sh`
 - No task/plan creation

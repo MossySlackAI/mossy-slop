@@ -40,7 +40,7 @@ Accepts:
 ## GUARDRAILS
 
 - **CRITICAL: NO actual work, no thinking, no planning, no reading. ONLY output: spec file to `.flow/specs/<id>.md` via flowctl.sh**
-- **DO NOT call flowctl.py** - use flowctl.sh
+- Use `flowctl.sh`
 - **Do NOT create tasks** - that's plan's job
 - **Do NOT create plans in ~/.vibe/plans **
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.

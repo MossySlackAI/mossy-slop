@@ -354,5 +354,5 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 - Blocking issues reported immediately
 - Workspace preserved for user inspection
 - Roll back on any failure
-- **DO NOT call flowctl.py** - use flowctl.sh
+- Use `flowctl.sh`
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.

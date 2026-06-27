@@ -212,9 +212,9 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ## GUARDRAILS
 
 - **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are working in.
-- **DO NOT call flowctl.py** - use flowctl.sh
-- Never modify files outside workspace without explicit task instruction
-- Never commit to git without user confirmation **OR** commit-policy != manual
+- Use `flowctl.sh`
+- Only modify files in this workspace
+- Check commit-policy before making a git commit
 - All modifications tracked in summary with diffs
 - Questions collected and asked in bulk at end (unless blocking)
 - Blocking questions asked immediately

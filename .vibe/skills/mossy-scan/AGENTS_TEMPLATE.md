@@ -14,7 +14,7 @@
 ## Notes from Humans
 ### GUARDRAIL: The AI Agents do not touch this section.
 
-<Add, leave empty. Never edit. Messages from humans to agents go here.>
+<Add, leave empty. Messages from humans to agents go here.>
 
 ## Directory Structure
 
