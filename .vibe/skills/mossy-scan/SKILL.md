@@ -42,6 +42,7 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
         - `update`: Take over changes from the subagent that seem better than what is in AGENTS.md.
         - `rescan`: Replace AGENTS.md completely with subagent suggestion.
       - In all cases, delete AGENTS_TOPDOWN.md.
+      - On the top level, make sure the file `CLAUDE.md` exists and contains the instructions from `CLAUDE_TEMPLATE.md`.
 
 ### Guidelines
 
