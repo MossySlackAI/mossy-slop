@@ -95,7 +95,7 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ## GUARDRAILS
 
 - **CRITICAL: NO actual work. ONLY output: task files in `.flow/tasks/<id>.md`**
-- **IMPORTANT**: Always read local `AGENTS.md` (`CLAUDE.md` if you are Claude) in the subdirectories you are investigating.
+- **IMPORTANT**: Always read local AGENTS.md in the subdirectories you are investigating.
 - **DO NOT call flowctl.py** - use flowctl.sh
 - **Do NOT create plans in ~/.vibe/plans **
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.

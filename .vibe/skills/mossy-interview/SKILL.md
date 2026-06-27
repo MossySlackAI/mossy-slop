@@ -179,7 +179,7 @@ Load questions from `skills/mossy-interview/questions-technical.md`.
 - [ ] Automated tests written (TDD for new features, fail-first for bugs, pass-first for refactoring)
 - [ ] All automated tests pass
 - [ ] Documentation updated
-- [ ] `AGENTS.md` (`CLAUDE.md` if you are Claude) files updated for structural changes
+- [ ] AGENTS.md files updated for structural changes
 
 ### Question Selection
 
@@ -217,6 +217,6 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ## GUARDRAILS
 
 - ONLY writes to `.flow/specs/<id>.md`
-- Read local `AGENTS.md` (`CLAUDE.md` if you are Claude)
+- Read local AGENTS.md
 - Use flowctl.sh (never flowctl.py)
 - No task/plan creation
