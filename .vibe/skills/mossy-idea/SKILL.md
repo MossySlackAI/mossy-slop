@@ -41,7 +41,6 @@ Accepts:
 
 - **CRITICAL: NO actual work, no thinking, no planning, no reading. ONLY output: spec file to `.flow/specs/<id>.md` via flowctl.sh**
 - Use `flowctl.sh`
-- **Do NOT create tasks** - that's plan's job
-- **Do NOT create plans in ~/.vibe/plans **
+- Only modify files in `.flow/specs/`
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.
 - When committing work done here, even later, sign off with coauthor given by `load-mossy-config.sh CO_AUTHORED_BY <spec-id>`

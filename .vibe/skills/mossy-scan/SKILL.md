@@ -52,7 +52,7 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
 ## GUARDRAILS
 
   - Only AGENTS.md is to be written to.
-  - Do not read or write outside of the current repository; neither by following symbolic links nor by ascending the directory tree.
+  - Keep reads and writes inside the current repository.
   - Do not make changes over git, no commits, to checkouts, no branches.
   - Skip hidden directories like .git, .flow, .vibe, .claude.
   - For git repositories, only scan files and directories that are in git.

@@ -59,9 +59,6 @@ To determine `N_FN`, feed the output of `generate-skill-oracle-prompt.sh <skill 
 
 - **CRITICAL: ONLY modify skill frontmatter description fields**
 - **IMPORTANT**: Always preserve original description in backup
-- **DO NOT modify skill implementation logic**
-- **DO NOT create new skills** - only optimize existing ones
-- **DO NOT change skill activation mechanism** - only improve descriptions
 - **ALL modifications tracked with error recording**
 - **User retains full control** - can review and revert any changes
 - You MUST use the `ask_user_question` tool for every question that requires user judgment.

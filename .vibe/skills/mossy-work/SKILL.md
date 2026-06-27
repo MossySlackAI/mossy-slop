@@ -72,7 +72,7 @@ Accepts:
    - Use `flowctl.sh done <task-id> --summary-file <path>` or fallback
    - Update task status to done
    - **Commit behavior**: Respect commit-policy from config, read with `load-mossy-config.sh COMMIT_POLICY <spec-id>`
-     - manual: Do not commit (user must explicitly request)
+     - manual: Commit only on explicit user request
      - auto-per-change: Auto-commit changes
      - auto-per-spec: Auto-commit when spec is complete
      - batch: Defer commit

@@ -12,7 +12,7 @@
 <more detailed description of the contents, about two to four paragraphs as needed>
 
 ## Notes from Humans
-### GUARDRAIL: The AI Agents do not touch this section.
+### GUARDRAIL: The AI Agents keep out of this section.
 
 <Add, leave empty. Messages from humans to agents go here.>
 
