@@ -1,5 +1,5 @@
 ---
-name: mossy-slop:frontmatter
+name: mossy-frontmatter
 description: "Optimize skill frontmatter descriptions to improve Vibe auto-trigger matching"
 user-invocable: false
 allowed-tools: read_file, write_file, grep, bash, ask_user_question, task
