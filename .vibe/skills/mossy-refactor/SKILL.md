@@ -317,14 +317,14 @@ flowctl.sh done <task-id> --summary-file .flow/refactors/<id>/summary.md
 
 ## Commands for Users
 
-- `/mossy:refactor src/utils.py extract_method process_data 10:20 validate` - Extract method
-- `/mossy:refactor --rename OldName NewName` - Rename symbol globally
-- `/mossy:refactor src/ --rename ClassName NewName` - Rename in directory
-- `/mossy:refactor --extract-interface MyClass` - Extract interface
-- `/mossy:refactor --i` - Interactive refactoring session
-- `/mossy:refactor --dry src/file.py extract 5:15` - Dry run extraction
-- `/mossy:refactor --list` - List available refactorings
-- `/mossy:refactor --show src/file.py` - Show refactoring candidates
+- `/mossy-slop:refactor src/utils.py extract_method process_data 10:20 validate` - Extract method
+- `/mossy-slop:refactor --rename OldName NewName` - Rename symbol globally
+- `/mossy-slop:refactor src/ --rename ClassName NewName` - Rename in directory
+- `/mossy-slop:refactor --extract-interface MyClass` - Extract interface
+- `/mossy-slop:refactor --i` - Interactive refactoring session
+- `/mossy-slop:refactor --dry src/file.py extract 5:15` - Dry run extraction
+- `/mossy-slop:refactor --list` - List available refactorings
+- `/mossy-slop:refactor --show src/file.py` - Show refactoring candidates
 
 ## Error Recording
 

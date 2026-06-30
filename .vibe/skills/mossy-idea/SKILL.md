@@ -33,7 +33,7 @@ Accepts:
 
 3. **Phase 4: Output Result**
    - Print: `Spec written to .flow/specs/<spec-id>`
-   - Print: `Next: /mossy:interview <spec-id-without-.md>`
+   - Print: `Next: /mossy-slop:interview <spec-id-without-.md>`
 
 **Note:** Use `|| true` to prevent script failures from breaking skill execution.
 

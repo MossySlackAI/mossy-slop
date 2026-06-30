@@ -11,10 +11,10 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 ## Usage
 
 ```
-- `/mossy:scan`         # same as stable
-- `/mossy:scan stable`  # change as little as possible, only things that are wrong now
-- `/mossy:scan update`  # allow larger changes
-- `/mossy:scan rescan`  # completely overwrite previous AGENTS.md/CLAUDE.md files
+- `/mossy-slop:scan`         # same as stable
+- `/mossy-slop:scan stable`  # change as little as possible, only things that are wrong now
+- `/mossy-slop:scan update`  # allow larger changes
+- `/mossy-slop:scan rescan`  # completely overwrite previous AGENTS.md/CLAUDE.md files
 ```
 
 ## What it does

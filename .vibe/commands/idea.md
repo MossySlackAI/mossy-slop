@@ -12,10 +12,10 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 ## Usage
 
 ```
-/mossy:idea Add dark mode                    # Create spec draft for dark mode
-/mossy:idea Add OAuth2 authentication       # Create spec draft for OAuth
-/mossy-idea Implement caching layer          # Alternative invocation syntax
-/mossy-idea "Add user profile feature"      # Idea with spaces (use quotes)
+/mossy-slop:idea Add dark mode                    # Create spec draft for dark mode
+/mossy-slop:idea Add OAuth2 authentication       # Create spec draft for OAuth
+/mossy-slop:idea Implement caching layer          # Alternative invocation syntax
+/mossy-slop:idea "Add user profile feature"      # Idea with spaces (use quotes)
 ```
 
 ## What it does

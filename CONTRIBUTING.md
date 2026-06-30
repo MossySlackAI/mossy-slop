@@ -41,10 +41,10 @@ All contributions follow this workflow using the mossy skills:
 
 ```
 1. Identify the change/feature/fix needed
-2. Refine the feature with /mossy:interview
-3. Plan it using /mossy:plan
-4. Implement it using /mossy:work
-5. Review it using /mossy:review
+2. Refine the feature with /mossy-slop:interview
+3. Plan it using /mossy-slop:plan
+4. Implement it using /mossy-slop:work
+5. Review it using /mossy-slop:review
 6. Commit and push
 7. Record any issues to .flow/issues/
 ```
@@ -59,13 +59,13 @@ To add a new skill (e.g., `mossy-rust`):
 
 ```
 # Plan the new skill
-/mossy:plan "Add mossy-rust skill for mossy-slop"
+/mossy-slop:plan "Add mossy-rust skill for mossy-slop"
 
 # Work through the tasks
-/mossy:work <task-id>
+/mossy-slop:work <task-id>
 
 # Review
-/mossy:review
+/mossy-slop:review
 ```
 
 ### Manual Process
@@ -112,7 +112,7 @@ If you must do it manually (e.g., the skills aren't working yet):
 5. **Test the skill**:
    ```bash
    # From the repo root with dev setup
-   /mossy:rust --help
+   /mossy-slop:rust --help
    ```
 
 ## Adding a New Command
@@ -171,7 +171,7 @@ Optional fields:
 
 ```bash
 # From the repo root with dev setup
-/mossy:<command> <args>
+/mossy-slop:<command> <args>
 ```
 
 ### Validating All Skills
@@ -242,7 +242,7 @@ python3 -c "import tomllib; tomllib.load(open('.vibe/agents.toml', 'rb'))"
    git push origin feat/my-feature
    ```
 
-7. **PR will be reviewed** using `/mossy:review`
+7. **PR will be reviewed** using `/mossy-slop:review`
 
 ## Versioning
 
@@ -271,7 +271,7 @@ This project uses semantic versioning for releases:
 ## Reporting Issues
 
 1. **For bugs in skills**: Record via the error recording system (automatic in skills)
-2. **For feature requests**: File a GitHub issue with the `/mossy:plan` output
+2. **For feature requests**: File a GitHub issue with the `/mossy-slop:plan` output
 3. **For questions**: File a GitHub issue or discussion
 
 All issues in `.flow/issues/` are tracked and should be addressed.

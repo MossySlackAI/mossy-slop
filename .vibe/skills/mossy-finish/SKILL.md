@@ -24,7 +24,7 @@ Accepts:
 
 1. **Parse Input**
    - Trim whitespace from $ARGUMENTS
-   - If empty or whitespace-only, output error: "Spec ID required. Usage: /mossy:finish <spec-id>"
+   - If empty or whitespace-only, output error: "Spec ID required. Usage: /mossy-slop:finish <spec-id>"
    - Validate spec ID format using regex: `^fn-\d+(-[a-z0-9-]+)?$`
    - If format invalid, output error: "Invalid spec ID format. Expected: fn-N or fn-N-slug"
    - Check if spec file exists at `.flow/specs/<spec-id>.md` or `.flow/specs/<spec-id>.md`
@@ -45,16 +45,16 @@ Accepts:
 
 4. **Execute Workflow**
    - **Plan Phase**: Invoke mossy-plan skill with spec_id as argument
-     - Use: `/mossy:plan <spec-id>` or invoke mossy-plan skill directly
+     - Use: `/mossy-slop:plan <spec-id>` or invoke mossy-plan skill directly
      - Wait for all tasks to be created
      - Verify plan creation succeeded by checking `.flow/tasks/<spec-id>.*` files exist
    - **Work Phase**: Invoke mossy-work skill with spec_id as argument
-     - Use: `/mossy:work <spec-id>` or invoke mossy-work skill directly
+     - Use: `/mossy-slop:work <spec-id>` or invoke mossy-work skill directly
      - This will execute all ready tasks for the spec in order
      - Wait for all tasks to complete (status: done)
      - Verify by checking all task statuses with `flowctl.sh show <spec-id>`
    - **Review Phase**: Invoke mossy-review skill with spec_id as argument
-     - Use: `/mossy:review <spec-id>` or invoke mossy-review skill directly
+     - Use: `/mossy-slop:review <spec-id>` or invoke mossy-review skill directly
      - Wait for review completion
      - Verify review report is generated
 
@@ -97,8 +97,8 @@ Accepts:
 
 ## Commands
 
-- `/mossy:finish fn-23` - Execute full workflow on spec fn-23
-- `/mossy:finish --help` - Show usage information
+- `/mossy-slop:finish fn-23` - Execute full workflow on spec fn-23
+- `/mossy-slop:finish --help` - Show usage information
 
 ## Error Recording
 

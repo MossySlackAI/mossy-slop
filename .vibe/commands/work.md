@@ -11,28 +11,28 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Usage
 
-- `/mossy:work fn-1.1` - Execute specific task
-- `/mossy:work fn-1` - Execute all ready tasks for spec
-- `/mossy:work --next` - Execute next ready task across all specs
-- `/mossy:work --list` - List ready tasks
-- `/mossy:work --show fn-1.1` - Show task details
-- `/mossy:work --continue fn-1.1` - Resume partially completed task
+- `/mossy-slop:work fn-1.1` - Execute specific task
+- `/mossy-slop:work fn-1` - Execute all ready tasks for spec
+- `/mossy-slop:work --next` - Execute next ready task across all specs
+- `/mossy-slop:work --list` - List ready tasks
+- `/mossy-slop:work --show fn-1.1` - Show task details
+- `/mossy-slop:work --continue fn-1.1` - Resume partially completed task
 
 ## Examples
 
 ```
 # Create plan first
-/mossy:plan "Add user authentication"
+/mossy-slop:plan "Add user authentication"
 
 # Then execute all tasks for that spec
-/mossy:work fn-1
+/mossy-slop:work fn-1
 
 # Or execute tasks one at a time
-/mossy:work --next
+/mossy-slop:work --next
 
 # Check what's ready
-/mossy:work --list
+/mossy-slop:work --list
 
 # See task details
-/mossy:work --show fn-1.2
+/mossy-slop:work --show fn-1.2
 ```

@@ -253,16 +253,16 @@ git show <commit> --name-only | xargs mossy-analyze
 
 ## Commands for Users
 
-- `/mossy:analyze src/main.py` - Analyze file
-- `/mossy:analyze src/` - Analyze directory
-- `/mossy:analyze --pattern "*.py"` - Analyze by pattern
-- `/mossy:analyze --list` - List available checks
-- `/mossy:analyze --check long-function` - Run specific check
-- `/mossy:analyze --language python` - Analyze only Python files
-- `/mossy:analyze --security` - Security-focused analysis
-- `/mossy:analyze --style` - Style checks only
-- `/mossy:analyze --quick` - Quick basic checks
-- `/mossy:analyze --full` - Full analysis (default)
+- `/mossy-slop:analyze src/main.py` - Analyze file
+- `/mossy-slop:analyze src/` - Analyze directory
+- `/mossy-slop:analyze --pattern "*.py"` - Analyze by pattern
+- `/mossy-slop:analyze --list` - List available checks
+- `/mossy-slop:analyze --check long-function` - Run specific check
+- `/mossy-slop:analyze --language python` - Analyze only Python files
+- `/mossy-slop:analyze --security` - Security-focused analysis
+- `/mossy-slop:analyze --style` - Style checks only
+- `/mossy-slop:analyze --quick` - Quick basic checks
+- `/mossy-slop:analyze --full` - Full analysis (default)
 
 ## Error Recording
 

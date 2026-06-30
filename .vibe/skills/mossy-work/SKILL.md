@@ -168,12 +168,12 @@ Accepts:
 ## Commands for Users
 
 After task execution:
-- `/mossy:work <task-id>` - Re-execute task
-- `/mossy:work <spec-id>` - Execute all ready tasks for spec
-- `/mossy:work --next` - Execute next ready task
-- `/mossy:work --list` - List ready tasks
-- `/mossy:work --show <id>` - Show task details
-- `/mossy:work --continue <task-id>` - Resume partially completed task
+- `/mossy-slop:work <task-id>` - Re-execute task
+- `/mossy-slop:work <spec-id>` - Execute all ready tasks for spec
+- `/mossy-slop:work --next` - Execute next ready task
+- `/mossy-slop:work --list` - List ready tasks
+- `/mossy-slop:work --show <id>` - Show task details
+- `/mossy-slop:work --continue <task-id>` - Resume partially completed task
 
 ## Integration with flowctl.sh
 

@@ -12,12 +12,12 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 ## Usage
 
 ```
-/mossy:frontmatter mossy-*                    # Optimize all mossy skills
-/mossy:frontmatter mossy-frontmatter               # Optimize just mossy-frontmatter
-/mossy:frontmatter                           # Optimize all skills in .vibe/skills/
-/mossy:frontmatter "*-analyze"               # Optimize all analyze-related skills
-/mossy:frontmatter --regenerate-triggers     # Regenerate TRIGGERS.md for all skills
-/mossy:frontmatter --generate-triggers mossy-frontmatter  # Generate TRIGGERS.md for specific skill
+/mossy-slop:frontmatter mossy-*                    # Optimize all mossy skills
+/mossy-slop:frontmatter mossy-frontmatter               # Optimize just mossy-frontmatter
+/mossy-slop:frontmatter                           # Optimize all skills in .vibe/skills/
+/mossy-slop:frontmatter "*-analyze"               # Optimize all analyze-related skills
+/mossy-slop:frontmatter --regenerate-triggers     # Regenerate TRIGGERS.md for all skills
+/mossy-slop:frontmatter --generate-triggers mossy-frontmatter  # Generate TRIGGERS.md for specific skill
 
     Optional switches: -v for verbose mode, --v for very verbose mode
 ```
@@ -54,29 +54,29 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 Optimize all mossy skills:
 ```bash
-/mossy:frontmatter mossy-*
+/mossy-slop:frontmatter mossy-*
 ```
 
 Optimize a specific skill:
 ```bash
-/mossy:frontmatter mossy-review
+/mossy-slop:frontmatter mossy-review
 ```
 
 Optimize all skills (default):
 ```bash
-/mossy:frontmatter
+/mossy-slop:frontmatter
 ```
 
 ### TRIGGERS.md Generation
 
 Regenerate TRIGGERS.md for all skills:
 ```bash
-/mossy:frontmatter --regenerate-triggers
+/mossy-slop:frontmatter --regenerate-triggers
 ```
 
 Generate TRIGGERS.md for a specific skill:
 ```bash
-/mossy:frontmatter --generate-triggers mossy-frontmatter
+/mossy-slop:frontmatter --generate-triggers mossy-frontmatter
 ```
 
 ## Pattern Examples

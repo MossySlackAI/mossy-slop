@@ -59,9 +59,9 @@ The skills are already in the right place to activate.
 Restart Vibe and check that mossy commands are available:
 
 ```
-/mossy:plan --help
-/mossy:work --help
-/mossy:review --help
+/mossy-slop:plan --help
+/mossy-slop:work --help
+/mossy-slop:review --help
 ```
 
 Vibe may sometimes complain that the hyphen syntax mossy-plan, mossy-work,... is the correct one. That is true, the commands are not loaded by the vibe CLI. But it works anyway, the LLM just has to do some extra work.
@@ -109,7 +109,7 @@ cp -r .vibe/commands/mossy-* ~/.claude/commands/
 /skill list
 
 # Use a mossy skill
-/mossy:idea my-feature
+/mossy-slop:idea my-feature
 ```
 
 ### Marketplace System via Command Line
@@ -325,7 +325,7 @@ Delete the copied files from your tool's skill directory.
 ### Commands not working
 
 - Ensure both the skill AND command files are copied
-- Commands reference skills by name (e.g., `mossy-plan` skill is invoked by `/mossy:plan`)
+- Commands reference skills by name (e.g., `mossy-plan` skill is invoked by `/mossy-slop:plan`)
 - Check the command file has the correct `name` in its frontmatter
 
 ### marketplace.json not found

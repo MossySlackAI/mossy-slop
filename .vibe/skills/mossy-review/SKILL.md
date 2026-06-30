@@ -258,17 +258,17 @@ git diff ${BASE_COMMIT} <file> > .flow/reviews/current/<file>.diff
 
 ## Commands for Users
 
-- `/mossy:review fn-1.1` - Review changes for task
-- `/mossy:review fn-1` - Review all changes for spec
-- `/mossy:review --diff` - Review unstaged changes
-- `/mossy:review --staged` - Review staged changes
-- `/mossy:review --all` - Review all uncommitted changes
-- `/mossy:review --file src/main.py` - Review specific file
-- `/mossy:review --list` - List pending reviews
-- `/mossy:review --show fn-1.1` - Show review report
-- `/mossy:review --check` - Quick style/lint check
-- `/mossy:review --quick` - Quick review (basic checks only)
-- `/mossy:review --security` - Security-focused review
+- `/mossy-slop:review fn-1.1` - Review changes for task
+- `/mossy-slop:review fn-1` - Review all changes for spec
+- `/mossy-slop:review --diff` - Review unstaged changes
+- `/mossy-slop:review --staged` - Review staged changes
+- `/mossy-slop:review --all` - Review all uncommitted changes
+- `/mossy-slop:review --file src/main.py` - Review specific file
+- `/mossy-slop:review --list` - List pending reviews
+- `/mossy-slop:review --show fn-1.1` - Show review report
+- `/mossy-slop:review --check` - Quick style/lint check
+- `/mossy-slop:review --quick` - Quick review (basic checks only)
+- `/mossy-slop:review --security` - Security-focused review
 
 ## Language-Specific Checks
 

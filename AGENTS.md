@@ -69,17 +69,17 @@ argument-hint: "[args]"
 
 | Skill | Command | Purpose |
 |-------|---------|---------|
-| `mossy-idea` | `/mossy:idea` | Write a minimal spec file draft for later refinement |
+| `mossy-idea` | `/mossy-slop:idea` | Write a minimal spec file draft for later refinement |
 | `mossy-interview` | `/mossy-interview` | Conduct technical interviews to refine specs and clarify requirements before planning |
 | `mossy-plan` | `/mossy-plan` | Create execution plan from spec |
 | `mossy-work` | `/mossy-work` | Execute plan tasks |
 | `mossy-review` | `/mossy-review` | Review changes before commit |
-| `mossy-finish` | `/mossy:finish` | Execute full workflow (plan, work, review) on a spec |
+| `mossy-finish` | `/mossy-slop:finish` | Execute full workflow (plan, work, review) on a spec |
 | `mossy-flowctl` | N/A (internal) | Wrapper for flowctl.py operations |
 | `mossy-analyze` | `/mossy-analyze` | Static analysis across languages |
 | `mossy-refactor` | `/mossy-refactor` | Language-aware refactoring |
 | `mossy-scan` | `/mossy-scan` | Deep scan of the repository. Creates or updates AGENTS.md files |
-| `mossy-frontmatter` | `/mossy:frontmatter` | Optimize skill frontmatter descriptions for better Vibe activation |
+| `mossy-frontmatter` | `/mossy-slop:frontmatter` | Optimize skill frontmatter descriptions for better Vibe activation |
 
 ## Directory Structure
 

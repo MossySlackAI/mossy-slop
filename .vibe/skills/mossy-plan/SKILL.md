@@ -70,11 +70,11 @@ depends_on: fn-<N>.(M-1)
 ## Commands
 
 After plan creation, user can:
-- `/mossy:finish <spec-id>` - Execute all tasks and review in one go
-- `/mossy:work <spec-id>` - Execute all tasks
-- `/mossy:work <task-id>` - Execute single task
-- `/mossy:plan --list` - List all specs
-- `/mossy:plan --show <id>` - Show spec + tasks
+- `/mossy-slop:finish <spec-id>` - Execute all tasks and review in one go
+- `/mossy-slop:work <spec-id>` - Execute all tasks
+- `/mossy-slop:work <task-id>` - Execute single task
+- `/mossy-slop:plan --list` - List all specs
+- `/mossy-slop:plan --show <id>` - Show spec + tasks
 
 ## Error Recording
 

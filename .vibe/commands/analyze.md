@@ -11,16 +11,16 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Usage
 
-- `/mossy:analyze src/main.py` - Analyze specific file
-- `/mossy:analyze src/` - Analyze all files in directory
-- `/mossy:analyze --pattern "*.py"` - Analyze files matching glob pattern
-- `/mossy:analyze --list` - List all available checks
-- `/mossy:analyze --check long-function` - Run only long-function check
-- `/mossy:analyze --language python` - Analyze only Python files
-- `/mossy:analyze --security` - Run security checks only
-- `/mossy:analyze --style` - Run style/lint checks only
-- `/mossy:analyze --quick` - Quick basic checks
-- `/mossy:analyze --full` - Full analysis (default)
+- `/mossy-slop:analyze src/main.py` - Analyze specific file
+- `/mossy-slop:analyze src/` - Analyze all files in directory
+- `/mossy-slop:analyze --pattern "*.py"` - Analyze files matching glob pattern
+- `/mossy-slop:analyze --list` - List all available checks
+- `/mossy-slop:analyze --check long-function` - Run only long-function check
+- `/mossy-slop:analyze --language python` - Analyze only Python files
+- `/mossy-slop:analyze --security` - Run security checks only
+- `/mossy-slop:analyze --style` - Run style/lint checks only
+- `/mossy-slop:analyze --quick` - Quick basic checks
+- `/mossy-slop:analyze --full` - Full analysis (default)
 
 ## Checks
 
@@ -40,28 +40,28 @@ C++, C#, VB.NET, JavaScript, TypeScript, GDScript, Python.
 
 ```
 # Analyze a single file
-/mossy:analyze app/models/user.py
+/mossy-slop:analyze app/models/user.py
 
 # Analyze a directory recursively
-/mossy:analyze src/
+/mossy-slop:analyze src/
 
 # Analyze all Python files
-/mossy:analyze --pattern "**.py"
+/mossy-slop:analyze --pattern "**.py"
 
 # Security audit
-/mossy:analyze src/ --security
+/mossy-slop:analyze src/ --security
 
 # Style checks only
-/mossy:analyze --style src/
+/mossy-slop:analyze --style src/
 
 # Run specific check
-/mossy:analyze --check long-function src/
+/mossy-slop:analyze --check long-function src/
 
 # Quick analysis (basic checks)
-/mossy:analyze --quick .
+/mossy-slop:analyze --quick .
 
 # List all available checks
-/mossy:analyze --list
+/mossy-slop:analyze --list
 ```
 
 ## Output

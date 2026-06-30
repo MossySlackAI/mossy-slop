@@ -11,15 +11,15 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Usage
 
-- `/mossy:refactor src/utils.py extract_method process 10:20 validate` - Extract lines 10-20 from process() to new validate() method
-- `/mossy:refactor src/ --rename OldClass NewClass` - Rename class in directory
-- `/mossy:refactor --rename globalFunction betterName` - Rename symbol globally in project
-- `/mossy:refactor --extract-interface MyService` - Extract interface from class
-- `/mossy:refactor Models/User.cs encapsulate_field _email` - Create property from field
-- `/mossy:refactor --i` - Interactive refactoring session
-- `/mossy:refactor --dry src/file.py extract 5:15` - Preview changes without applying
-- `/mossy:refactor --list` - List available refactoring operations
-- `/mossy:refactor --show src/module.ts` - Show refactoring candidates for file
+- `/mossy-slop:refactor src/utils.py extract_method process 10:20 validate` - Extract lines 10-20 from process() to new validate() method
+- `/mossy-slop:refactor src/ --rename OldClass NewClass` - Rename class in directory
+- `/mossy-slop:refactor --rename globalFunction betterName` - Rename symbol globally in project
+- `/mossy-slop:refactor --extract-interface MyService` - Extract interface from class
+- `/mossy-slop:refactor Models/User.cs encapsulate_field _email` - Create property from field
+- `/mossy-slop:refactor --i` - Interactive refactoring session
+- `/mossy-slop:refactor --dry src/file.py extract 5:15` - Preview changes without applying
+- `/mossy-slop:refactor --list` - List available refactoring operations
+- `/mossy-slop:refactor --show src/module.ts` - Show refactoring candidates for file
 
 ## Operations
 
@@ -50,31 +50,31 @@ C++, C#, VB.NET, JavaScript, TypeScript, GDScript, Python.
 
 ```
 # Extract method from Python file
-/mossy:refactor app/main.py extract_method DataProcessor.run 25:45 _validate
+/mossy-slop:refactor app/main.py extract_method DataProcessor.run 25:45 _validate
 
 # Rename a TypeScript class across project
-/mossy:refactor --rename UserManager AccountManager
+/mossy-slop:refactor --rename UserManager AccountManager
 
 # Rename C# class in specific directory
-/mossy:refactor src/Services/ --rename UserService IUserService
+/mossy-slop:refactor src/Services/ --rename UserService IUserService
 
 # Extract interface from C++ class
-/mossy:refactor include/ --extract-interface Database Connection
+/mossy-slop:refactor include/ --extract-interface Database Connection
 
 # Encapsulate private field in C#
-/mossy:refactor Models/Person.cs encapsulate_field _age
+/mossy-slop:refactor Models/Person.cs encapsulate_field _age
 
 # Dry run to preview changes
-/mossy:refactor --dry src/utils.ts extract_function 10:20 helper
+/mossy-slop:refactor --dry src/utils.ts extract_function 10:20 helper
 
 # Interactive mode - scan and suggest refactorings
-/mossy:refactor --i
+/mossy-slop:refactor --i
 
 # Show what can be refactored in a file
-/mossy:refactor --show src/engine.cpp
+/mossy-slop:refactor --show src/engine.cpp
 
 # List all available refactoring operations
-/mossy:refactor --list
+/mossy-slop:refactor --list
 ```
 
 ## Workflow

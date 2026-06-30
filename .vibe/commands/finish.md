@@ -10,8 +10,8 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Usage
 
-- `/mossy:finish fn-23` - Execute full workflow on spec fn-23
-- `/mossy:finish --help` - Show usage information
+- `/mossy-slop:finish fn-23` - Execute full workflow on spec fn-23
+- `/mossy-slop:finish --help` - Show usage information
 
 ## Description
 
@@ -31,8 +31,8 @@ The workflow respects the mossy-config settings in the configuration
 
 ```
 # Execute full workflow on a spec
-/mossy:finish fn-23
+/mossy-slop:finish fn-23
 
 # Execute with short spec ID
-/mossy:finish fn-23-create-mossy-finish-skill
+/mossy-slop:finish fn-23-create-mossy-finish-skill
 ```

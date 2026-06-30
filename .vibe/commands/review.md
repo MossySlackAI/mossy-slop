@@ -11,42 +11,42 @@ Pass $ARGUMENTS to the skill. The skill handles all logic.
 
 ## Usage
 
-- `/mossy:review fn-1.1` - Review changes for specific task
-- `/mossy:review fn-1` - Review all changes for spec
-- `/mossy:review --diff` - Review unstaged git changes
-- `/mossy:review --staged` - Review staged git changes
-- `/mossy:review --all` - Review all uncommitted changes
-- `/mossy:review --file src/main.py` - Review specific file
-- `/mossy:review --list` - List pending reviews
-- `/mossy:review --show fn-1.1` - Show existing review report
-- `/mossy:review --check` - Quick style/lint check
-- `/mossy:review --quick` - Quick review (basic checks only)
-- `/mossy:review --security` - Security-focused review
+- `/mossy-slop:review fn-1.1` - Review changes for specific task
+- `/mossy-slop:review fn-1` - Review all changes for spec
+- `/mossy-slop:review --diff` - Review unstaged git changes
+- `/mossy-slop:review --staged` - Review staged git changes
+- `/mossy-slop:review --all` - Review all uncommitted changes
+- `/mossy-slop:review --file src/main.py` - Review specific file
+- `/mossy-slop:review --list` - List pending reviews
+- `/mossy-slop:review --show fn-1.1` - Show existing review report
+- `/mossy-slop:review --check` - Quick style/lint check
+- `/mossy-slop:review --quick` - Quick review (basic checks only)
+- `/mossy-slop:review --security` - Security-focused review
 
 ## Examples
 
 ```
 # After completing a task, review before commit
-/mossy:work fn-1.1
-/mossy:review fn-1.1
+/mossy-slop:work fn-1.1
+/mossy-slop:review fn-1.1
 
 # Review all changes for a spec
-/mossy:review fn-1
+/mossy-slop:review fn-1
 
 # Review current unstaged changes
-/mossy:review --diff
+/mossy-slop:review --diff
 
 # Quick lint check
-/mossy:review --check
+/mossy-slop:review --check
 
 # Security audit of staged changes
-/mossy:review --staged --security
+/mossy-slop:review --staged --security
 
 # See what needs review
-/mossy:review --list
+/mossy-slop:review --list
 
 # View previous review report
-/mossy:review --show fn-1.1
+/mossy-slop:review --show fn-1.1
 ```
 
 ## Review Process

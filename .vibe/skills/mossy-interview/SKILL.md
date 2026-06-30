@@ -154,7 +154,7 @@ Use `echo "$content" | flowctl.sh spec set-plan --file - <id>`.
 Output:
 ```
 Interview complete for <spec-id>. Spec: .flow/specs/<id>.md
-Next: /mossy:finish <spec-id> or /mossy:plan <spec-id>
+Next: /mossy-slop:finish <spec-id> or /mossy-slop:plan <spec-id>
 ```
 
 ## Question Bank: Technical
@@ -211,8 +211,8 @@ This skill records errors to `.flow/issues/` following the [Issue Recording Guid
 ## Not in Scope
 
 - Business questions
-- Task creation (`/mossy:plan`)
-- Implementation (`/mossy:work`)
+- Task creation (`/mossy-slop:plan`)
+- Implementation (`/mossy-slop:work`)
 
 ## GUARDRAILS
 
