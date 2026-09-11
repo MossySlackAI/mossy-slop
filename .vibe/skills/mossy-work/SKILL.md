@@ -83,22 +83,29 @@ Accepts:
 ## Task Execution Phases
 
 ### Phase 1: Analysis (Read-Only)
-- Read relevant files
+- Read relevant files. At least, but not limited to:
+  - the main spec file (`specs/fn-<spec-id>`)
+  - the task file (`tasks/fn-<task-id>`)
+  - the AGENTS.md files in the relevant directories
+- Remember the relevant files
 - Understand current state
 - Identify exact changes needed
 - NO modifications in this phase
 
 ### Phase 2: Planning
+- If you have not read the files you remember as being relevant, read them now <!-- This is supposed to trigger after compactification -->
 - List files to modify/create
 - Define change strategy
 - Identify risks and mitigations
 
 ### Phase 3: Implementation
+- If you have not read the files you remember as being relevant, read them now
 - Apply changes incrementally
 - Verify each change immediately
 - Track all modifications in summary
 
 ### Phase 4: Verification
+- If you have not read the files you remember as being relevant, read them now
 - Run acceptance checks
 - Execute tests
 - Capture evidence
