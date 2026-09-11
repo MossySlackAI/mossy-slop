@@ -30,7 +30,7 @@ cd <your repository, ideally with git already set up>
 # this creates skill and command links into the local .vibe directory.
 ```
 
-### Option 1: Clone and Install for a User (and all Repositories)
+### Option 2: Clone and Install for a User (and all Repositories)
 
 ```bash
 # Clone the repository
