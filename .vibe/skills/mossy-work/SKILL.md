@@ -102,6 +102,7 @@ Accepts:
 - Run acceptance checks
 - Execute tests
 - Capture evidence
+- Compact context window if more than 50 percent full
 - Iterate if incomplete
 
 ## Workspace Structure
