@@ -46,7 +46,7 @@ fi
 echo ""
 echo "Verifying setup..."
 
-if [ -f "$REPO_ROOT/.vibe/commands/mossy-plan.md" ]; then
+if [ -f "$REPO_ROOT/.vibe/commands/idea.md" ]; then
     echo "  ✓ commands link: OK"
 else
     echo "  ✗ commands link: FAILED"
