@@ -48,6 +48,10 @@ For each directory in this repository, each subdirectory, each sub-subdirectory 
 
   - During analysis, you may skip large files or implementation files (.c, .cpp, ...) as you see fit
   - Avoid explicit line references to source files, they can become outdated. Prefer just function and class names.
+  - If you can get by with smaller files, take that chance.
+  - Concentrate on things that help you write and debug code. There is usually no need to include:
+    - Information about the human developers
+    - git branch structure
 
 ## GUARDRAILS
 
