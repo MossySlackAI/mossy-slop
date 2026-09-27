@@ -9,15 +9,7 @@ allowed-tools: read_file,write_file,search_replace,grep,bash,ask_user_question,t
 
 This is a leaner alternative to flow-next, compatible with Mistral Vibe.
 
-The focus is the code; code is the single source of truth, it should be able to speak for itself. Inline comments provide the documentation.
-
-The human retains full control and responsibility. They can verify the quality of individual steps during or after processing.
-
-It is the user's choice whether individual steps are committed to git, and whether auto-generated plan metadata gets committed or not.
-
-When questions arise during processing, they are logged to human-readable output immediately but processing continues; open questions are asked in bulk at the end.
-
-Speed and token conservation are valued higher than exhaustive question discovery.
+This taks executes work that was previously planned by the mossy-plan skill.
 
 ## Execute
 
