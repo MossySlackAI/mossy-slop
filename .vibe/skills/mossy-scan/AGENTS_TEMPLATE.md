@@ -38,9 +38,11 @@
 
 ## Coding Conventions
 
+<TBD; in subdirectories, only list deviations or specializations>
+
  - respect local configuration in .editorconfig and .clang-format
  - follow well established best practices
-- **IMPORTANT**: demonstrate coding conventions per language with code samples, such as
+ - **IMPORTANT**: demonstrate coding conventions per language with code samples, such as
 
 ```cpp
 class CamelCase
@@ -73,14 +75,16 @@ public:
 
 ## Key Patterns
 
-<TBD>
+<TBD, for example>
+
+- class `X` uses the visitor pattern in `X::Visit(Visitor &v)`
 
 ## Build System
 
-<TBD>
+<TBD, leave out if irrelevant>
 
 ## Automated Tests
 
-<TBD>
+<TBD, leave out if there are no tests in this directory or subdirectories>
 
 ## <Other sections as appropriate for the content>
