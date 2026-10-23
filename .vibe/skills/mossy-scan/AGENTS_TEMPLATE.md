@@ -5,7 +5,7 @@
 <short description, one or two sentences>
 
 <add this note to the top AGENTS.md only>
-**Important Note**: This repository contains recursive AGENTS.md files in subdirectories. AI agents working on this project MUST read all relevant AGENTS.md files before planning or making changes. Relevant files include the AGENTS.md in the directory being modified and all parent directories. When changes to source code are made, the individual AGENTS.md files should be updated accordingly.
+**Important Note**: This repository contains recursive AGENTS.md files in subdirectories. AI agents working on this project MUST read all relevant AGENTS.md files before planning or making changes. Relevant files include the AGENTS.md in the directory being modified and all parent directories. When changes to source code are made, the individual AGENTS.md files should be updated accordingly. Keep them small.
 
 ## Details
 
@@ -15,18 +15,6 @@
 ### GUARDRAIL: The AI Agents keep out of this section.
 
 <Add, leave empty. Messages from humans to agents go here.>
-
-## Directory Structure
-
-<limit depth, only elements on this level. Subdirectories have their own AGENTS.md.>
-
-```
-.
-├── subdirectory_1/     # <very short description>
-├── subdirectory_2/     # <very short description>
-└── file_1.h            # <very short description>
-└── file_2.py           # <very short description>
-```
 
 ## Technologies
 
@@ -78,10 +66,6 @@ public:
 <TBD, for example>
 
 - class `X` uses the visitor pattern in `X::Visit(Visitor &v)`
-
-## Build System
-
-<TBD, leave out if irrelevant>
 
 ## Automated Tests
 
