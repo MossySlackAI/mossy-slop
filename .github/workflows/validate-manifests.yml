@@ -119,7 +119,7 @@ jobs:
           REQUIRED_FIELDS=("name" "description")
           
           echo "Checking all command files..."
-          for cmd_file in .vibe/commands/mossy-*.md; do
+          for cmd_file in .vibe/commands/*.md; do
             if [ ! -f "$cmd_file" ]; then
               echo "  ✗ $cmd_file not found"
               exit 1
