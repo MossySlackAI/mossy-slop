@@ -16,6 +16,18 @@
 
 <Add, leave empty. Messages from humans to agents go here.>
 
+## Directory Structure
+
+<limit depth, only elements on this level. Subdirectories have their own AGENTS.md.>
+
+```
+.
+├── subdirectory_1/     # <very short description>
+├── subdirectory_2/     # <very short description>
+└── file_1.h            # <very short description>
+└── file_2.py           # <very short description>
+```
+
 ## Technologies
 
 <For example>
@@ -27,6 +39,7 @@
 ## Coding Conventions
 
 <TBD; in subdirectories, only list deviations or specializations>
+<if coding conventions already are defined, just add a reference, do not copy>
 
  - respect local configuration in .editorconfig and .clang-format
  - follow well established best practices
